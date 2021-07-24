@@ -1,11 +1,11 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import Home from '../home/Home';
-import Profile from '../profile/Profile';
-import Game from '../game/Game';
-import Categories from '../categories/Categories';
-import Welcome from '../welcome/Welcome';
+import Home from '../../screens/home/Home';
+import Profile from '../../screens/profile/Profile';
+import Game from '../../screens/game/Game';
+import Categories from '../../screens/categories/Categories';
+import Welcome from '../../screens/welcome/Welcome';
 
 const Stack = createStackNavigator();
 
@@ -17,7 +17,7 @@ const WelcomeStackNavigator = () => {
   );
 };
 
-const MainStackNavigator = () => {
+const HomeStackNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Home" component={Home} />
@@ -51,7 +51,7 @@ const ProfileStackNavigator = () => {
 };
 
 export {
-  MainStackNavigator,
+  HomeStackNavigator,
   CategoriesStackNavigator,
   GameStackNavigator,
   ProfileStackNavigator,

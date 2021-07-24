@@ -1,10 +1,12 @@
 import React from 'react';
-import { Text, StyleSheet, View } from 'react-native';
+import { Text, StyleSheet, View, Button } from 'react-native';
 
 const Welcome = () => {
+  const pepe = false;
   return (
     <View style={styles.sectionContainer}>
-      <Text style={styles.sectionTitle}> Welcome! </Text>
+      <Text style={styles.sectionTitle}> Benvenuti! </Text>
+      <Button title="holi" onClick={() => receivedChildValue(pepe)} />
     </View>
   );
 };
