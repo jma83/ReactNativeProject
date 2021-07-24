@@ -13,7 +13,7 @@ export default class HomeManager {
   }
 
   async getRandomContent() {
-    const size = 3; //ContentType.size;
+    const size = Object.keys(ContentType).length;
     const contentType = this.generateRandom(0, size);
 
     console.log('size', size);
@@ -21,58 +21,54 @@ export default class HomeManager {
 
     switch (contentType) {
       case ContentType.CHARACTER:
-        return await this.getCharacters();
+        return { result: await this.getCharacters(), contentType };
       case ContentType.LOCATION:
-        return await this.getLocations();
+        return { result: await this.getLocations(), contentType };
       case ContentType.EPISODE:
-        return await this.getEpisodes();
+        return { result: await this.getEpisodes(), contentType };
     }
   }
 
   async getCharacters() {
-    if (this.characterManager.getPages() < 0) {
+    const pages = this.characterManager.getPages();
+    if (pages < 0) {
       const info = await this.characterManager.getCharacterInfo();
       this.characterManager.setPages(info.pages);
     }
-    const page = this.generateRandom(0, this.characterManager.getPages());
+    const page = this.generateRandom(0, pages);
     const results = await this.characterManager.getCharacters(page, this.limit, this.random);
     return this.filterResults(results);
   }
 
   async getLocations() {
-    if (this.locationManager.getPages() < 0) {
+    const pages = this.locationManager.getPages();
+    if (pages < 0) {
       const info = await this.locationManager.getLocationInfo();
       this.locationManager.setPages(info.pages);
     }
-    const page = this.generateRandom(0, this.locationManager.getPages());
+    const page = this.generateRandom(0, pages);
     const results = await this.locationManager.getLocations(page, this.limit, this.random);
     return this.filterResults(results);
   }
 
   async getEpisodes() {
-    if (this.episodeManager.getPages() < 0) {
+    const pages = this.episodeManager.getPages();
+    if (pages < 0) {
       const info = await this.episodeManager.getEpisodeInfo();
       this.episodeManager.setPages(info.pages);
     }
-    const page = this.generateRandom(0, this.episodeManager.getPages());
+    const page = this.generateRandom(0, pages);
     const results = await this.episodeManager.getEpisodes(page, this.limit, this.random);
     return this.filterResults(results);
   }
 
   filterResults(results = []) {
-    const initIndex = this.calcRandomInitIndex(results.length - this.limit, this.random);
     if (this.limit <= 0) {
       return results;
     }
+    const initIndex = this.random === true ? this.generateRandom(0, results.length - this.limit) : 0;
     console.log('randomLimit', initIndex, this.limit + initIndex);
     return results.slice(initIndex, this.limit + initIndex);
-  }
-
-  calcRandomInitIndex(size = 0, random = false) {
-    if (random === false) {
-      return 0;
-    }
-    return this.generateRandom(0, size);
   }
 
   generateRandom(min = 0, max = 0) {
