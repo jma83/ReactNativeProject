@@ -1,14 +1,10 @@
 import React from 'react';
-import { Text, StyleSheet, View, Button } from 'react-native';
+import { Text, StyleSheet, View } from 'react-native';
 
-const Home = ({ navigation }) => {
+const Welcome = () => {
   return (
     <View style={styles.sectionContainer}>
       <Text style={styles.sectionTitle}> Welcome! </Text>
-      <Button
-        title="Go to Profile Screen"
-        onPress={() => navigation.navigate('Profile')} // We added an onPress event which would navigate to the About screen
-      />
     </View>
   );
 };
@@ -25,4 +21,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Home;
+export default Welcome;
