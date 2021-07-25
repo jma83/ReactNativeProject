@@ -6,6 +6,7 @@ import Profile from '../../screens/profile/Profile';
 import Game from '../../screens/game/Game';
 import Categories from '../../screens/categories/Categories';
 import Welcome from '../../screens/welcome/Welcome';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const Stack = createStackNavigator();
 
@@ -16,11 +17,16 @@ const WelcomeStackNavigator = () => {
     </Stack.Navigator>
   );
 };
-
 const HomeStackNavigator = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Home" component={Home} />
+      <Stack.Screen
+        name="Home"
+        component={Home}
+        options={{
+          headerRight: () => <Icon name="refresh" size={25} color="black" onPress={() => alert('el pepe')} />
+        }}
+      />
       <Stack.Screen name="Profile" component={Profile} />
     </Stack.Navigator>
   );

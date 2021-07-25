@@ -15,6 +15,10 @@ export default class Home extends React.Component {
     this.loading = false;
   }
 
+  reload() {
+    this.loadContent();
+  }
+
   componentDidMount() {
     this.loadContent();
   }
@@ -31,14 +35,9 @@ export default class Home extends React.Component {
   render() {
     return (
       <View style={styles.sectionContainer}>
-        <Text style={styles.sectionTitle}> Welcome! </Text>
+        <Text style={styles.sectionTitle}> Suggested {this.contentTypeText()} </Text>
         <View style={styles.sectionList}>
-          <FlatList
-            data={this.state.items}
-            renderItem={this.renderRow.bind(this)}
-            onEndReached={() => {
-              this.loadContent();
-            }}></FlatList>
+          <FlatList data={this.state.items} renderItem={this.renderRow.bind(this)}></FlatList>
         </View>
       </View>
     );
@@ -49,11 +48,24 @@ export default class Home extends React.Component {
     console.log('item', item.name, item.type, item.episode);
 
     if (this.state.contentType === ContentType.CHARACTER) {
-      return <CharacterRow title={item.name} subtitle={item.species} imageURI="https://source.unsplash.com/random" />;
+      return <CharacterRow title={item.name} subtitle={item.species} imageURI={item.image} footer={item.status} />;
     } else if (this.state.contentType === ContentType.EPISODE) {
-      return <EpisodeRow title={item.name} subtitle={item.episode} imageURI="https://source.unsplash.com/random" />;
+      return (
+        <EpisodeRow title={item.name} subtitle={item.episode} imageURI="https://source.unsplash.com/random/200x200" />
+      );
     } else if (this.state.contentType === ContentType.LOCATION) {
-      return <LocationRow title={item.name} subtitle={item.type} imageURI="https://source.unsplash.com/random" />;
+      return (
+        <LocationRow title={item.name} subtitle={item.type} imageURI="https://source.unsplash.com/random/200x200" />
+      );
+    }
+  };
+  contentTypeText = () => {
+    if (this.state.contentType === ContentType.CHARACTER) {
+      return 'characters:';
+    } else if (this.state.contentType === ContentType.EPISODE) {
+      return 'episodes:';
+    } else if (this.state.contentType === ContentType.LOCATION) {
+      return 'locations:';
     }
   };
 }
@@ -63,12 +75,9 @@ const styles = StyleSheet.create({
     height: '100%'
   },
   sectionList: {
-    flex: 1,
     width: '100%',
-    height: '100%',
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
-    textAlign: 'center'
+    display: 'flex',
+    flexDirection: 'column'
   },
   sectionTitle: {
     fontSize: 24,
