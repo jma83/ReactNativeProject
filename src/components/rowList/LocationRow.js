@@ -2,11 +2,15 @@ import React, { Component } from 'react';
 import { Image, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 
 export default class LocationRow extends Component {
+  mounted() {
+    console.log('this.props.imageURI', this.props.imageURI);
+  }
+
   render() {
     return (
       <TouchableHighlight underlayColor="lightgray">
         <View style={styles.el_container}>
-          <Image style={styles.image} resizeMode="contain" source={{ uri: this.props.imageURI }} />
+          <Image style={styles.image} resizeMode="contain" source={this.props.imageURI} />
           <View style={styles.el_content}>
             <View style={styles.el_header}>
               <Text>{this.props.title}</Text>

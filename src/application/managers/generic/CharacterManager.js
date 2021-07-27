@@ -1,5 +1,5 @@
-import ApiClientCharacter from '../../api/ApiClientCharacter';
-import ContentManager from './ContentManager';
+import ApiClientCharacter from '@application/api/ApiClientCharacter.js';
+import ContentManager from '@application/managers/generic/ContentManager.js';
 
 export default class CharacterManager extends ContentManager {
   constructor() {

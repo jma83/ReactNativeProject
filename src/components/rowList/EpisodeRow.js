@@ -6,7 +6,7 @@ export default class EpisodeRow extends Component {
     return (
       <TouchableHighlight underlayColor="lightgray">
         <View style={styles.el_container}>
-          <Image style={styles.image} resizeMode="contain" source={{ uri: this.props.imageURI }} />
+          <Image style={styles.image} resizeMode="contain" source={this.props.imageURI} />
           <View style={styles.el_content}>
             <View style={styles.el_header}>
               <Text>{this.props.title}</Text>
@@ -27,7 +27,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     margin: 8,
-    padding: 10,
     backgroundColor: '#4c5775',
     borderRadius: 12,
     shadowColor: '#000',
@@ -61,7 +60,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'green'
   },
   image: {
-    width: 150,
-    height: 150
+    width: 132,
+    height: 105
   }
 });

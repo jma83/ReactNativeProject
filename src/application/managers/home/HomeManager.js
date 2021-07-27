@@ -1,13 +1,15 @@
-import ContentType from '../../data/ContentType';
-import EpisodeManager from '../generic/EpisodeManager';
-import CharacterManager from '../generic/CharacterManager';
-import LocationManager from '../generic/LocationManager';
+import ContentType from '@application/data/ContentType';
+import EpisodeManager from '@application/managers/generic/EpisodeManager';
+import CharacterManager from '@application/managers/generic/CharacterManager';
+import LocationManager from '@application/managers/generic/LocationManager';
+import ImageManager from '@application/managers/generic/ImageManager';
 
 export default class HomeManager {
   constructor(limit = 10, random = true) {
     this.characterManager = new CharacterManager();
     this.episodeManager = new EpisodeManager();
     this.locationManager = new LocationManager();
+    this.imageManager = new ImageManager();
     this.limit = limit;
     this.random = random;
   }
@@ -27,6 +29,16 @@ export default class HomeManager {
       case ContentType.EPISODE:
         return { result: await this.getEpisodes(), contentType };
     }
+  }
+
+  async getImages(data = []) {
+    const images = [];
+    data.forEach(async element => {
+      const res = await this.imageManager.getImage(element.name);
+      images.push(res);
+    });
+    console.log('images', images);
+    return images;
   }
 
   async getCharacters() {

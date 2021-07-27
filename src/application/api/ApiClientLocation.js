@@ -1,4 +1,4 @@
-import ApiClient from './ApiClient';
+import ApiClient from '@application/api/ApiClient.js';
 
 export default class ApiClientLocation extends ApiClient {
   async getLocations(page) {

@@ -1,6 +1,6 @@
-import ApiClient from './ApiClient';
+import ApiClient from '@application/api/ApiClient.js';
 
-export default class ApiClientCharacter extends ApiClient {
+export default class ApiClientEpisode extends ApiClient {
   async getEpisodes(page) {
     let query = this.getEpisodeURI() + this.getQueryParam('page', page, true);
     console.log('getEpisodes', query);

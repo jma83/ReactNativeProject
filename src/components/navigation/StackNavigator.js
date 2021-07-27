@@ -1,11 +1,11 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import Home from '../../screens/home/Home';
-import Profile from '../../screens/profile/Profile';
-import Game from '../../screens/game/Game';
-import Categories from '../../screens/categories/Categories';
-import Welcome from '../../screens/welcome/Welcome';
+import Home from '@screens/home/Home';
+import Profile from '@screens/profile/Profile';
+import Game from '@screens/game/Game';
+import Categories from '@screens/categories/Categories';
+import Welcome from '@screens/welcome/Welcome';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const Stack = createStackNavigator();

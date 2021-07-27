@@ -1,5 +1,5 @@
-import { BottomTabNavigator } from './navigation/TabNavigator';
-import { WelcomeStackNavigator } from './navigation/StackNavigator';
+import { BottomTabNavigator } from '@components/navigation/TabNavigator';
+import { WelcomeStackNavigator } from '@components/navigation/StackNavigator';
 import React from 'react';
 
 export default class MainComponent extends React.Component {

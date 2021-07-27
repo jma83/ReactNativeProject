@@ -1,8 +1,8 @@
 const axios = require('axios');
 
 export default class ApiClient {
-  constructor() {
-    this.URL = 'https://rickandmortyapi.com/api';
+  constructor(url = 'https://rickandmortyapi.com/api') {
+    this.URL = url;
   }
 
   async get(query = '') {

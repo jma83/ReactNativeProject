@@ -1,5 +1,5 @@
 import { NavigationContainer } from '@react-navigation/native';
-import MainComponent from './components/MainComponent';
+import MainComponent from '@components/MainComponent';
 import React from 'react';
 
 const App = () => {

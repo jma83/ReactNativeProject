@@ -1,12 +1,13 @@
 import React from 'react';
 import { Text, StyleSheet, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import HomeManager from '../../application/managers/home/HomeManager';
-import ContentType from '../../application/data/ContentType';
-import CharacterRow from '../../components/rowList/CharacterRow';
-import EpisodeRow from '../../components/rowList/EpisodeRow';
-import LocationRow from '../../components/rowList/LocationRow';
+import HomeManager from '@application/managers/home/HomeManager';
+import ContentType from '@application/data/ContentType';
+import CharacterRow from '@components/rowList/CharacterRow';
+import EpisodeRow from '@components/rowList/EpisodeRow';
+import LocationRow from '@components/rowList/LocationRow';
 
+const defaultIcon = require('@assets/imgs/icon.jpg');
 export default class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -25,10 +26,13 @@ export default class Home extends React.Component {
 
   loadContent = async () => {
     this.loading = true;
-    this.homeManager.getRandomContent().then(data => {
+    this.homeManager.getRandomContent().then(async data => {
       console.log('\n\n');
       this.setState({ items: data.result, contentType: data.contentType });
-      this.loading = true;
+      if (data.contentType !== ContentType.CHARACTER) {
+        await this.homeManager.getImages(data.result);
+      }
+      this.loading = false;
     });
   };
 
@@ -50,13 +54,9 @@ export default class Home extends React.Component {
     if (this.state.contentType === ContentType.CHARACTER) {
       return <CharacterRow title={item.name} subtitle={item.species} imageURI={item.image} footer={item.status} />;
     } else if (this.state.contentType === ContentType.EPISODE) {
-      return (
-        <EpisodeRow title={item.name} subtitle={item.episode} imageURI="https://source.unsplash.com/random/200x200" />
-      );
+      return <EpisodeRow title={item.name} subtitle={item.episode} imageURI={defaultIcon} />;
     } else if (this.state.contentType === ContentType.LOCATION) {
-      return (
-        <LocationRow title={item.name} subtitle={item.type} imageURI="https://source.unsplash.com/random/200x200" />
-      );
+      return <LocationRow title={item.name} subtitle={item.type} imageURI={defaultIcon} />;
     }
   };
   contentTypeText = () => {

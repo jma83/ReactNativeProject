@@ -1,5 +1,5 @@
-import ApiClientLocation from '../../api/ApiClientLocation.js';
-import ContentManager from './ContentManager';
+import ApiClientLocation from '@application/api/ApiClientLocation.js';
+import ContentManager from '@application/managers/generic/ContentManager.js';
 
 export default class LocationManager extends ContentManager {
   constructor() {
