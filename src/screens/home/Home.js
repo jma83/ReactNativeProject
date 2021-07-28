@@ -7,7 +7,6 @@ import CharacterRow from '@components/rowList/CharacterRow';
 import EpisodeRow from '@components/rowList/EpisodeRow';
 import LocationRow from '@components/rowList/LocationRow';
 
-const defaultIcon = require('@assets/imgs/icon.jpg');
 export default class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -24,24 +23,37 @@ export default class Home extends React.Component {
     this.loadContent();
   }
 
-  loadContent = async () => {
+  loadContent = () => {
     this.loading = true;
     this.homeManager.getRandomContent().then(async data => {
       console.log('\n\n');
+      console.log('data.result', data.result[0]);
       this.setState({ items: data.result, contentType: data.contentType });
-      if (data.contentType !== ContentType.CHARACTER) {
-        await this.homeManager.getImages(data.result);
-      }
       this.loading = false;
+      if (data.contentType !== ContentType.CHARACTER) {
+        await this.loadImages(data.result);
+      }
     });
   };
 
+  loadImages = async (data = []) => {
+    this.homeManager.getImages(data).then(images => {
+      const items = this.state.items.map(async (item, index) => {
+        item.image = await images[index];
+        return item;
+      });
+      this.setState({ items });
+    });
+  };
   render() {
     return (
       <View style={styles.sectionContainer}>
         <Text style={styles.sectionTitle}> Suggested {this.contentTypeText()} </Text>
         <View style={styles.sectionList}>
-          <FlatList data={this.state.items} renderItem={this.renderRow.bind(this)}></FlatList>
+          <FlatList
+            data={this.state.items}
+            renderItem={this.renderRow.bind(this)}
+            keyExtractor={(item, index) => index}></FlatList>
         </View>
       </View>
     );
@@ -49,14 +61,13 @@ export default class Home extends React.Component {
 
   renderRow = rowInfo => {
     const item = rowInfo.item;
-    console.log('item', item.name, item.type, item.episode);
-
+    console.log('item', item.name, item.type, item.episode, item.image);
     if (this.state.contentType === ContentType.CHARACTER) {
       return <CharacterRow title={item.name} subtitle={item.species} imageURI={item.image} footer={item.status} />;
     } else if (this.state.contentType === ContentType.EPISODE) {
-      return <EpisodeRow title={item.name} subtitle={item.episode} imageURI={defaultIcon} />;
+      return <EpisodeRow title={item.name} subtitle={item.episode} imageURI={item.image} />;
     } else if (this.state.contentType === ContentType.LOCATION) {
-      return <LocationRow title={item.name} subtitle={item.type} imageURI={defaultIcon} />;
+      return <LocationRow title={item.name} subtitle={item.type} imageURI={item.image} />;
     }
   };
   contentTypeText = () => {

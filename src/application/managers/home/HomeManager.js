@@ -17,7 +17,6 @@ export default class HomeManager {
   async getRandomContent() {
     const size = Object.keys(ContentType).length;
     const contentType = this.generateRandom(0, size);
-
     console.log('size', size);
     console.log('content', contentType);
 
@@ -25,20 +24,22 @@ export default class HomeManager {
       case ContentType.CHARACTER:
         return { result: await this.getCharacters(), contentType };
       case ContentType.LOCATION:
-        return { result: await this.getLocations(), contentType };
+        let locations = await this.getLocations();
+        return { result: locations.map(async obj => ({ ...obj, image: '' })), contentType };
       case ContentType.EPISODE:
         return { result: await this.getEpisodes(), contentType };
     }
   }
 
   async getImages(data = []) {
-    const images = [];
-    data.forEach(async element => {
-      const res = await this.imageManager.getImage(element.name);
-      images.push(res);
+    return data.map(async element => {
+      return await this.imageManager.getImage(element.name).then(result => {
+        const elem = Object.keys(result.items)[0];
+        if (elem == null) return '';
+        const image = result.items[elem].thumbnail || '';
+        return image;
+      });
     });
-    console.log('images', images);
-    return images;
   }
 
   async getCharacters() {

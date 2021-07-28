@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { Image, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
+const defaultIcon = require('@assets/imgs/icon.jpg');
 
 export default class EpisodeRow extends Component {
   render() {
     return (
       <TouchableHighlight underlayColor="lightgray">
         <View style={styles.el_container}>
-          <Image style={styles.image} resizeMode="contain" source={this.props.imageURI} />
+          <Image style={styles.image} resizeMode="contain" source={this.getImage()} />
           <View style={styles.el_content}>
             <View style={styles.el_header}>
               <Text>{this.props.title}</Text>
@@ -20,6 +21,13 @@ export default class EpisodeRow extends Component {
       </TouchableHighlight>
     );
   }
+
+  getImage = () => {
+    if (this.props.imageURI == null || this.props.imageURI.length <= 0) {
+      return defaultIcon;
+    }
+    return { uri: this.props.imageURI };
+  };
 }
 
 const styles = StyleSheet.create({
@@ -45,7 +53,8 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
-    marginLeft: 10
+    marginLeft: 10,
+    padding: 10
   },
 
   el_header: {

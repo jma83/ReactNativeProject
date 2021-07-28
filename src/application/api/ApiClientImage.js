@@ -7,6 +7,7 @@ export default class ApiClientImage extends ApiClient {
 
   async getImageByTitle(title = '') {
     const uri = this.URL + this.getQueryParam('titles', title, true);
+    console.log('uri img', uri);
     return await this.get(uri);
   }
 }
