@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Image, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 const defaultIcon = require('@assets/imgs/icon.jpg');
+import globalStyles from '@src/utils/GlobalStyles';
 
 export default class LocationRow extends Component {
   mounted() {
@@ -14,11 +15,11 @@ export default class LocationRow extends Component {
           <Image style={styles.image} resizeMode="contain" source={this.getImage()} />
           <View style={styles.el_content}>
             <View style={styles.el_header}>
-              <Text>{this.props.title}</Text>
-              <Text>{this.props.subtitle}</Text>
+              <Text style={globalStyles.CustomTitleMDFont}>{this.props.title}</Text>
+              <Text style={globalStyles.CustomSMFont}>{this.props.subtitle}</Text>
             </View>
             <View style={styles.el_footer}>
-              <Text>pepepe</Text>
+              <Text style={globalStyles.DefaultTextFont}>{this.props.footer}</Text>
             </View>
           </View>
         </View>
@@ -61,15 +62,13 @@ const styles = StyleSheet.create({
   },
 
   el_header: {
-    display: 'flex',
-    flexDirection: 'column',
-    flexGrow: 1
+    maxWidth: 200
   },
 
   el_footer: {
     display: 'flex',
     flexDirection: 'row',
-    backgroundColor: 'green'
+    color: 'white'
   },
   image: {
     width: 132,

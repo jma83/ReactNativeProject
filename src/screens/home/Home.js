@@ -23,26 +23,25 @@ export default class Home extends React.Component {
     this.loadContent();
   }
 
-  loadContent = () => {
+  loadContent = async () => {
     this.loading = true;
-    this.homeManager.getRandomContent().then(async data => {
-      console.log('\n\n');
-      console.log('data.result', data.result[0]);
-      this.setState({ items: data.result, contentType: data.contentType });
-      this.loading = false;
-      if (data.contentType !== ContentType.CHARACTER) {
-        await this.loadImages(data.result);
-      }
-    });
+    const data = await this.homeManager.getRandomContent();
+    console.log('\n\n');
+    this.setState({ items: data.result, contentType: data.contentType });
+    this.loading = false;
+    if (data.contentType !== ContentType.CHARACTER) {
+      await this.loadImages(data.result);
+    }
   };
 
   loadImages = async (data = []) => {
     this.homeManager.getImages(data).then(images => {
-      const items = this.state.items.map(async (item, index) => {
+      let array = [...this.state.items];
+      array.forEach(async (item, index) => {
         item.image = await images[index];
         return item;
       });
-      this.setState({ items });
+      this.setState({ items: array });
     });
   };
   render() {
@@ -61,13 +60,12 @@ export default class Home extends React.Component {
 
   renderRow = rowInfo => {
     const item = rowInfo.item;
-    console.log('item', item.name, item.type, item.episode, item.image);
     if (this.state.contentType === ContentType.CHARACTER) {
       return <CharacterRow title={item.name} subtitle={item.species} imageURI={item.image} footer={item.status} />;
     } else if (this.state.contentType === ContentType.EPISODE) {
-      return <EpisodeRow title={item.name} subtitle={item.episode} imageURI={item.image} />;
+      return <EpisodeRow title={item.name} subtitle={item.episode} imageURI={item.image} footer={item.air_date} />;
     } else if (this.state.contentType === ContentType.LOCATION) {
-      return <LocationRow title={item.name} subtitle={item.type} imageURI={item.image} />;
+      return <LocationRow title={item.name} subtitle={item.type} imageURI={item.image} footer={item.dimension} />;
     }
   };
   contentTypeText = () => {

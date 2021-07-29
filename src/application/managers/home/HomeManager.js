@@ -25,19 +25,20 @@ export default class HomeManager {
         return { result: await this.getCharacters(), contentType };
       case ContentType.LOCATION:
         let locations = await this.getLocations();
-        return { result: locations.map(async obj => ({ ...obj, image: '' })), contentType };
+        return { result: locations.map(obj => ({ ...obj, image: '' })), contentType };
       case ContentType.EPISODE:
-        return { result: await this.getEpisodes(), contentType };
+        let episodes = await this.getEpisodes();
+        return { result: episodes, contentType };
     }
   }
 
   async getImages(data = []) {
     return data.map(async element => {
-      return await this.imageManager.getImage(element.name).then(result => {
+      return await this.imageManager.getImage(element.name).then(async result => {
         const elem = Object.keys(result.items)[0];
         if (elem == null) return '';
         const image = result.items[elem].thumbnail || '';
-        return image;
+        return await image;
       });
     });
   }

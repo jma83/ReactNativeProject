@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Image, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
+import globalStyles from '@src/utils/GlobalStyles';
 
 export default class CharacterRow extends Component {
   render() {
@@ -9,11 +10,11 @@ export default class CharacterRow extends Component {
           <Image style={styles.image} resizeMode="contain" source={{ uri: this.props.imageURI }} />
           <View style={styles.el_content}>
             <View style={styles.el_header}>
-              <Text style={styles.title}>{this.props.title}</Text>
-              <Text style={styles.specie}>{this.props.subtitle}</Text>
+              <Text style={globalStyles.CustomTitleFont}>{this.props.title}</Text>
+              <Text style={globalStyles.CustomMDFont}>{this.props.subtitle}</Text>
             </View>
             <View style={styles.el_footer}>
-              <Text>{this.props.footer}</Text>
+              <Text style={globalStyles.DefaultTextFont}>Status: {this.props.footer}</Text>
             </View>
           </View>
         </View>
@@ -50,26 +51,10 @@ const styles = StyleSheet.create({
   },
 
   el_header: {
-    display: 'flex',
-    flexDirection: 'column',
-    flexGrow: 1
+    maxWidth: 200
   },
 
-  el_footer: {
-    display: 'flex',
-    flexDirection: 'row',
-    backgroundColor: 'green'
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: '600',
-    color: 'white',
-    display: 'flex'
-  },
-  specie: {
-    fontSize: 18,
-    color: 'white'
-  },
+  el_footer: {},
   image: {
     width: 150,
     height: 150

@@ -1,15 +1,35 @@
 {
-    "compilerOptions": {
-      "baseUrl": ".",
-      "paths": {
-        "@app": ["./*"],
-        "@src": ["./src/*"],
-        "@application": ["./src/application/*"],
-        "@components": ["./src/components/*"],
-        "@screens": ["./src/screens/*"],
-        "@utils": ["./src/utils/*"],
-        "@assets": ["./assets/*"]
-      }
-    },
-    "exclude": ["node_modules"]
-  }
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@app": [
+        "."
+      ],
+      "@src": [
+        "./src/*"
+      ],
+      "@application": [
+        "./src/application/*"
+      ],
+      "@components": [ 
+        "./src/components/*"
+      ],
+      "@screens": [
+        "./src/screens/*"
+      ],
+      "@utils": [
+        "./src/utils/*"
+      ],
+      "@assets": [
+        "./assets/*"
+      ]
+    }
+  },
+  "include": [
+    "src/*",
+    "assets/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
