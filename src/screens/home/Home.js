@@ -4,8 +4,7 @@ import { FlatList } from 'react-native-gesture-handler';
 import HomeManager from '@application/managers/home/HomeManager';
 import ContentType from '@application/data/ContentType';
 import CharacterRow from '@components/rowList/CharacterRow';
-import EpisodeRow from '@components/rowList/EpisodeRow';
-import LocationRow from '@components/rowList/LocationRow';
+import ContentRow from '@components/rowList/ContentRow';
 
 export default class Home extends React.Component {
   constructor(props) {
@@ -63,9 +62,16 @@ export default class Home extends React.Component {
     if (this.state.contentType === ContentType.CHARACTER) {
       return <CharacterRow title={item.name} subtitle={item.species} imageURI={item.image} footer={item.status} />;
     } else if (this.state.contentType === ContentType.EPISODE) {
-      return <EpisodeRow title={item.name} subtitle={item.episode} imageURI={item.image} footer={item.air_date} />;
+      return (
+        <ContentRow
+          title={item.name}
+          subtitle={item.episode}
+          imageURI={item.image}
+          footer={`Release: ${item.air_date}`}
+        />
+      );
     } else if (this.state.contentType === ContentType.LOCATION) {
-      return <LocationRow title={item.name} subtitle={item.type} imageURI={item.image} footer={item.dimension} />;
+      return <ContentRow title={item.name} subtitle={item.type} imageURI={item.image} footer={item.dimension} />;
     }
   };
   contentTypeText = () => {

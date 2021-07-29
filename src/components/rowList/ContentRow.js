@@ -3,11 +3,7 @@ import { Image, StyleSheet, Text, TouchableHighlight, View } from 'react-native'
 const defaultIcon = require('@assets/imgs/icon.jpg');
 import globalStyles from '@src/utils/GlobalStyles';
 
-export default class LocationRow extends Component {
-  mounted() {
-    console.log('this.props.imageURI', this.props.imageURI);
-  }
-
+export default class ContentRow extends Component {
   render() {
     return (
       <TouchableHighlight underlayColor="lightgray">
@@ -15,7 +11,7 @@ export default class LocationRow extends Component {
           <Image style={styles.image} resizeMode="contain" source={this.getImage()} />
           <View style={styles.el_content}>
             <View style={styles.el_header}>
-              <Text style={globalStyles.CustomTitleMDFont}>{this.props.title}</Text>
+              <Text style={globalStyles.CustomTitleSMFont}>{this.props.title}</Text>
               <Text style={globalStyles.CustomSMFont}>{this.props.subtitle}</Text>
             </View>
             <View style={styles.el_footer}>
@@ -26,6 +22,7 @@ export default class LocationRow extends Component {
       </TouchableHighlight>
     );
   }
+
   getImage = () => {
     if (this.props.imageURI == null || this.props.imageURI.length <= 0) {
       return defaultIcon;
@@ -67,9 +64,9 @@ const styles = StyleSheet.create({
 
   el_footer: {
     display: 'flex',
-    flexDirection: 'row',
-    color: 'white'
+    flexDirection: 'row'
   },
+
   image: {
     width: 132,
     height: 105
