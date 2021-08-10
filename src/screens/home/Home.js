@@ -57,10 +57,22 @@ export default class Home extends React.Component {
     );
   }
 
+  onContentPressed(content) {
+    this.props.navigation.navigate('ContentDetails', { content });
+  }
+
   renderRow = rowInfo => {
     const item = rowInfo.item;
     if (this.state.contentType === ContentType.CHARACTER) {
-      return <CharacterRow title={item.name} subtitle={item.species} imageURI={item.image} footer={item.status} />;
+      return (
+        <CharacterRow
+          title={item.name}
+          subtitle={item.species}
+          imageURI={item.image}
+          footer={`Status: ${item.status}`}
+          onPress={this.onContentPressed.bind(this, item)}
+        />
+      );
     } else if (this.state.contentType === ContentType.EPISODE) {
       return (
         <ContentRow
@@ -68,10 +80,19 @@ export default class Home extends React.Component {
           subtitle={item.episode}
           imageURI={item.image}
           footer={`Release: ${item.air_date}`}
+          onPress={this.onContentPressed.bind(this, item)}
         />
       );
     } else if (this.state.contentType === ContentType.LOCATION) {
-      return <ContentRow title={item.name} subtitle={item.type} imageURI={item.image} footer={item.dimension} />;
+      return (
+        <ContentRow
+          title={item.name}
+          subtitle={item.type}
+          imageURI={item.image}
+          footer={item.dimension}
+          onPress={this.onContentPressed.bind(this, item)}
+        />
+      );
     }
   };
   contentTypeText = () => {

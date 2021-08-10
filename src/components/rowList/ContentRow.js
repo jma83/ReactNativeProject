@@ -6,7 +6,7 @@ import globalStyles from '@src/utils/GlobalStyles';
 export default class ContentRow extends Component {
   render() {
     return (
-      <TouchableHighlight underlayColor="lightgray">
+      <TouchableHighlight onPress={this.props.onPress} underlayColor="lightgray">
         <View style={styles.el_container}>
           <Image style={styles.image} resizeMode="contain" source={this.getImage()} />
           <View style={styles.el_content}>

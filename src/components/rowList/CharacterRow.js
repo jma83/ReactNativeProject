@@ -5,7 +5,7 @@ import globalStyles from '@src/utils/GlobalStyles';
 export default class CharacterRow extends Component {
   render() {
     return (
-      <TouchableHighlight underlayColor="lightgray">
+      <TouchableHighlight onPress={this.props.onPress} underlayColor="lightgray">
         <View style={styles.el_container}>
           <Image style={styles.image} resizeMode="contain" source={{ uri: this.props.imageURI }} />
           <View style={styles.el_content}>
@@ -14,7 +14,7 @@ export default class CharacterRow extends Component {
               <Text style={globalStyles.CustomMDFont}>{this.props.subtitle}</Text>
             </View>
             <View style={styles.el_footer}>
-              <Text style={globalStyles.DefaultTextFont}>Status: {this.props.footer}</Text>
+              <Text style={globalStyles.DefaultTextFont}>{this.props.footer}</Text>
             </View>
           </View>
         </View>

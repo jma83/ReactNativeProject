@@ -6,6 +6,7 @@ import Profile from '@screens/profile/Profile';
 import Game from '@screens/game/Game';
 import Categories from '@screens/categories/Categories';
 import Welcome from '@screens/welcome/Welcome';
+import ContentDetails from '@components/contentDetail/ContentDetail';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const Stack = createStackNavigator();
@@ -27,6 +28,7 @@ const HomeStackNavigator = () => {
           headerRight: () => <Icon name="refresh" size={25} color="black" onPress={() => alert('el pepe')} />
         }}
       />
+      <Stack.Screen name="ContentDetails" component={ContentDetails} />
       <Stack.Screen name="Profile" component={Profile} />
     </Stack.Navigator>
   );
