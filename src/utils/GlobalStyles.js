@@ -16,6 +16,11 @@ const globalStyles = StyleSheet.create({
     fontSize: 19,
     color: 'white'
   },
+  CustomSMLinkFont: {
+    fontFamily: 'coolvetica',
+    fontSize: 16,
+    color: '#369ed1'
+  },
   CustomLGFont: {
     fontFamily: 'coolvetica',
     fontSize: 22,
@@ -38,6 +43,9 @@ const globalStyles = StyleSheet.create({
   },
   DefaultTextFont: {
     color: 'black'
+  },
+  DefaultTextFontWhite: {
+    color: 'white'
   }
 });
 

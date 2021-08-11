@@ -16,7 +16,7 @@ export default class HomeManager {
 
   async getRandomContent() {
     const size = Object.keys(ContentType).length;
-    const contentType = this.generateRandom(0, size);
+    const contentType = 0; //this.generateRandom(0, size);
     console.log('size', size);
     console.log('content', contentType);
 
@@ -45,11 +45,11 @@ export default class HomeManager {
 
   async getCharacters() {
     const pages = this.characterManager.getPages();
-    if (pages < 0) {
+    if (pages <= 0) {
       const info = await this.characterManager.getCharacterInfo();
       this.characterManager.setPages(info.pages);
     }
-    const page = this.generateRandom(0, pages);
+    const page = this.generateRandom(0, this.characterManager.getPages());
     const results = await this.characterManager.getCharacters(page, this.limit, this.random);
     return this.filterResults(results);
   }

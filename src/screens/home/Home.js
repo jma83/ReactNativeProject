@@ -58,7 +58,7 @@ export default class Home extends React.Component {
   }
 
   onContentPressed(content) {
-    this.props.navigation.navigate('ContentDetails', { content });
+    this.props.navigation.navigate('ContentDetail', { content, contentType: this.state.contentType });
   }
 
   renderRow = rowInfo => {
