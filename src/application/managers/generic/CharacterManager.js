@@ -12,6 +12,11 @@ export default class CharacterManager extends ContentManager {
     return data.results;
   }
 
+  async getCharactersByIds(ids = []) {
+    const data = await this.apiClientCharacter.getCharactersByIds(ids);
+    return data;
+  }
+
   getCharacterInfo() {
     return this.apiClientCharacter
       .getCharacters(0)

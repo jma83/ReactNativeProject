@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, StyleSheet, View } from 'react-native';
+import { Text, StyleSheet, View, SafeAreaView } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import HomeManager from '@application/managers/home/HomeManager';
 import ContentType from '@application/data/ContentType';
@@ -45,15 +45,17 @@ export default class Home extends React.Component {
   };
   render() {
     return (
-      <View style={styles.sectionContainer}>
-        <Text style={styles.sectionTitle}> Suggested {this.contentTypeText()} </Text>
-        <View style={styles.sectionList}>
-          <FlatList
-            data={this.state.items}
-            renderItem={this.renderRow.bind(this)}
-            keyExtractor={(item, index) => index}></FlatList>
+      <SafeAreaView>
+        <View style={styles.sectionContainer}>
+          <Text style={styles.sectionTitle}> Suggested {this.contentTypeText()} </Text>
+          <View style={styles.sectionList}>
+            <FlatList
+              data={this.state.items}
+              renderItem={this.renderRow.bind(this)}
+              keyExtractor={(item, index) => index}></FlatList>
+          </View>
         </View>
-      </View>
+      </SafeAreaView>
     );
   }
 
@@ -108,7 +110,7 @@ export default class Home extends React.Component {
 const styles = StyleSheet.create({
   sectionContainer: {
     width: '100%',
-    height: '100%'
+    height: '98%'
   },
   sectionList: {
     width: '100%',

@@ -17,8 +17,15 @@ export default class ApiClientCharacter extends ApiClient {
   }
 
   async getCharactersByIds(id = []) {
+    if (id.length <= 0) {
+      return null;
+    }
     let query = this.getCharacterURI() + `/${id}`;
-    return await this.get(query);
+    const result = await this.get(query);
+    if (result.length > 1) {
+      return result;
+    }
+    return [result];
   }
 
   getCharacterURI() {

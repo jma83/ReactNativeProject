@@ -14,8 +14,15 @@ export default class ApiClientEpisode extends ApiClient {
   }
 
   async getEpisodesByIds(id = []) {
+    if (id.length <= 0) {
+      return null;
+    }
     let query = this.getEpisodeURI() + `/${id}`;
-    return await this.get(query);
+    const result = await this.get(query);
+    if (result.length > 1) {
+      return result;
+    }
+    return [result];
   }
 
   getEpisodeURI() {

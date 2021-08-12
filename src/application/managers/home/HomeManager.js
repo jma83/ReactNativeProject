@@ -16,7 +16,7 @@ export default class HomeManager {
 
   async getRandomContent() {
     const size = Object.keys(ContentType).length;
-    const contentType = 0; //this.generateRandom(0, size);
+    const contentType = this.generateRandom(0, size);
     console.log('size', size);
     console.log('content', contentType);
 

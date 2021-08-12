@@ -1,21 +1,38 @@
 import React, { Component } from 'react';
-import { Image, StyleSheet, Text, View, Linking } from 'react-native';
+import { Image, StyleSheet, Text, View, Linking, SafeAreaView, TouchableOpacity } from 'react-native';
 import globalStyles from '@src/utils/GlobalStyles';
 const defaultIcon = require('@assets/imgs/icon.jpg');
 import { FlatList } from 'react-native-gesture-handler';
 import ContentType from '@application/data/ContentType';
 import ContentCardRow from '@components/contentDetail/elementCard/ContentCardRow';
+import Icon from 'react-native-vector-icons/Ionicons';
+import ContentRow from '@components/rowList/ContentRow';
 
 export default class CharacterDetail extends Component {
   static unknown = 'Unknown';
   constructor(props) {
     super(props);
-    console.log('props', props);
   }
 
   render() {
     return (
-      <View style={styles.el_general}>
+      <SafeAreaView>
+        <View style={styles.el_general}>
+          <FlatList
+            ListHeaderComponent={this.getMainDetail()}
+            ListEmptyComponent={<Text>No results!</Text>}
+            data={this.props.contentList}
+            renderItem={this.renderRow.bind(this)}
+            keyExtractor={(item, index) => index}></FlatList>
+          {this.getFloatingButton()}
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  getMainDetail = () => {
+    return (
+      <View>
         <View style={styles.el_container}>
           <View style={styles.el_image_container}>
             <Image style={styles.image} resizeMode="contain" source={this.getImage()} />
@@ -34,19 +51,18 @@ export default class CharacterDetail extends Component {
         </View>
         <View style={styles.el_footer}>
           {this.getMetaDescription()}
-          <Text style={globalStyles.CustomSMLinkFont} onPress={() => Linking.openURL(this.props.metaInfo.url)}>
-            Continue reading...
-          </Text>
           {this.getLocation()}
           {this.getOrigin()}
-          {this.getEpisodes()}
+          <View style={{ marginTop: 30 }}>
+            <Text style={globalStyles.CustomMDFont}>Episodes where appears:</Text>
+          </View>
         </View>
       </View>
     );
-  }
+  };
 
   getMetaDescription = () => {
-    return this.props.metaInfo.abstract ? (
+    let description = this.props.metaInfo.abstract ? (
       <View>
         <Text style={globalStyles.CustomMDFont}>Description:</Text>
         <Text style={globalStyles.DefaultTextFontWhite}>{this.props.metaInfo.abstract}</Text>
@@ -54,6 +70,17 @@ export default class CharacterDetail extends Component {
     ) : (
       <Text style={globalStyles.CustomMDFont}>No description available</Text>
     );
+    if (this.props.metaInfo.url != null) {
+      description = (
+        <View>
+          {description}
+          <Text style={globalStyles.CustomSMLinkFont} onPress={() => Linking.openURL(this.props.metaInfo.url)}>
+            Continue reading...
+          </Text>
+        </View>
+      );
+    }
+    return description;
   };
 
   getLocation = () => {
@@ -86,22 +113,6 @@ export default class CharacterDetail extends Component {
     );
   };
 
-  getEpisodes = () => {
-    return (
-      <View style={{ marginTop: 30 }}>
-        <Text style={globalStyles.CustomMDFont}>Episodes where appears:</Text>
-
-        <View style={styles.sectionList}>
-          <FlatList
-            numColumns={2}
-            data={this.props.content.episode}
-            renderItem={this.renderRow.bind(this)}
-            keyExtractor={(item, index) => index}></FlatList>
-        </View>
-      </View>
-    );
-  };
-
   getImage = () => {
     const imageURI = this.props.content.image || this.props.metaInfo.image;
     if (!imageURI) {
@@ -112,11 +123,13 @@ export default class CharacterDetail extends Component {
 
   renderRow = rowInfo => {
     const item = rowInfo.item;
-    const result = item.match('[^/]*$');
     return (
-      <ContentCardRow
-        title={`Episode ${result}`}
-        onPress={this.onContentPressed.bind(this, { url: item, contentType: ContentType.EPISODE })}
+      <ContentRow
+        title={item.name}
+        subtitle={item.episode}
+        imageURI={item.image}
+        footer={`Release: ${item.air_date}`}
+        onPress={this.onContentPressed.bind(this, item)}
       />
     );
   };
@@ -124,10 +137,19 @@ export default class CharacterDetail extends Component {
   onContentPressed(data) {
     this.props.navigation.navigate('ContentDetail', { content: data.url, contentType: data.contentType });
   }
+
+  getFloatingButton() {
+    return (
+      <TouchableOpacity style={styles.floatingButton} activeOpacity={0.5} onPress={() => {}}>
+        <Icon name="star-outline" size={28} color={'black'} />
+      </TouchableOpacity>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
   el_general: {
+    display: 'flex',
     backgroundColor: '#4c5775',
     elevation: 24,
     height: '100%'
@@ -160,7 +182,8 @@ const styles = StyleSheet.create({
   el_footer: {
     display: 'flex',
     flexDirection: 'column',
-    marginLeft: 16
+    marginLeft: 16,
+    maxWidth: 350
   },
   image: {
     width: '102%',
@@ -178,7 +201,24 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     width: '100%',
-    justifyContent: 'space-between',
-    marginTop: 6
+    marginTop: 6,
+    marginLeft: 8
+  },
+  floatingButton: {
+    width: 50,
+    height: 50,
+    borderRadius: 30,
+    backgroundColor: '#ee6e73',
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+    bottom: 20,
+    right: 20,
+    zIndex: 50
+  },
+  icon: {
+    resizeMode: 'contain',
+    width: 50,
+    height: 50
   }
 });

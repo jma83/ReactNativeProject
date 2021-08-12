@@ -12,6 +12,11 @@ export default class EpisodeManager extends ContentManager {
     return data.results;
   }
 
+  async getEpisodesByIds(ids = []) {
+    const data = await this.apiClientEpisode.getEpisodesByIds(ids);
+    return data;
+  }
+
   getEpisodeInfo() {
     return this.apiClientEpisode
       .getEpisodes(0)
