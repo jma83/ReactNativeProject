@@ -11,6 +11,9 @@
       "@application": [
         "./src/application/*"
       ],
+      "@navigation": [
+        "./src/navigation/*"
+      ],
       "@components": [ 
         "./src/components/*"
       ],

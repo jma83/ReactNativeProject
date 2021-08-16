@@ -1,17 +1,20 @@
 import React from 'react';
 import { Text, StyleSheet, View, SafeAreaView } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import HomeManager from '@application/managers/home/HomeManager';
+import CategoryContentManager from '@application/managers/categoryContent/CategoryContentManager';
 import ContentType from '@application/data/ContentType';
 import CharacterRow from '@components/rowList/CharacterRow';
 import ContentRow from '@components/rowList/ContentRow';
 
-export default class Home extends React.Component {
+export default class CategoryContent extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { items: [], contentType: ContentType.CHARACTER };
-    this.homeManager = new HomeManager();
+    this.state = { items: [] };
+    this.categoryContentManager = new CategoryContentManager();
     this.loading = false;
+    props.navigation.setOptions({
+      title: props.contentName
+    });
   }
 
   reload() {
@@ -24,7 +27,7 @@ export default class Home extends React.Component {
 
   loadContent = async () => {
     this.loading = true;
-    const data = await this.homeManager.getRandomContent();
+    const data = await this.categoryContentManager.getContent(this.props.contentType);
     console.log('\n\n');
     this.setState({ items: data.result, contentType: data.contentType });
     this.loading = false;
@@ -34,7 +37,7 @@ export default class Home extends React.Component {
   };
 
   loadImages = async (data = []) => {
-    return this.homeManager.getImages(data).then(images => {
+    return this.categoryContentManager.getImages(data).then(images => {
       let array = [...this.state.items];
       array.forEach(async (item, index) => {
         item.image = await images[index];
@@ -61,12 +64,12 @@ export default class Home extends React.Component {
   }
 
   onContentPressed(content) {
-    this.props.navigation.navigate('ContentDetail', { content, contentType: this.state.contentType });
+    this.props.navigation.navigate('ContentDetail', { content, contentType: this.props.contentType });
   }
 
   renderRow = rowInfo => {
     const item = rowInfo.item;
-    if (this.state.contentType === ContentType.CHARACTER) {
+    if (this.props.contentType === ContentType.CHARACTER) {
       return (
         <CharacterRow
           title={item.name}
@@ -76,7 +79,7 @@ export default class Home extends React.Component {
           onPress={this.onContentPressed.bind(this, item)}
         />
       );
-    } else if (this.state.contentType === ContentType.EPISODE) {
+    } else if (this.props.contentType === ContentType.EPISODE) {
       return (
         <ContentRow
           title={item.name}
@@ -86,7 +89,7 @@ export default class Home extends React.Component {
           onPress={this.onContentPressed.bind(this, item)}
         />
       );
-    } else if (this.state.contentType === ContentType.LOCATION) {
+    } else if (this.props.contentType === ContentType.LOCATION) {
       return (
         <ContentRow
           title={item.name}
@@ -99,11 +102,11 @@ export default class Home extends React.Component {
     }
   };
   contentTypeText = () => {
-    if (this.state.contentType === ContentType.CHARACTER) {
+    if (this.props.contentType === ContentType.CHARACTER) {
       return 'characters:';
-    } else if (this.state.contentType === ContentType.EPISODE) {
+    } else if (this.props.contentType === ContentType.EPISODE) {
       return 'episodes:';
-    } else if (this.state.contentType === ContentType.LOCATION) {
+    } else if (this.props.contentType === ContentType.LOCATION) {
       return 'locations:';
     }
   };

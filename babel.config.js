@@ -10,6 +10,7 @@ module.exports = {
         alias: {
           '@app': __dirname,
           '@src': path.join(__dirname, 'src'),
+          '@navigation': path.join(__dirname, 'src', 'navigation'),
           '@application': path.join(__dirname, 'src', 'application'),
           '@components': path.join(__dirname, 'src', 'components'),
           '@screens': path.join(__dirname, 'src', 'screens'),

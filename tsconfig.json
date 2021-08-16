@@ -8,6 +8,9 @@
             "@src": [
                 "./src/*"
             ],
+            "@navigation": [
+                "./src/navigation/*"
+            ],
             "@application": [
                 "./src/application/*"
             ],
@@ -26,6 +29,6 @@
         }
     },
     "exclude": [
-        "node_modules"
+        "./node_modules"
     ]
 }

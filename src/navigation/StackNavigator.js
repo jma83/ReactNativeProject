@@ -8,6 +8,7 @@ import Categories from '@screens/categories/Categories';
 import Welcome from '@screens/welcome/Welcome';
 import ContentDetail from '@components/contentDetail/ContentDetail';
 import Icon from 'react-native-vector-icons/Ionicons';
+import CategoryContent from '@components/categoryContent/CategoryContent';
 
 const Stack = createStackNavigator();
 
@@ -38,6 +39,7 @@ const CategoriesStackNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Categories" component={Categories} />
+      <Stack.Screen name="CategoryContent" component={CategoryContent} />
     </Stack.Navigator>
   );
 };

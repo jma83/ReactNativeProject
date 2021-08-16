@@ -5,7 +5,7 @@ import {
   CategoriesStackNavigator,
   GameStackNavigator,
   ProfileStackNavigator
-} from '@components/navigation/StackNavigator';
+} from '@navigation/StackNavigator';
 
 const Tab = createBottomTabNavigator();
 import Icon from 'react-native-vector-icons/Ionicons';
