@@ -3,26 +3,28 @@ import EpisodeManager from '@application/managers/generic/EpisodeManager';
 import CharacterManager from '@application/managers/generic/CharacterManager';
 import LocationManager from '@application/managers/generic/LocationManager';
 import ImageManager from '@application/managers/generic/ImageManager';
+import { PageState } from '@components/pagination/Pagination';
 
 export default class CategoryContentManager {
-  constructor(limit = 10) {
+  constructor(contentType) {
     this.characterManager = new CharacterManager();
     this.episodeManager = new EpisodeManager();
     this.locationManager = new LocationManager();
     this.imageManager = new ImageManager();
-    this.limit = limit;
+    this.page = 0;
+    this.contentType = contentType;
   }
 
-  async getContent(contentType) {
-    switch (contentType) {
+  async getContent() {
+    switch (this.contentType) {
       case ContentType.CHARACTER:
-        return { result: await this.getCharacters(), contentType };
+        return { result: await this.getCharacters(), currentPage: this.page };
       case ContentType.LOCATION:
         let locations = await this.getLocations();
-        return { result: locations.map(obj => ({ ...obj, image: '' })), contentType };
+        return { result: locations.map(obj => ({ ...obj, image: '' })), currentPage: this.page };
       case ContentType.EPISODE:
         let episodes = await this.getEpisodes();
-        return { result: episodes, contentType };
+        return { result: episodes, currentPage: this.page };
     }
   }
 
@@ -38,35 +40,67 @@ export default class CategoryContentManager {
   }
 
   async getCharacters() {
-    const pages = this.characterManager.getPages();
+    const pages = this.getCharacterPages();
     if (pages <= 0) {
       const info = await this.characterManager.getCharacterInfo();
       this.characterManager.setPages(info.pages);
     }
-    const page = this.generateRandom(0, this.characterManager.getPages());
-    const results = await this.characterManager.getCharacters(page, this.limit, this.random);
-    return this.filterResults(results);
+    const results = await this.characterManager.getCharacters(this.page);
+    return results;
   }
 
   async getLocations() {
-    const pages = this.locationManager.getPages();
-    if (pages < 0) {
+    const pages = this.getLocationPages();
+    if (pages <= 0) {
       const info = await this.locationManager.getLocationInfo();
       this.locationManager.setPages(info.pages);
     }
-    const page = this.generateRandom(0, pages);
-    const results = await this.locationManager.getLocations(page, this.limit, this.random);
-    return this.filterResults(results);
+    const results = await this.locationManager.getLocations(this.page);
+    return results;
   }
 
   async getEpisodes() {
-    const pages = this.episodeManager.getPages();
-    if (pages < 0) {
+    const pages = this.getEpisodePages();
+    if (pages <= 0) {
       const info = await this.episodeManager.getEpisodeInfo();
       this.episodeManager.setPages(info.pages);
     }
-    const page = this.generateRandom(0, pages);
-    const results = await this.episodeManager.getEpisodes(page, this.limit, this.random);
-    return this.filterResults(results);
+    const results = await this.episodeManager.getEpisodes(this.page);
+    return results;
+  }
+
+  getPages() {
+    switch (this.contentType) {
+      case ContentType.CHARACTER:
+        return this.getCharacterPages();
+      case ContentType.LOCATION:
+        return this.getLocationPages();
+      case ContentType.EPISODE:
+        return this.getEpisodePages();
+    }
+  }
+
+  getEpisodePages() {
+    return this.episodeManager.getPages();
+  }
+
+  getLocationPages() {
+    return this.locationManager.getPages();
+  }
+
+  getCharacterPages() {
+    return this.characterManager.getPages();
+  }
+
+  updatePage(pageState) {
+    if (pageState === PageState.FIRST) {
+      this.page = 1;
+    } else if (pageState === PageState.PREVIOUS) {
+      this.page--;
+    } else if (pageState === PageState.NEXT) {
+      this.page++;
+    } else if (pageState === PageState.LAST) {
+      this.page = this.getPages();
+    }
   }
 }

@@ -40,6 +40,7 @@ const CategoriesStackNavigator = () => {
     <Stack.Navigator>
       <Stack.Screen name="Categories" component={Categories} />
       <Stack.Screen name="CategoryContent" component={CategoryContent} />
+      <Stack.Screen name="ContentDetail" component={ContentDetail} />
     </Stack.Navigator>
   );
 };

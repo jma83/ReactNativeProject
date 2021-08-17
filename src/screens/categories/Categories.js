@@ -38,7 +38,7 @@ export default class Categories extends Component {
 const styles = StyleSheet.create({
   sectionContainer: {
     width: '100%',
-    height: '98%'
+    height: '100%'
   },
   sectionList: {
     width: '100%',

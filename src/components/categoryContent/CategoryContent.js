@@ -1,19 +1,20 @@
 import React from 'react';
-import { Text, StyleSheet, View, SafeAreaView } from 'react-native';
+import { StyleSheet, View, SafeAreaView } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import CategoryContentManager from '@application/managers/categoryContent/CategoryContentManager';
 import ContentType from '@application/data/ContentType';
 import CharacterRow from '@components/rowList/CharacterRow';
 import ContentRow from '@components/rowList/ContentRow';
+import Pagination from '@components/pagination/Pagination';
 
 export default class CategoryContent extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { items: [] };
-    this.categoryContentManager = new CategoryContentManager();
+    this.state = { items: [], pages: 1, currentPage: 0 };
+    this.categoryContentManager = new CategoryContentManager(this.props.route.params.contentType);
     this.loading = false;
     props.navigation.setOptions({
-      title: props.contentName
+      title: props.route.params.contentName
     });
   }
 
@@ -27,11 +28,12 @@ export default class CategoryContent extends React.Component {
 
   loadContent = async () => {
     this.loading = true;
-    const data = await this.categoryContentManager.getContent(this.props.contentType);
+    const data = await this.categoryContentManager.getContent();
+    const pages = await this.categoryContentManager.getPages();
     console.log('\n\n');
-    this.setState({ items: data.result, contentType: data.contentType });
+    this.setState({ items: data.result, pages, currentPage: data.currentPage });
     this.loading = false;
-    if (data.contentType !== ContentType.CHARACTER) {
+    if (this.props.route.params.contentType !== ContentType.CHARACTER) {
       this.loadImages(data.result).then(array => this.setState({ items: array }));
     }
   };
@@ -51,9 +53,9 @@ export default class CategoryContent extends React.Component {
     return (
       <SafeAreaView>
         <View style={styles.sectionContainer}>
-          <Text style={styles.sectionTitle}> Suggested {this.contentTypeText()} </Text>
           <View style={styles.sectionList}>
             <FlatList
+              ListFooterComponent={this.getPages()}
               data={this.state.items}
               renderItem={this.renderRow.bind(this)}
               keyExtractor={(item, index) => index}></FlatList>
@@ -64,12 +66,40 @@ export default class CategoryContent extends React.Component {
   }
 
   onContentPressed(content) {
-    this.props.navigation.navigate('ContentDetail', { content, contentType: this.props.contentType });
+    this.props.navigation.navigate('ContentDetail', { content, contentType: this.props.route.params.contentType });
   }
+
+  getPages() {
+    const current = this.state.currentPage + 1; //this.state.pages
+    const totalPages = this.state.pages;
+    let array = [];
+    const disabledFirst = current === 1;
+    const disabledLast = current === totalPages;
+
+    array = [...array, 'First', 'Previous'];
+    array = [...array, String(current)];
+    array = [...array, 'Next', 'Last'];
+
+    return (
+      <Pagination
+        style={styles.footer}
+        pages={array}
+        currentPage={current}
+        disabledFirst={disabledFirst}
+        disabledLast={disabledLast}
+        onPressPage={this.navigatePage}
+      />
+    );
+  }
+
+  navigatePage = async pageState => {
+    await this.categoryContentManager.updatePage(pageState);
+    await this.loadContent();
+  };
 
   renderRow = rowInfo => {
     const item = rowInfo.item;
-    if (this.props.contentType === ContentType.CHARACTER) {
+    if (this.props.route.params.contentType === ContentType.CHARACTER) {
       return (
         <CharacterRow
           title={item.name}
@@ -79,7 +109,7 @@ export default class CategoryContent extends React.Component {
           onPress={this.onContentPressed.bind(this, item)}
         />
       );
-    } else if (this.props.contentType === ContentType.EPISODE) {
+    } else if (this.props.route.params.contentType === ContentType.EPISODE) {
       return (
         <ContentRow
           title={item.name}
@@ -89,7 +119,7 @@ export default class CategoryContent extends React.Component {
           onPress={this.onContentPressed.bind(this, item)}
         />
       );
-    } else if (this.props.contentType === ContentType.LOCATION) {
+    } else if (this.props.route.params.contentType === ContentType.LOCATION) {
       return (
         <ContentRow
           title={item.name}
@@ -101,28 +131,21 @@ export default class CategoryContent extends React.Component {
       );
     }
   };
-  contentTypeText = () => {
-    if (this.props.contentType === ContentType.CHARACTER) {
-      return 'characters:';
-    } else if (this.props.contentType === ContentType.EPISODE) {
-      return 'episodes:';
-    } else if (this.props.contentType === ContentType.LOCATION) {
-      return 'locations:';
-    }
-  };
 }
 const styles = StyleSheet.create({
   sectionContainer: {
     width: '100%',
-    height: '98%'
+    height: '100%'
   },
   sectionList: {
     width: '100%',
     display: 'flex',
     flexDirection: 'column'
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600'
+  footer: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between'
   }
 });

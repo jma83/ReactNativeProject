@@ -50,29 +50,29 @@ export default class HomeManager {
       this.characterManager.setPages(info.pages);
     }
     const page = this.generateRandom(0, this.characterManager.getPages());
-    const results = await this.characterManager.getCharacters(page, this.limit, this.random);
+    const results = await this.characterManager.getCharacters(page);
     return this.filterResults(results);
   }
 
   async getLocations() {
     const pages = this.locationManager.getPages();
-    if (pages < 0) {
+    if (pages <= 0) {
       const info = await this.locationManager.getLocationInfo();
       this.locationManager.setPages(info.pages);
     }
     const page = this.generateRandom(0, pages);
-    const results = await this.locationManager.getLocations(page, this.limit, this.random);
+    const results = await this.locationManager.getLocations(page);
     return this.filterResults(results);
   }
 
   async getEpisodes() {
     const pages = this.episodeManager.getPages();
-    if (pages < 0) {
+    if (pages <= 0) {
       const info = await this.episodeManager.getEpisodeInfo();
       this.episodeManager.setPages(info.pages);
     }
     const page = this.generateRandom(0, pages);
-    const results = await this.episodeManager.getEpisodes(page, this.limit, this.random);
+    const results = await this.episodeManager.getEpisodes(page);
     return this.filterResults(results);
   }
 
