@@ -16,6 +16,12 @@ const globalStyles = StyleSheet.create({
     fontSize: 19,
     color: 'white'
   },
+  CustomMDFontBlack: {
+    fontFamily: 'coolvetica',
+    fontSize: 19,
+    color: 'black',
+    padding: 2
+  },
   CustomSMLinkFont: {
     fontFamily: 'coolvetica',
     fontSize: 16,
@@ -30,6 +36,12 @@ const globalStyles = StyleSheet.create({
     fontFamily: 'KGBlankSpaceSolid',
     fontSize: 20,
     color: 'white'
+  },
+  CustomLGTitleFontBlack: {
+    fontFamily: 'KGBlankSpaceSolid',
+    fontSize: 24,
+    color: 'black',
+    textAlign: 'center'
   },
   CustomTitleMDFont: {
     fontFamily: 'KGBlankSpaceSolid',
@@ -46,6 +58,14 @@ const globalStyles = StyleSheet.create({
   },
   DefaultTextFontWhite: {
     color: 'white'
+  },
+  CategoryTitle: {
+    color: 'white',
+    fontSize: 34,
+    lineHeight: 84,
+    textAlign: 'center',
+    backgroundColor: '#000000c0',
+    fontFamily: 'KGBlankSpaceSolid'
   }
 });
 

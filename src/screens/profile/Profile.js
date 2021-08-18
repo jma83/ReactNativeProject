@@ -5,6 +5,10 @@ const Profile = () => {
   return (
     <View style={styles.sectionContainer}>
       <Text style={styles.sectionTitle}> This is profile! </Text>
+      <Text style={styles.sectionTitle}>- Favourite content </Text>
+      <Text style={styles.sectionTitle}>- Change Name </Text>
+      <Text style={styles.sectionTitle}>- Change Avatar </Text>
+      <Text style={styles.sectionTitle}>- Manage Profiles</Text>
     </View>
   );
 };

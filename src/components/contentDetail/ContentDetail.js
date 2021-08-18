@@ -103,6 +103,9 @@ export default class ContentDetail extends Component {
   };
 
   onContentPressed = data => {
+    if (!data) {
+      return;
+    }
     this.props.navigation.push('ContentDetail', { content: data.content, contentType: data.contentType });
   };
 }
