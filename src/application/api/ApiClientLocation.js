@@ -3,7 +3,6 @@ import ApiClient from '@application/api/ApiClient.js';
 export default class ApiClientLocation extends ApiClient {
   async getLocations(page) {
     let query = this.getLocationURI() + this.getQueryParam('page', page, true);
-    console.log('getLocations', query);
     return await this.get(query);
   }
 
@@ -15,6 +14,14 @@ export default class ApiClientLocation extends ApiClient {
   async getLocationsByIds(id = []) {
     let query = this.getLocationURI() + `/${id}`;
     return await this.get(query);
+  }
+
+  async getLocationByURL(url = '') {
+    console.log('getLocationByURL', url.includes(this.getLocationURI()));
+    if (!url.includes(this.getLocationURI())) {
+      return null;
+    }
+    return await this.get(url);
   }
 
   getLocationURI() {

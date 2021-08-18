@@ -11,7 +11,7 @@ export default class CategoryContentManager {
     this.episodeManager = new EpisodeManager();
     this.locationManager = new LocationManager();
     this.imageManager = new ImageManager();
-    this.page = 0;
+    this.page = 1;
     this.contentType = contentType;
   }
 

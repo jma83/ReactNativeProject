@@ -20,7 +20,7 @@ export default class CharacterDetail extends Component {
         <View style={styles.el_general}>
           <FlatList
             ListHeaderComponent={this.getMainDetail()}
-            ListEmptyComponent={<Text>No results!</Text>}
+            ListEmptyComponent={<Text style={styles.el_footer}>No results!</Text>}
             data={this.props.contentList}
             renderItem={this.renderRow.bind(this)}
             keyExtractor={(item, index) => index}></FlatList>
@@ -89,10 +89,7 @@ export default class CharacterDetail extends Component {
         <Text style={globalStyles.CustomMDFont}>Location:</Text>
         <ContentCardRow
           title={this.props.content.location.name || unknown}
-          onPress={this.onContentPressed.bind(this, {
-            url: this.props.content.location.url,
-            contentType: ContentType.LOCATION
-          })}
+          onPress={this.props.loadLocation.bind(this, this.props.content.location.url)}
         />
       </View>
     );
@@ -104,10 +101,7 @@ export default class CharacterDetail extends Component {
         <Text style={globalStyles.CustomMDFont}>Origin:</Text>
         <ContentCardRow
           title={this.props.content.origin.name || unknown}
-          onPress={this.onContentPressed.bind(this, {
-            url: this.props.content.origin.url,
-            contentType: ContentType.LOCATION
-          })}
+          onPress={this.props.loadLocation.bind(this, this.props.content.origin.url)}
         />
       </View>
     );
@@ -135,7 +129,7 @@ export default class CharacterDetail extends Component {
   };
 
   onContentPressed(data) {
-    this.props.navigation.navigate('ContentDetail', { content: data.url, contentType: data.contentType });
+    this.props.onContentPressed({ content: data, contentType: ContentType.EPISODE });
   }
 
   getFloatingButton() {

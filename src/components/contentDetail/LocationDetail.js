@@ -5,6 +5,7 @@ const defaultIcon = require('@assets/imgs/icon.jpg');
 import { FlatList } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Ionicons';
 import CharacterRow from '@components/rowList/CharacterRow';
+import ContentType from '@application/data/ContentType';
 
 export default class LocationDetail extends Component {
   constructor(props) {
@@ -18,7 +19,7 @@ export default class LocationDetail extends Component {
         <View style={styles.el_general}>
           <FlatList
             ListHeaderComponent={this.getMainDetail()}
-            ListEmptyComponent={<Text>No results!</Text>}
+            ListEmptyComponent={<Text style={styles.el_footer}>No results!</Text>}
             data={this.props.contentList}
             renderItem={this.renderRow.bind(this)}
             keyExtractor={(item, index) => index}></FlatList>
@@ -110,7 +111,7 @@ export default class LocationDetail extends Component {
   };
 
   onContentPressed(data) {
-    this.props.navigation.navigate('ContentDetail', { content: data.url, contentType: data.contentType });
+    this.props.onContentPressed({ content: data, contentType: ContentType.CHARACTER });
   }
 
   getFloatingButton() {

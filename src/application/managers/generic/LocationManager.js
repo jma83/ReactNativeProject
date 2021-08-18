@@ -21,4 +21,9 @@ export default class LocationManager extends ContentManager {
       })
       .catch(e => Promise.reject(e));
   }
+
+  async getLocationByURL(url = '') {
+    const data = await this.apiClientLocation.getLocationByURL(url);
+    return data;
+  }
 }

@@ -10,7 +10,7 @@ import Pagination from '@components/pagination/Pagination';
 export default class CategoryContent extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { items: [], pages: 1, currentPage: 0 };
+    this.state = { items: [], pages: 1, currentPage: 1 };
     this.categoryContentManager = new CategoryContentManager(this.props.route.params.contentType);
     this.loading = false;
     props.navigation.setOptions({
@@ -70,7 +70,7 @@ export default class CategoryContent extends React.Component {
   }
 
   getPages() {
-    const current = this.state.currentPage + 1; //this.state.pages
+    const current = this.state.currentPage; //this.state.pages
     const totalPages = this.state.pages;
     let array = [];
     const disabledFirst = current === 1;

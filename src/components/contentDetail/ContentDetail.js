@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View } from 'react-native';
 import CharacterDetail from '@components/contentDetail/CharacterDetail';
 import EpìsodeDetail from '@components/contentDetail/EpìsodeDetail';
 import LocationDetail from '@components/contentDetail/LocationDetail';
@@ -10,9 +10,8 @@ export default class ContentDetail extends Component {
   constructor(props) {
     super(props);
     const params = props.route.params;
-
     this.state = {
-      content: params.content,
+      content: params.content || '',
       contentType: params.contentType,
       metaInfo: { url: '', abstract: '', image: '' },
       contentList: []
@@ -69,6 +68,8 @@ export default class ContentDetail extends Component {
           content={this.state.content}
           metaInfo={this.state.metaInfo}
           contentList={this.state.contentList}
+          onContentPressed={this.onContentPressed}
+          loadLocation={this.loadLocation}
         />
       );
     } else if (this.state.contentType === ContentType.LOCATION) {
@@ -77,6 +78,7 @@ export default class ContentDetail extends Component {
           content={this.state.content}
           metaInfo={this.state.metaInfo}
           contentList={this.state.contentList}
+          onContentPressed={this.onContentPressed}
         />
       );
     } else if (this.state.contentType === ContentType.EPISODE) {
@@ -85,8 +87,22 @@ export default class ContentDetail extends Component {
           content={this.state.content}
           metaInfo={this.state.metaInfo}
           contentList={this.state.contentList}
+          onContentPressed={this.onContentPressed}
         />
       );
     }
   }
+
+  loadLocation = location => {
+    if (!location) {
+      return;
+    }
+    this.detailManager.getLocationByURL(location).then(result => {
+      this.props.navigation.push('ContentDetail', { content: result, contentType: ContentType.LOCATION });
+    });
+  };
+
+  onContentPressed = data => {
+    this.props.navigation.push('ContentDetail', { content: data.content, contentType: data.contentType });
+  };
 }

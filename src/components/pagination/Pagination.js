@@ -29,8 +29,6 @@ export default class Pagination extends React.Component {
   }
 
   renderRow = page => {
-    console.log('page!', page, this.props.disabledFirst);
-
     if (
       (this.props.disabledFirst && (page.index === PageState.FIRST || page.index === PageState.PREVIOUS)) ||
       (this.props.disabledLast && (page.index === PageState.NEXT || page.index === PageState.LAST))

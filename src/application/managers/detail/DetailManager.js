@@ -1,12 +1,14 @@
 import MetaInfoManager from '@application/managers/generic/MetaInfoManager';
 import EpisodeManager from '@application/managers/generic/EpisodeManager';
 import CharacterManager from '@application/managers/generic/CharacterManager';
+import LocationManager from '@application/managers/generic/LocationManager';
 
 export default class DetailManager {
   constructor() {
     this.metaInfoManager = new MetaInfoManager();
     this.episodeManager = new EpisodeManager();
     this.characterManager = new CharacterManager();
+    this.locationManager = new LocationManager();
   }
 
   async getMetaInfoByTitle(title = '') {
@@ -23,13 +25,16 @@ export default class DetailManager {
 
   async getEpisodesByIds(ids = []) {
     const result = await this.episodeManager.getEpisodesByIds(ids);
-    console.log('getEpisodesByIds res', result);
     return result;
   }
 
   async getCharactersByIds(ids = []) {
     const result = await this.characterManager.getCharactersByIds(ids);
-    console.log('getCharactersByIds res', result);
+    return result;
+  }
+
+  async getLocationByURL(url = '') {
+    const result = await this.locationManager.getLocationByURL(url);
     return result;
   }
 }
