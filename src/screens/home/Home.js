@@ -5,7 +5,8 @@ import HomeManager from '@application/managers/home/HomeManager';
 import ContentType from '@application/data/ContentType';
 import CharacterRow from '@components/rowList/CharacterRow';
 import ContentRow from '@components/rowList/ContentRow';
-import globalStyles from '../../utils/GlobalStyles';
+import globalStyles from '@utils/GlobalStyles';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 export default class Home extends React.Component {
   constructor(props) {
@@ -13,6 +14,9 @@ export default class Home extends React.Component {
     this.state = { items: [], contentType: ContentType.CHARACTER };
     this.homeManager = new HomeManager();
     this.loading = false;
+    props.navigation.setOptions({
+      headerRight: () => <Icon name="refresh" size={25} color="black" onPress={() => this.reload()}></Icon>
+    });
   }
 
   reload() {
@@ -30,19 +34,21 @@ export default class Home extends React.Component {
     this.setState({ items: data.result, contentType: data.contentType });
     this.loading = false;
     if (data.contentType !== ContentType.CHARACTER) {
-      this.loadImages(data.result).then(array => this.setState({ items: array }));
+      this.loadImages(data.result).then(array => {
+        console.log('result finale', array);
+        this.setState({ items: array });
+      });
     }
   };
 
   loadImages = async (data = []) => {
-    return this.homeManager.getImages(data).then(images => {
-      let array = [...this.state.items];
-      array.forEach(async (item, index) => {
-        item.image = await images[index];
-        return item;
-      });
-      return array;
+    const images = await this.homeManager.getImages(data);
+    let array = [...this.state.items];
+    array.forEach(async (item, index) => {
+      item.image = await images[index];
+      console.log('index', index, await images[index]);
     });
+    return array;
   };
 
   render() {

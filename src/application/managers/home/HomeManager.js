@@ -33,14 +33,19 @@ export default class HomeManager {
   }
 
   async getImages(data = []) {
-    return data.map(async element => {
-      return await this.imageManager.getImage(element.name).then(async result => {
-        const elem = Object.keys(result.items)[0];
-        if (elem == null) return '';
-        const image = result.items[elem].thumbnail || '';
-        return await image;
-      });
+    const pepe = data.map(async element => {
+      const result = await this.imageManager.getImage(element.name);
+      const elem = Object.keys(result.items)[0];
+      if (elem == null) {
+        console.log('chao pescaoooo');
+        return '';
+      }
+      let image = '';
+      image = await result.items[elem].thumbnail;
+      console.log('image result=?=?', image);
+      return image;
     });
+    return pepe;
   }
 
   async getCharacters() {

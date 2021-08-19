@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { ImageBackground, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
-import globalStyles from '../../utils/GlobalStyles';
+import globalStyles from '@utils/GlobalStyles';
 
 export default class CategoryRow extends Component {
   render() {

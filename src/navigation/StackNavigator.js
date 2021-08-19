@@ -4,10 +4,10 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Home from '@screens/home/Home';
 import Profile from '@screens/profile/Profile';
 import Game from '@screens/game/Game';
+import StartGame from '@screens/game/StartGame';
 import Categories from '@screens/categories/Categories';
 import Welcome from '@screens/welcome/Welcome';
 import ContentDetail from '@components/contentDetail/ContentDetail';
-import Icon from 'react-native-vector-icons/Ionicons';
 import CategoryContent from '@components/categoryContent/CategoryContent';
 
 const Stack = createStackNavigator();
@@ -22,13 +22,7 @@ const WelcomeStackNavigator = () => {
 const HomeStackNavigator = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen
-        name="Home"
-        component={Home}
-        options={{
-          headerRight: () => <Icon name="refresh" size={25} color="black" onPress={() => alert('el pepe')} />
-        }}
-      />
+      <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="ContentDetail" component={ContentDetail} />
       <Stack.Screen name="Profile" component={Profile} />
     </Stack.Navigator>
@@ -49,6 +43,7 @@ const GameStackNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Game" component={Game} />
+      <Stack.Screen name="StartGame" component={StartGame} />
     </Stack.Navigator>
   );
 };

@@ -4,7 +4,7 @@ import globalStyles from '@src/utils/GlobalStyles';
 import Icon from 'react-native-vector-icons/Ionicons';
 const charactersImg = require('@assets/imgs/characters.png');
 
-export default class Game extends React.Component {
+export default class StartGame extends React.Component {
   render() {
     return (
       <View style={styles.sectionContainer}>
@@ -18,10 +18,7 @@ export default class Game extends React.Component {
                 </Text>
               </View>
               <View style={styles.sectionButtonsContainer}>
-                <TouchableOpacity
-                  style={styles.floatingButton}
-                  activeOpacity={0.5}
-                  onPress={() => this.onContentPressed()}>
+                <TouchableOpacity style={styles.floatingButton} activeOpacity={0.5} onPress={() => {}}>
                   <Icon name="rocket" size={28} color={'white'} />
                   <Text style={globalStyles.CustomMDFont}> Start game </Text>
                 </TouchableOpacity>
@@ -35,10 +32,6 @@ export default class Game extends React.Component {
         </ImageBackground>
       </View>
     );
-  }
-
-  onContentPressed() {
-    this.props.navigation.navigate('StartGame');
   }
 }
 const styles = StyleSheet.create({
