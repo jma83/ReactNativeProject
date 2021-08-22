@@ -1,13 +1,21 @@
 import React from 'react';
-import { StyleSheet, View, ImageBackground, ScrollView, FlatList } from 'react-native';
+import { StyleSheet, View, ImageBackground, ScrollView, FlatList, Text } from 'react-native';
+import StartGameManager from '@application/managers/game/StartGameManager';
+import ImageCharacterRow from '@components/rowList/ImageCharacterRow';
+
 const charactersImg = require('@assets/imgs/characters.png');
 
 export default class StartGame extends React.Component {
-  constructor() {
+  constructor(props) {
+    super(props);
     this.startGameManager = new StartGameManager();
     this.startTimeout = null;
-    this.inGameTimeout = null;
-    this.state = { options: [], round: 1 };
+    this.inGameInterval = null;
+    this.state = { options: [], round: 1, name: '', count: 0 };
+  }
+
+  componentDidMount() {
+    this.activeStartTimeout();
   }
 
   activeStartTimeout() {
@@ -21,27 +29,36 @@ export default class StartGame extends React.Component {
     );
   }
 
-  activeInGameTimeout() {
-    this.inGameTimeout = setTimeout(
+  activeInGameInterval() {
+    this.inGameInterval = setInterval(
       (function (self) {
         return function () {
-          self.endRound();
+          console.log('gola?');
+          if (self.state.count <= 0) {
+            self.endRound();
+          } else {
+            let count = self.state.count - 1;
+            console.log('hola???', count);
+            self.setState({ count });
+          }
         };
       })(this),
-      this.startGameManager.getTimeInRound()
+      1000
     );
   }
-  
+
   async startRound() {
     await this.startGameManager.nextRound();
     const options = this.startGameManager.getOptions();
-    this.setState({ options });
-    this.startGameManager.activeInGameTimeout();
+    const name = this.startGameManager.getCorrectName();
+    const count = this.startGameManager.getTimeInRound();
+    this.setState({ options, name, count });
+    this.activeInGameInterval();
   }
 
   endRound() {
     clearInterval(this.startTimeout);
-    clearInterval(this.inGameTimeout);
+    clearInterval(this.inGameInterval);
     this.startGameManager.endRound();
   }
 
@@ -49,20 +66,29 @@ export default class StartGame extends React.Component {
     return (
       <View style={styles.sectionContainer}>
         <ImageBackground source={charactersImg} resizeMode="cover" style={{ flex: 1, justifyContent: 'center' }}>
-          <ScrollView>
-            <View style={styles.sectionContent}>
+          <View style={styles.sectionContent}>
+            <Text>Who is {this.state.name}?</Text>
+            <Text>Timer: {this.state.count} </Text>
             <FlatList
-              data={this.state.items}
+              numColumns={2}
+              data={this.state.options}
               renderItem={this.renderRow.bind(this)}
               keyExtractor={(item, index) => index}></FlatList>
-            </View>
-          </ScrollView>
+          </View>
         </ImageBackground>
       </View>
     );
   }
 
+  renderRow = item => {
+    console.log('item', item.item);
 
+    return <ImageCharacterRow imageURI={item.item.image} onPress={this.onContentPressed.bind(this, item.item)} />;
+  };
+
+  onContentPressed = item => {
+    this.startGameManager.checkAnswer(item);
+  };
 }
 const styles = StyleSheet.create({
   sectionContainer: {

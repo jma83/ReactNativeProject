@@ -20,7 +20,7 @@ export default class StartGameManager {
     this.correctAnswer = 0;
 
     this.timeBetweenRounds = 3000;
-    this.timeInRound = 10000; 
+    this.timeInRound = 10;
   }
 
   async getCharacters() {
@@ -32,7 +32,7 @@ export default class StartGameManager {
     const page = this.generateRandom(0, this.characterManager.getPages());
     const results = await this.characterManager.getCharacters(page);
     this.options = this.filterResults(results);
-    this.correctAnswer = this.options[this.generateRandom(0, filteredResults.length)];
+    this.correctAnswer = this.options[this.generateRandom(0, this.options.length)];
   }
 
   endRound() {
@@ -40,8 +40,8 @@ export default class StartGameManager {
   }
 
   checkAnswer(option) {
-    if (option === this.correctAnswer){
-      return true
+    if (option === this.correctAnswer) {
+      return true;
     }
     return false;
   }
@@ -50,7 +50,7 @@ export default class StartGameManager {
     return this.timeBetweenRounds;
   }
 
-  getTimeInRounds() {
+  getTimeInRound() {
     return this.timeInRound;
   }
 
@@ -69,6 +69,12 @@ export default class StartGameManager {
 
   getRound() {
     return this.round;
+  }
+
+  getCorrectName() {
+    let location = this.correctAnswer.origin.name || this.correctAnswer.location.name || '';
+    location = ` (${location})`;
+    return this.correctAnswer.name + location;
   }
 
   generateRandom(min = 0, max = 0) {
