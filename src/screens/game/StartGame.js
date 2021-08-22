@@ -1,38 +1,68 @@
-import React, { Component } from 'react';
-import { Text, StyleSheet, View, TouchableOpacity, ImageBackground, ScrollView } from 'react-native';
-import globalStyles from '@src/utils/GlobalStyles';
-import Icon from 'react-native-vector-icons/Ionicons';
+import React from 'react';
+import { StyleSheet, View, ImageBackground, ScrollView, FlatList } from 'react-native';
 const charactersImg = require('@assets/imgs/characters.png');
 
 export default class StartGame extends React.Component {
+  constructor() {
+    this.startGameManager = new StartGameManager();
+    this.startTimeout = null;
+    this.inGameTimeout = null;
+    this.state = { options: [], round: 1 };
+  }
+
+  activeStartTimeout() {
+    this.startTimeout = setTimeout(
+      (function (self) {
+        return function () {
+          self.startRound();
+        };
+      })(this),
+      this.startGameManager.getTimeBetweenRounds()
+    );
+  }
+
+  activeInGameTimeout() {
+    this.inGameTimeout = setTimeout(
+      (function (self) {
+        return function () {
+          self.endRound();
+        };
+      })(this),
+      this.startGameManager.getTimeInRound()
+    );
+  }
+  
+  async startRound() {
+    await this.startGameManager.nextRound();
+    const options = this.startGameManager.getOptions();
+    this.setState({ options });
+    this.startGameManager.activeInGameTimeout();
+  }
+
+  endRound() {
+    clearInterval(this.startTimeout);
+    clearInterval(this.inGameTimeout);
+    this.startGameManager.endRound();
+  }
+
   render() {
     return (
       <View style={styles.sectionContainer}>
         <ImageBackground source={charactersImg} resizeMode="cover" style={{ flex: 1, justifyContent: 'center' }}>
           <ScrollView>
             <View style={styles.sectionContent}>
-              <View style={styles.sectionTitleContainer}>
-                <Text style={globalStyles.CustomLGTitleFontBlack}>Ready to guess Rick & Morty Characters?{'\n'}</Text>
-                <Text style={globalStyles.CustomMDFontBlack}>
-                  Choose between 4 images, only one matches the correct character!
-                </Text>
-              </View>
-              <View style={styles.sectionButtonsContainer}>
-                <TouchableOpacity style={styles.floatingButton} activeOpacity={0.5} onPress={() => {}}>
-                  <Icon name="rocket" size={28} color={'white'} />
-                  <Text style={globalStyles.CustomMDFont}> Start game </Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.floatingButton2} activeOpacity={0.5} onPress={() => {}}>
-                  <Icon name="stats-chart" size={28} color={'white'} />
-                  <Text style={globalStyles.CustomMDFont}> List scores </Text>
-                </TouchableOpacity>
-              </View>
+            <FlatList
+              data={this.state.items}
+              renderItem={this.renderRow.bind(this)}
+              keyExtractor={(item, index) => index}></FlatList>
             </View>
           </ScrollView>
         </ImageBackground>
       </View>
     );
   }
+
+
 }
 const styles = StyleSheet.create({
   sectionContainer: {

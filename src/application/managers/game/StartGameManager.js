@@ -18,7 +18,9 @@ export default class StartGameManager {
     this.guessed = 0;
     this.options = [];
     this.correctAnswer = 0;
-    this.nextRound();
+
+    this.timeBetweenRounds = 3000;
+    this.timeInRound = 10000; 
   }
 
   async getCharacters() {
@@ -29,38 +31,28 @@ export default class StartGameManager {
     }
     const page = this.generateRandom(0, this.characterManager.getPages());
     const results = await this.characterManager.getCharacters(page);
-    return this.filterResults(results);
-  }
-
-  activeStartTimeout() {
-    this.startTimeout = setTimeout(
-      (function (self) {
-        return function () {
-          self.activeInGameTimeout();
-        };
-      })(this),
-      3000
-    );
-  }
-
-  activeInGameTimeout() {
-    this.inGameTimeout = setTimeout(
-      (function (self) {
-        return function () {
-          self.endRound();
-        };
-      })(this),
-      10000
-    );
+    this.options = this.filterResults(results);
+    this.correctAnswer = this.options[this.generateRandom(0, filteredResults.length)];
   }
 
   endRound() {
     this.status = GameStatus.ENDED;
-    clearInterval(this.startTimeout);
-    clearInterval(this.inGameTimeout);
   }
 
-  answer() {}
+  checkAnswer(option) {
+    if (option === this.correctAnswer){
+      return true
+    }
+    return false;
+  }
+
+  getTimeBetweenRounds() {
+    return this.timeBetweenRounds;
+  }
+
+  getTimeInRounds() {
+    return this.timeInRound;
+  }
 
   async nextRound() {
     if (this.maxRounds <= this.round) {
@@ -68,8 +60,15 @@ export default class StartGameManager {
     }
     this.round++;
     this.status = GameStatus.PLAYING;
-    this.activeStartTimeout();
-    this.options = await this.getCharacters();
+    await this.getCharacters();
+  }
+
+  getOptions() {
+    return this.options;
+  }
+
+  getRound() {
+    return this.round;
   }
 
   generateRandom(min = 0, max = 0) {
