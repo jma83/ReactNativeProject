@@ -1,7 +1,9 @@
 import React from 'react';
-import { StyleSheet, View, ImageBackground, ScrollView, FlatList, Text } from 'react-native';
+import { StyleSheet, View, ImageBackground, TouchableOpacity, FlatList, Text } from 'react-native';
 import StartGameManager from '@application/managers/game/StartGameManager';
 import ImageCharacterRow from '@components/rowList/ImageCharacterRow';
+import globalStyles from '@src/utils/GlobalStyles';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const charactersImg = require('@assets/imgs/characters.png');
 
@@ -9,23 +11,28 @@ export default class StartGame extends React.Component {
   constructor(props) {
     super(props);
     this.startGameManager = new StartGameManager();
-    this.startTimeout = null;
+    this.startInterval = null;
     this.inGameInterval = null;
-    this.state = { options: [], round: 1, name: '', count: 0 };
+    this.state = { options: [], round: 0, name: '', count: this.startGameManager.getTimeBetweenRounds() };
   }
 
   componentDidMount() {
-    this.activeStartTimeout();
+    this.activeStartInterval();
   }
 
-  activeStartTimeout() {
-    this.startTimeout = setTimeout(
+  activeStartInterval() {
+    this.startInterval = setInterval(
       (function (self) {
         return function () {
-          self.startRound();
+          if (self.state.count <= 1) {
+            self.startRound();
+          } else {
+            let count = self.state.count - 1;
+            self.setState({ count });
+          }
         };
       })(this),
-      this.startGameManager.getTimeBetweenRounds()
+      1000
     );
   }
 
@@ -33,12 +40,10 @@ export default class StartGame extends React.Component {
     this.inGameInterval = setInterval(
       (function (self) {
         return function () {
-          console.log('gola?');
           if (self.state.count <= 0) {
             self.endRound();
           } else {
             let count = self.state.count - 1;
-            console.log('hola???', count);
             self.setState({ count });
           }
         };
@@ -48,17 +53,21 @@ export default class StartGame extends React.Component {
   }
 
   async startRound() {
+    if (this.startInterval) {
+      clearInterval(this.startInterval);
+    }
     await this.startGameManager.nextRound();
     const options = this.startGameManager.getOptions();
     const name = this.startGameManager.getCorrectName();
     const count = this.startGameManager.getTimeInRound();
-    this.setState({ options, name, count });
+    const round = this.startGameManager.getRound();
+    this.setState({ options, round, name, count });
     this.activeInGameInterval();
   }
 
   endRound() {
-    clearInterval(this.startTimeout);
     clearInterval(this.inGameInterval);
+    this.setState({ count: 0 });
     this.startGameManager.endRound();
   }
 
@@ -66,74 +75,142 @@ export default class StartGame extends React.Component {
     return (
       <View style={styles.sectionContainer}>
         <ImageBackground source={charactersImg} resizeMode="cover" style={{ flex: 1, justifyContent: 'center' }}>
-          <View style={styles.sectionContent}>
-            <Text>Who is {this.state.name}?</Text>
-            <Text>Timer: {this.state.count} </Text>
-            <FlatList
-              numColumns={2}
-              data={this.state.options}
-              renderItem={this.renderRow.bind(this)}
-              keyExtractor={(item, index) => index}></FlatList>
-          </View>
+          {this.state.round > 0 ? this.getMainContent() : this.getStartingContent()}
         </ImageBackground>
       </View>
     );
   }
 
   renderRow = item => {
-    console.log('item', item.item);
-
     return <ImageCharacterRow imageURI={item.item.image} onPress={this.onContentPressed.bind(this, item.item)} />;
   };
 
   onContentPressed = item => {
     this.startGameManager.checkAnswer(item);
+    this.endRound();
   };
+
+  getMainContent() {
+    return (
+      <View style={styles.content}>
+        <View style={styles.timerContent}>
+          <Text style={globalStyles.CustomSMFont}>Timer: {this.state.count} </Text>
+        </View>
+        <View style={styles.roundContent}>
+          <Text style={globalStyles.CustomSMFont}>Round: {this.state.round} </Text>
+        </View>
+        <View style={styles.sectionContent}>
+          <View style={styles.sectionTitleContainer}>
+            <Text style={globalStyles.CustomLGFont}>Who is {this.state.name}?</Text>
+          </View>
+          <FlatList
+            numColumns={2}
+            columnWrapperStyle={styles.sectionButtonsContainer}
+            data={this.state.options}
+            renderItem={this.renderRow.bind(this)}
+            keyExtractor={(item, index) => index}></FlatList>
+        </View>
+        {this.getFloatingButton()}
+      </View>
+    );
+  }
+
+  getStartingContent() {
+    return (
+      <View style={styles.sectionFirstContent}>
+        <Text style={globalStyles.CustomTitleFont}>Game starts in {this.state.count}</Text>
+      </View>
+    );
+  }
+
+  getFloatingButton() {
+    return this.state.count === 0 ? (
+      <TouchableOpacity
+        style={styles.floatingButton}
+        activeOpacity={0.7}
+        onPress={() => {
+          this.startRound();
+        }}>
+        <Icon name="arrow-forward" size={28} color={'black'} />
+        <Text>Next round</Text>
+      </TouchableOpacity>
+    ) : null;
+  }
 }
 const styles = StyleSheet.create({
   sectionContainer: {
     flex: 1
   },
-  sectionContent: {
+  content: {
+    width: '100%',
+    height: '100%',
+    marginTop: 50,
+    display: 'flex',
+    justifyContent: 'flex-start'
+  },
+  timerContent: {
+    width: '40%',
     borderWidth: 2,
     borderColor: 'black',
     borderRadius: 20,
-    padding: 20,
-    margin: 10,
-    marginTop: 80,
-    backgroundColor: '#fff'
+    margin: 6,
+    backgroundColor: 'red',
+    alignItems: 'center',
+    textAlign: 'center'
+  },
+  roundContent: {
+    width: '40%',
+    borderWidth: 2,
+    borderColor: 'black',
+    borderRadius: 20,
+    margin: 6,
+    backgroundColor: 'blue',
+    alignItems: 'center',
+    textAlign: 'center'
+  },
+  sectionContent: {
+    height: '70%',
+    borderWidth: 2,
+    borderColor: 'black',
+    borderRadius: 20,
+    margin: 6,
+    backgroundColor: '#4c5775'
+  },
+  sectionFirstContent: {
+    height: '20%',
+    borderWidth: 2,
+    borderColor: 'black',
+    borderRadius: 20,
+    margin: 6,
+    backgroundColor: '#4c5775',
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign: 'center'
   },
   sectionTitleContainer: {
-    marginBottom: 20,
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingTop: 20,
     justifyContent: 'center',
     alignItems: 'center'
   },
   sectionButtonsContainer: {
+    flex: 1,
+    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'space-between',
+    padding: 15
   },
 
   floatingButton: {
-    width: '70%',
-
+    padding: 5,
     borderRadius: 10,
-    backgroundColor: '#ee6e73',
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
+    backgroundColor: '#fff',
+    position: 'absolute',
     alignItems: 'center',
-    padding: 10,
-    margin: 20
-  },
-  floatingButton2: {
-    width: '70%',
-    borderRadius: 10,
-    backgroundColor: '#4c5775',
-    display: 'flex',
-    flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center',
-    padding: 10,
-    margin: 20
+    bottom: 40,
+    right: 20,
+    zIndex: 50
   }
 });

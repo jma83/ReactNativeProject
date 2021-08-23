@@ -14,13 +14,12 @@ export default class StartGameManager {
     this.maxRounds = maxRounds;
     this.characterManager = new CharacterManager();
 
-    this.points = 0;
     this.guessed = 0;
     this.options = [];
-    this.correctAnswer = 0;
+    this.correctAnswer = {};
 
-    this.timeBetweenRounds = 3000;
-    this.timeInRound = 10;
+    this.timeBetweenRounds = 3;
+    this.timeInRound = 12;
   }
 
   async getCharacters() {
@@ -31,7 +30,8 @@ export default class StartGameManager {
     }
     const page = this.generateRandom(0, this.characterManager.getPages());
     const results = await this.characterManager.getCharacters(page);
-    this.options = this.filterResults(results);
+    this.options = await this.filterResults(results);
+    console.log(this.options);
     this.correctAnswer = this.options[this.generateRandom(0, this.options.length)];
   }
 
@@ -40,8 +40,12 @@ export default class StartGameManager {
   }
 
   checkAnswer(option) {
-    if (option === this.correctAnswer) {
-      return true;
+    if (this.status === GameStatus.PLAYING) {
+      console.log('checkAnswer', option.id, this.correctAnswer.id);
+      if (option.id === this.correctAnswer.id) {
+        this.guessed++;
+        return true;
+      }
     }
     return false;
   }
@@ -55,8 +59,11 @@ export default class StartGameManager {
   }
 
   async nextRound() {
+    this.options = [];
+    this.correctAnswer = {};
     if (this.maxRounds <= this.round) {
       this.status = GameStatus.ENDED_GAME;
+      return;
     }
     this.round++;
     this.status = GameStatus.PLAYING;
@@ -73,7 +80,10 @@ export default class StartGameManager {
 
   getCorrectName() {
     let location = this.correctAnswer.origin.name || this.correctAnswer.location.name || '';
-    location = ` (${location})`;
+    if (location == null || location === '' || location === 'unknown') {
+      return this.correctAnswer.name;
+    }
+    location = ` - ${location}`;
     return this.correctAnswer.name + location;
   }
 
@@ -82,8 +92,15 @@ export default class StartGameManager {
   }
 
   filterResults(results = [], limit = 4) {
-    const initIndex = this.generateRandom(0, results.length - limit);
-    console.log('randomLimit', initIndex, limit + initIndex);
-    return results.slice(initIndex, limit + initIndex);
+    let list = [];
+    let cont = 0;
+    let copy = [...results];
+    while (cont < limit) {
+      const index = this.generateRandom(0, copy.length);
+      list = [...list, copy[index]];
+      copy.splice(index, 1);
+      cont++;
+    }
+    return list;
   }
 }
