@@ -4,7 +4,12 @@ import globalStyles from '@src/utils/GlobalStyles';
 import Icon from 'react-native-vector-icons/Ionicons';
 const charactersImg = require('@assets/imgs/characters.png');
 
-export default class Game extends React.Component {
+export default class EndGame extends React.Component {
+  constructor(props) {
+    super(props);
+    console.log('props!', props);
+  }
+
   render() {
     return (
       <View style={styles.sectionContainer}>
@@ -12,22 +17,25 @@ export default class Game extends React.Component {
           <ScrollView>
             <View style={styles.sectionContent}>
               <View style={styles.sectionTitleContainer}>
-                <Text style={globalStyles.CustomLGTitleFontBlack}>Ready to guess Rick & Morty Characters?{'\n'}</Text>
+                <Text style={globalStyles.CustomLGTitleFontBlack}>{this.getMessage()}</Text>
                 <Text style={globalStyles.CustomMDFontBlack}>
-                  Choose between 4 images, only one matches the correct character!
+                  {`Result: ${this.props.route.params.guessed}/${this.props.route.params.maxRounds}`}
                 </Text>
               </View>
               <View style={styles.sectionButtonsContainer}>
                 <TouchableOpacity
                   style={styles.floatingButton}
                   activeOpacity={0.5}
-                  onPress={() => this.onContentPressed()}>
+                  onPress={() => this.onPlayPressed()}>
                   <Icon name="rocket" size={28} color={'white'} />
-                  <Text style={globalStyles.CustomMDFont}> Start game </Text>
+                  <Text style={globalStyles.CustomMDFont}> Play Again </Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.floatingButton2} activeOpacity={0.5} onPress={() => {}}>
+                <TouchableOpacity
+                  style={styles.floatingButton2}
+                  activeOpacity={0.5}
+                  onPress={() => this.onReturnPressed()}>
                   <Icon name="stats-chart" size={28} color={'white'} />
-                  <Text style={globalStyles.CustomMDFont}>Your scores </Text>
+                  <Text style={globalStyles.CustomMDFont}> Go Back </Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -37,8 +45,21 @@ export default class Game extends React.Component {
     );
   }
 
-  onContentPressed() {
+  onPlayPressed() {
     this.props.navigation.navigate('StartGame');
+  }
+
+  onReturnPressed() {
+    this.props.navigation.navigate('Game');
+  }
+
+  getMessage() {
+    const half = this.props.route.params.maxRounds / 2;
+    if (half > this.props.route.params.guessed) {
+      return 'I bet you can do better than that!';
+    } else {
+      return 'Well done!';
+    }
   }
 }
 const styles = StyleSheet.create({

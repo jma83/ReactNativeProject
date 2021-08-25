@@ -11,6 +11,22 @@ const globalStyles = StyleSheet.create({
     fontSize: 16,
     color: 'white'
   },
+  CustomSMFontRed: {
+    fontFamily: 'coolvetica',
+    fontSize: 16,
+    color: 'red',
+    backgroundColor: 'black',
+    padding: 5,
+    borderRadius: 10
+  },
+  CustomSMFontGreen: {
+    fontFamily: 'coolvetica',
+    fontSize: 16,
+    color: '#34a832',
+    backgroundColor: 'black',
+    padding: 5,
+    borderRadius: 10
+  },
   CustomMDFont: {
     fontFamily: 'coolvetica',
     fontSize: 19,

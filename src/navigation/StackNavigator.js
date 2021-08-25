@@ -1,5 +1,5 @@
 import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator, navigation, route } from '@react-navigation/stack';
 
 import Home from '@screens/home/Home';
 import Profile from '@screens/profile/Profile';
@@ -9,6 +9,7 @@ import Categories from '@screens/categories/Categories';
 import Welcome from '@screens/welcome/Welcome';
 import ContentDetail from '@components/contentDetail/ContentDetail';
 import CategoryContent from '@components/categoryContent/CategoryContent';
+import EndGame from '@screens/game/EndGame';
 
 const Stack = createStackNavigator();
 
@@ -43,7 +44,8 @@ const GameStackNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Game" component={Game} />
-      <Stack.Screen name="StartGame" component={StartGame} />
+      <Stack.Screen name="StartGame" component={StartGame} listeners={{ navigation, route }} />
+      <Stack.Screen name="EndGame" component={EndGame} />
     </Stack.Navigator>
   );
 };

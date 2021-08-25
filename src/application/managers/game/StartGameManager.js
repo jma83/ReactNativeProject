@@ -9,6 +9,10 @@ const GameStatus = {
 
 export default class StartGameManager {
   constructor(maxRounds = 5) {
+    this.init(maxRounds);
+  }
+
+  init(maxRounds = 5) {
     this.status = GameStatus.PAUSED;
     this.round = 0;
     this.maxRounds = maxRounds;
@@ -19,7 +23,7 @@ export default class StartGameManager {
     this.correctAnswer = {};
 
     this.timeBetweenRounds = 3;
-    this.timeInRound = 12;
+    this.timeInRound = 4;
   }
 
   async getCharacters() {
@@ -61,13 +65,20 @@ export default class StartGameManager {
   async nextRound() {
     this.options = [];
     this.correctAnswer = {};
-    if (this.maxRounds <= this.round) {
-      this.status = GameStatus.ENDED_GAME;
+    if (this.checkEnded()) {
       return;
     }
     this.round++;
     this.status = GameStatus.PLAYING;
     await this.getCharacters();
+  }
+
+  checkEnded() {
+    if (this.maxRounds <= this.round) {
+      this.status = GameStatus.ENDED_GAME;
+      return true;
+    }
+    return false;
   }
 
   getOptions() {
@@ -78,8 +89,16 @@ export default class StartGameManager {
     return this.round;
   }
 
+  getGuessed() {
+    return this.guessed;
+  }
+
+  getMaxRounds() {
+    return this.maxRounds;
+  }
+
   getCorrectName() {
-    let location = this.correctAnswer.origin.name || this.correctAnswer.location.name || '';
+    let location = this.correctAnswer?.origin?.name || this.correctAnswer?.location?.name || '';
     if (location == null || location === '' || location === 'unknown') {
       return this.correctAnswer.name;
     }
