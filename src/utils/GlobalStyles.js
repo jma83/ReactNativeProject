@@ -64,6 +64,12 @@ const globalStyles = StyleSheet.create({
     fontSize: 16,
     color: 'white'
   },
+  CustomTitleMDFontCenter: {
+    fontFamily: 'KGBlankSpaceSolid',
+    fontSize: 16,
+    color: 'white',
+    textAlign: 'center'
+  },
   CustomTitleSMFont: {
     fontFamily: 'KGBlankSpaceSolid',
     fontSize: 15,
@@ -81,6 +87,13 @@ const globalStyles = StyleSheet.create({
     lineHeight: 84,
     textAlign: 'center',
     backgroundColor: '#000000c0',
+    fontFamily: 'KGBlankSpaceSolid'
+  },
+  WelcomeTitle: {
+    color: 'white',
+    fontSize: 34,
+    lineHeight: 60,
+    textAlign: 'center',
     fontFamily: 'KGBlankSpaceSolid'
   }
 });

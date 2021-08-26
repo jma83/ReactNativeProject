@@ -11,6 +11,6 @@ export default class MainComponent extends React.Component {
   }
 
   render() {
-    return this.state.loggedIn == true ? <WelcomeStackNavigator /> : <BottomTabNavigator />;
+    return this.state.loggedIn == false ? <WelcomeStackNavigator /> : <BottomTabNavigator />;
   }
 }
