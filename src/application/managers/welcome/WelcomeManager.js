@@ -18,12 +18,16 @@ export default class WelcomeManager {
 
   createProfile(nickname = '') {
     if (this.profiles.length >= this.maxProfiles) {
-      return;
+      return false;
     }
     const image = this.profileImages[this.profiles.length];
-    const item = { nickname, image };
+    const item = { id: this.profiles.length, nickname, image };
     this.profiles = [...this.profiles, item];
-    console.log('creo!', this.profiles);
+    return true;
+  }
+
+  deleteById(id = 0) {
+    this.profiles.splice(id, 1);
   }
 
   getProfiles() {

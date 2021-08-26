@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
-import { Image, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, TouchableHighlight, View } from 'react-native';
 import globalStyles from '@utils/GlobalStyles';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 export default class CategoryRow extends Component {
+  constructor(props) {
+    super(props);
+  }
+
   render() {
     return (
       <TouchableHighlight onPress={this.props.onPress} underlayColor="lightgray">
@@ -14,11 +19,19 @@ export default class CategoryRow extends Component {
           </View>
           <View style={{ alignItems: 'center' }}>
             <Text style={globalStyles.CustomMDFont}>{this.props.name}</Text>
+            <TouchableOpacity
+              style={styles.buttonSecondary}
+              activeOpacity={0.5}
+              onPress={() => this.props.deleteProfile(this.props.id, this.props.name)}>
+              <Icon name="close" size={20} color={'black'} />
+            </TouchableOpacity>
           </View>
         </View>
       </TouchableHighlight>
     );
   }
+
+  deleteProfile = () => {};
 }
 
 const styles = StyleSheet.create({
@@ -47,15 +60,6 @@ const styles = StyleSheet.create({
     flex: 1
   },
 
-  text: {
-    color: 'white',
-    fontSize: 42,
-    lineHeight: 84,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    backgroundColor: '#000000c0'
-  },
-
   el_footer: {
     display: 'flex',
     flexDirection: 'row'
@@ -64,5 +68,18 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: '100%'
+  },
+  buttonSecondary: {
+    width: 30,
+    height: 30,
+    borderRadius: 50,
+    position: 'absolute',
+    backgroundColor: '#f55d42',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: 'black',
+    right: 30,
+    bottom: 28
   }
 });

@@ -7,7 +7,8 @@ import {
   FlatList,
   ImageBackground,
   TouchableOpacity,
-  TextInput
+  TextInput,
+  Alert
 } from 'react-native';
 import AvatarProfileRow from '@components/rowList/AvatarProfileRow';
 import globalStyles from '@src/utils/GlobalStyles';
@@ -20,6 +21,7 @@ export default class Wlcome extends Component {
     super(props);
     this.welcomeManager = new WelcomeManager();
     this.state = { profiles: this.welcomeManager.getProfiles(), textInput: '' };
+    this.deleteSelection = null;
   }
 
   render() {
@@ -31,7 +33,7 @@ export default class Wlcome extends Component {
             <View style={styles.sectionList}>
               <Text style={globalStyles.CustomLGFont}>Select your profile:</Text>
               <FlatList
-                ListEmptyComponent={<Text style={globalStyles.CustomTitleMDFontCenter}>- No profiles yet! -</Text>}
+                ListEmptyComponent={<Text style={globalStyles.CustomMDFontCenter}>- No profiles yet! -</Text>}
                 horizontal={true}
                 data={this.state.profiles}
                 renderItem={this.renderRow.bind(this)}
@@ -61,7 +63,13 @@ export default class Wlcome extends Component {
   renderRow = rowInfo => {
     const item = rowInfo.item;
     return (
-      <AvatarProfileRow name={item.nickname} image={item.image} onPress={this.onContentPressed.bind(this, item)} />
+      <AvatarProfileRow
+        id={item.id}
+        name={item.nickname}
+        image={item.image}
+        deleteProfile={this.deleteProfile}
+        onPress={this.onContentPressed.bind(this, item)}
+      />
     );
   };
 
@@ -73,10 +81,42 @@ export default class Wlcome extends Component {
     this.setState({ textInput });
   }
 
+  deleteProfile = (id, name) => {
+    console.log('delete!!!', id);
+    this.deleteSelection = id;
+    this.createAlert('Confirm delete', `Do you want to delete ${name}'s profile?`, true, () => {
+      console.log('confirm?=???', this.deleteSelection);
+      this.welcomeManager.deleteById(this.deleteSelection);
+      this.setState({ profiles: this.welcomeManager.getProfiles(), textInput: '' });
+    });
+  };
+
   createProfile() {
-    this.welcomeManager.createProfile(this.state.textInput);
+    if (this.state.textInput === '') {
+      this.createAlert('Error', `Nickname can't be empty`);
+      return;
+    }
+    if (!this.welcomeManager.createProfile(this.state.textInput)) {
+      this.createAlert('Error', `Can't create more profiles`);
+    }
     this.setState({ profiles: this.welcomeManager.getProfiles(), textInput: '' });
   }
+
+  createAlert = (title, message, choices = false, callbackOk = () => {}) => {
+    let options = [{ text: 'OK', onPress: callbackOk }];
+
+    if (choices == true) {
+      options = [
+        ...options,
+        {
+          text: 'Cancel',
+          onPress: () => {},
+          style: 'cancel'
+        }
+      ];
+    }
+    Alert.alert(title, message, options);
+  };
 }
 
 const styles = StyleSheet.create({
@@ -90,7 +130,8 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: 'rgba(76, 87, 117, 0.8)',
     marginTop: 30,
-    padding: 10
+    padding: 10,
+    alignItems: 'center'
   },
   sectionCreate: {
     width: '100%',

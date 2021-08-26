@@ -32,6 +32,13 @@ const globalStyles = StyleSheet.create({
     fontSize: 19,
     color: 'white'
   },
+  CustomMDFontCenter: {
+    fontFamily: 'coolvetica',
+    fontSize: 19,
+    color: 'white',
+    textAlign: 'center',
+    padding: 2
+  },
   CustomMDFontBlack: {
     fontFamily: 'coolvetica',
     fontSize: 19,
