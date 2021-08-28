@@ -17,21 +17,29 @@ export default class CategoryRow extends Component {
               <Image source={this.props.image} style={styles.image} />
             </View>
           </View>
-          <View style={{ alignItems: 'center' }}>
-            <Text style={globalStyles.CustomMDFont}>{this.props.name}</Text>
-            <TouchableOpacity
-              style={styles.buttonSecondary}
-              activeOpacity={0.5}
-              onPress={() => this.props.deleteProfile(this.props.id, this.props.name)}>
-              <Icon name="close" size={20} color={'black'} />
-            </TouchableOpacity>
-          </View>
+          {this.drawMainContent()}
         </View>
       </TouchableHighlight>
     );
   }
 
-  deleteProfile = () => {};
+  drawMainContent() {
+    return !this.props.profile ? (
+      <View style={{ alignItems: 'center' }}>
+        <Text style={globalStyles.CustomMDFont}>{this.props.name}</Text>
+        <TouchableOpacity
+          style={styles.buttonSecondary}
+          activeOpacity={0.5}
+          onPress={() => this.props.deleteProfile(this.props.id, this.props.name)}>
+          <Icon name="close" size={20} color={'black'} />
+        </TouchableOpacity>
+      </View>
+    ) : (
+      <View style={{ alignItems: 'center' }}>
+        <Text style={globalStyles.CustomMDFontBlack}>{this.props.name}</Text>
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({

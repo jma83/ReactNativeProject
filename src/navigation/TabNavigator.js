@@ -12,7 +12,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 export const BottomTabNavigator = () => {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator initialRouteName="Home">
       <Tab.Screen
         name="Home"
         component={HomeStackNavigator}

@@ -1,43 +1,42 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Text, StyleSheet, View, TouchableOpacity, ScrollView, Image, ImageBackground } from 'react-native';
 import globalStyles from '@src/utils/GlobalStyles';
 import Icon from 'react-native-vector-icons/Ionicons';
 const seasonsImg = require('@assets/imgs/seasons.jpg');
+import AuthContext from '@application/context/AuthContext';
+import AvatarProfileRow from '@components/rowList/AvatarProfileRow';
 
-export default class Profile extends React.Component {
-  render() {
-    return (
-      <View style={styles.sectionContainer}>
-        <ImageBackground source={seasonsImg} resizeMode="stretch" style={{ flex: 1, justifyContent: 'center' }}>
-          <ScrollView>
-            <View style={styles.sectionContent}>
-              <View style={styles.sectionTitleContainer}>
-                <Image style={styles.image} resizeMode="contain" source={seasonsImg} />
-                <Text style={globalStyles.CustomLGTitleFontBlack}>Johnny</Text>
-              </View>
-              <View style={styles.sectionButtonsContainer}>
-                <TouchableOpacity
-                  style={styles.floatingButton}
-                  activeOpacity={0.5}
-                  onPress={() => this.onContentPressed()}>
-                  <Icon name="people" size={28} color={'white'} />
-                  <Text style={globalStyles.CustomMDFont}> Change profile </Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.floatingButton2} activeOpacity={0.5} onPress={() => {}}>
-                  <Icon name="star" size={28} color={'white'} />
-                  <Text style={globalStyles.CustomMDFont}>Favorite content</Text>
-                </TouchableOpacity>
-              </View>
+export default function Profile({ navigation }) {
+  const { signOut } = React.useContext(AuthContext);
+
+  const onContentPressed = () => {
+    console.log('navigation', navigation);
+    navigation.navigate('Profile');
+  };
+
+  return (
+    <View style={styles.sectionContainer}>
+      <ImageBackground source={seasonsImg} resizeMode="stretch" style={{ flex: 1, justifyContent: 'center' }}>
+        <ScrollView>
+          <View style={styles.sectionContent}>
+            <View style={styles.sectionTitleContainer}>
+              <AvatarProfileRow id={0} name={'Johnny'} image={seasonsImg} profile={true} />
             </View>
-          </ScrollView>
-        </ImageBackground>
-      </View>
-    );
-  }
-
-  onContentPressed() {
-    this.props.navigation.navigate('StartGame');
-  }
+            <View style={styles.sectionButtonsContainer}>
+              <TouchableOpacity style={styles.floatingButton} activeOpacity={0.5} onPress={() => onContentPressed()}>
+                <Icon name="star" size={28} color={'white'} />
+                <Text style={globalStyles.CustomMDFont}>Favorite content</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.floatingButton2} activeOpacity={0.5} onPress={signOut}>
+                <Icon name="people" size={28} color={'white'} />
+                <Text style={globalStyles.CustomMDFont}> Change profile </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </ScrollView>
+      </ImageBackground>
+    </View>
+  );
 }
 const styles = StyleSheet.create({
   sectionContainer: {

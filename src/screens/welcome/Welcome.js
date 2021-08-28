@@ -1,108 +1,65 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import {
   Text,
   StyleSheet,
   View,
-  SafeAreaView,
   FlatList,
   ImageBackground,
   TouchableOpacity,
   TextInput,
-  Alert
+  Alert,
+  Keyboard
 } from 'react-native';
 import AvatarProfileRow from '@components/rowList/AvatarProfileRow';
 import globalStyles from '@src/utils/GlobalStyles';
 const welcomeImg = require('@assets/imgs/welcome.jpg');
 import Icon from 'react-native-vector-icons/Ionicons';
 import WelcomeManager from '@application/managers/welcome/WelcomeManager';
+import AuthContext from '@application/context/AuthContext';
 
-export default class Wlcome extends Component {
-  constructor(props) {
-    super(props);
-    this.welcomeManager = new WelcomeManager();
-    this.state = { profiles: this.welcomeManager.getProfiles(), textInput: '' };
-    this.deleteSelection = null;
-  }
+export default function Welcome({ navigation }) {
+  const { signIn } = React.useContext(AuthContext);
+  const welcomeManager = new WelcomeManager();
+  let deleteSelection = null;
+  const [profiles, setProfiles] = useState(welcomeManager.getProfiles());
+  const [textInput, setTextInput] = useState('');
 
-  render() {
-    return (
-      <View style={{ flex: 1 }}>
-        <ImageBackground source={welcomeImg} resizeMode="cover" style={styles.image}>
-          <View style={styles.sectionContainer}>
-            <Text style={globalStyles.WelcomeTitle}>Welcome to the Rickpedia!</Text>
-            <View style={styles.sectionList}>
-              <Text style={globalStyles.CustomLGFont}>Select your profile:</Text>
-              <FlatList
-                ListEmptyComponent={<Text style={globalStyles.CustomMDFontCenter}>- No profiles yet! -</Text>}
-                horizontal={true}
-                data={this.state.profiles}
-                renderItem={this.renderRow.bind(this)}
-                keyExtractor={(item, index) => index}></FlatList>
-            </View>
-            <View style={styles.sectionCreate}>
-              <Text style={globalStyles.CustomLGFont}>Or create a new one:</Text>
-              <View style={styles.form}>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Your Nickname"
-                  maxLength={20}
-                  value={this.state.textInput}
-                  onChangeText={text => this.onChangeText(text)}
-                />
-                <TouchableOpacity style={styles.button} activeOpacity={0.5} onPress={() => this.createProfile()}>
-                  <Icon name="person-add" size={30} color={'black'} />
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-        </ImageBackground>
-      </View>
-    );
-  }
-
-  renderRow = rowInfo => {
+  const renderRow = rowInfo => {
     const item = rowInfo.item;
     return (
       <AvatarProfileRow
         id={item.id}
         name={item.nickname}
         image={item.image}
-        deleteProfile={this.deleteProfile}
-        onPress={this.onContentPressed.bind(this, item)}
+        deleteProfile={deleteProfile}
+        onPress={signIn}
       />
     );
   };
 
-  onContentPressed(item) {
-    this.props.navigation.navigate('CategoryContent', { contentName: item.name, contentType: item.id });
-  }
+  const onChangeText = textInput => {
+    setTextInput(textInput);
+  };
 
-  onChangeText(textInput) {
-    this.setState({ textInput });
-  }
-
-  deleteProfile = (id, name) => {
-    console.log('delete!!!', id);
-    this.deleteSelection = id;
-    this.createAlert('Confirm delete', `Do you want to delete ${name}'s profile?`, true, () => {
-      console.log('confirm?=???', this.deleteSelection);
-      this.welcomeManager.deleteById(this.deleteSelection);
-      this.setState({ profiles: this.welcomeManager.getProfiles(), textInput: '' });
+  const deleteProfile = (id, name) => {
+    deleteSelection = id;
+    createAlert('Confirm delete', `Do you want to delete ${name}'s profile?`, true, () => {
+      welcomeManager.deleteById(deleteSelection);
+      setProfiles(welcomeManager.getProfiles());
+      setTextInput('');
     });
   };
 
-  createProfile() {
-    if (this.state.textInput === '') {
-      this.createAlert('Error', `Nickname can't be empty`);
-      return;
+  const createProfile = () => {
+    Keyboard.dismiss();
+    if (!welcomeManager.createProfile(textInput)) {
+      createAlert('Error', welcomeManager.getErrorMessage());
     }
-    if (!this.welcomeManager.createProfile(this.state.textInput)) {
-      this.createAlert('Error', `Can't create more profiles`);
-    }
-    this.setState({ profiles: this.welcomeManager.getProfiles(), textInput: '' });
-  }
+    setProfiles(welcomeManager.getProfiles());
+    setTextInput('');
+  };
 
-  createAlert = (title, message, choices = false, callbackOk = () => {}) => {
+  const createAlert = (title, message, choices = false, callbackOk = () => {}) => {
     let options = [{ text: 'OK', onPress: callbackOk }];
 
     if (choices == true) {
@@ -117,6 +74,41 @@ export default class Wlcome extends Component {
     }
     Alert.alert(title, message, options);
   };
+
+  return (
+    <View style={{ flex: 1 }}>
+      <ImageBackground source={welcomeImg} resizeMode="cover" style={styles.image}>
+        <View style={styles.sectionContainer}>
+          <Text style={globalStyles.WelcomeTitle}>Welcome to the Rickpedia!</Text>
+          <View style={styles.sectionList}>
+            <Text style={globalStyles.CustomLGFont}>Select your profile:</Text>
+            <FlatList
+              ListEmptyComponent={<Text style={globalStyles.CustomMDFontCenter}>- No profiles yet! -</Text>}
+              horizontal={true}
+              data={profiles}
+              renderItem={renderRow.bind(this)}
+              keyExtractor={(item, index) => index}></FlatList>
+          </View>
+          <View style={styles.sectionCreate}>
+            <Text style={globalStyles.CustomLGFont}>Or create a new one:</Text>
+            <View style={styles.form}>
+              <TextInput
+                style={styles.input}
+                placeholder="Your Nickname"
+                maxLength={20}
+                value={textInput}
+                onSubmitEditing={() => createProfile()}
+                onChangeText={text => onChangeText(text)}
+              />
+              <TouchableOpacity style={styles.button} activeOpacity={0.5} onPress={() => createProfile()}>
+                <Icon name="person-add" size={30} color={'black'} />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </ImageBackground>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -173,6 +165,7 @@ const styles = StyleSheet.create({
     padding: 8,
     paddingLeft: 12,
     backgroundColor: 'white',
-    borderRadius: 10
+    borderRadius: 10,
+    color: 'black'
   }
 });
