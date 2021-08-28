@@ -35,7 +35,6 @@ export default class Home extends React.Component {
     this.loading = false;
     if (data.contentType !== ContentType.CHARACTER) {
       this.loadImages(data.result).then(array => {
-        console.log('result finale', array);
         this.setState({ items: array });
       });
     }

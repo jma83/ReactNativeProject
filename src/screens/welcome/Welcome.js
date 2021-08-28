@@ -16,11 +16,11 @@ const welcomeImg = require('@assets/imgs/welcome.jpg');
 import Icon from 'react-native-vector-icons/Ionicons';
 import WelcomeManager from '@application/managers/welcome/WelcomeManager';
 import AuthContext from '@application/context/AuthContext';
+import { createAlert } from '@utils/Utils';
 
 export default function Welcome({ navigation }) {
   const { signIn } = React.useContext(AuthContext);
-  const welcomeManager = new WelcomeManager();
-  let deleteSelection = null;
+  const [welcomeManager] = useState(new WelcomeManager());
   const [profiles, setProfiles] = useState(welcomeManager.getProfiles());
   const [textInput, setTextInput] = useState('');
 
@@ -32,7 +32,7 @@ export default function Welcome({ navigation }) {
         name={item.nickname}
         image={item.image}
         deleteProfile={deleteProfile}
-        onPress={signIn}
+        onPress={signInProfile.bind(this, item)}
       />
     );
   };
@@ -42,9 +42,9 @@ export default function Welcome({ navigation }) {
   };
 
   const deleteProfile = (id, name) => {
-    deleteSelection = id;
-    createAlert('Confirm delete', `Do you want to delete ${name}'s profile?`, true, () => {
-      welcomeManager.deleteById(deleteSelection);
+    const profileId = id;
+    createAlert('Confirm delete', `Do you want to delete ${name}'s profile?`, true, async () => {
+      await welcomeManager.deleteById(profileId);
       setProfiles(welcomeManager.getProfiles());
       setTextInput('');
     });
@@ -59,20 +59,13 @@ export default function Welcome({ navigation }) {
     setTextInput('');
   };
 
-  const createAlert = (title, message, choices = false, callbackOk = () => {}) => {
-    let options = [{ text: 'OK', onPress: callbackOk }];
+  const signInProfile = profile => {
+    const token = welcomeManager.signInProfile();
 
-    if (choices == true) {
-      options = [
-        ...options,
-        {
-          text: 'Cancel',
-          onPress: () => {},
-          style: 'cancel'
-        }
-      ];
-    }
-    Alert.alert(title, message, options);
+    const data = { nickname: profile.nickname, token };
+    console.log('lksaklfamlfmsalfmsflamflmfslasflmsfa', data);
+
+    signIn(data);
   };
 
   return (

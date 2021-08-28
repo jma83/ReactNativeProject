@@ -1,35 +1,11 @@
 import AuthContext from '@application/context/AuthContext';
+import AsyncStorageManager from '@application/storage/AsyncStorageManager';
 import * as React from 'react';
-import { Button, Text, TextInput, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { BottomTabNavigator } from '@navigation/TabNavigator';
 import { WelcomeStackNavigator } from '@navigation/StackNavigator';
 
-/* function HomeScreen() {
-  const { signOut } = React.useContext(AuthContext);
-
-  return (
-    <View>
-      <Text>Signed in!</Text>
-      <Button title="Sign out" onPress={signOut} />
-    </View>
-  );
-}
-
-function SignInScreen() {
-  const [username, setUsername] = React.useState('');
-
-  const { signIn } = React.useContext(AuthContext);
-
-  return (
-    <View>
-      <TextInput placeholder="Username" value={username} onChangeText={setUsername} />
-      <Button title="Sign in" onPress={() => signIn({ username })} />
-    </View>
-  );
-} */
-
-export default function App({ navigation }) {
+export default function App() {
   const [state, dispatch] = React.useReducer(
     (prevState, action) => {
       switch (action.type) {
@@ -66,11 +42,14 @@ export default function App({ navigation }) {
       let userToken;
 
       try {
-        // Restore token stored in `SecureStore` or any other encrypted storage
-        // userToken = await SecureStore.getItemAsync('userToken');
-      } catch (e) {
-        // Restoring token failed
-      }
+        const user = await AsyncStorageManager.getItem('user');
+        const token = await AsyncStorageManager.getItem('userToken');
+        if (!user || !token) {
+          return;
+        }
+        userToken = { user, token };
+        console.log('userTokenizer!!!!', userToken);
+      } catch (e) {}
       dispatch({ type: 'RESTORE_TOKEN', token: userToken });
     };
 
@@ -80,9 +59,15 @@ export default function App({ navigation }) {
   const authContext = React.useMemo(
     () => ({
       signIn: async data => {
-        dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' });
+        await AsyncStorageManager.setItem('user', data.nickname);
+        await AsyncStorageManager.setItem('userToken', data.token);
+        dispatch({ type: 'SIGN_IN', userData: data, token: 'user-token' });
       },
-      signOut: () => dispatch({ type: 'SIGN_OUT' })
+      signOut: () => {
+        AsyncStorageManager.removeItem('user');
+        AsyncStorageManager.removeItem('userToken');
+        dispatch({ type: 'SIGN_OUT' });
+      }
     }),
     []
   );
