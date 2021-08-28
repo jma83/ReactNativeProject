@@ -1,4 +1,4 @@
-import ApiClient from '@application/api/ApiClient.js';
+import ApiClient from '@application/model/api/ApiClient.js';
 
 export default class ApiClientEpisode extends ApiClient {
   async getEpisodes(page) {

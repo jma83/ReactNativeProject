@@ -1,4 +1,4 @@
-import ApiClientEpisode from '@application/api/ApiClientEpisode.js';
+import ApiClientEpisode from '@application/model/api/ApiClientEpisode.js';
 import ContentManager from '@application/managers/generic/ContentManager.js';
 
 export default class EpisodeManager extends ContentManager {

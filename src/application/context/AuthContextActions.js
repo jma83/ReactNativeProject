@@ -1,4 +1,4 @@
-import AsyncStorageManager from '@application/storage/AsyncStorageManager';
+import AsyncStorageManager from '@application/managers/storage/AsyncStorageManager';
 
 const signIn = dispatch => {
   return async data => {

@@ -1,4 +1,4 @@
-import ApiClientImage from '@application/api/ApiClientImage.js';
+import ApiClientImage from '@application/model/api/ApiClientImage.js';
 
 export default class ImageManager {
   constructor() {

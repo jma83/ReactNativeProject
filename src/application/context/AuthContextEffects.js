@@ -1,9 +1,9 @@
-import AsyncStorageManager from '@application/storage/AsyncStorageManager';
+import AsyncStorageManager from '@application/managers/storage/AsyncStorageManager';
 import * as React from 'react';
 
 const effects = dispatch => {
   React.useEffect(() => {
-    const bootstrapAsync = async () => {
+    const checkUserSessionOnLoad = async () => {
       let userToken = null;
       try {
         const user = await AsyncStorageManager.getItem('user');
@@ -16,7 +16,7 @@ const effects = dispatch => {
       dispatch({ type: 'RESTORE_TOKEN', token: userToken });
     };
 
-    bootstrapAsync();
+    checkUserSessionOnLoad();
   }, []);
 };
 

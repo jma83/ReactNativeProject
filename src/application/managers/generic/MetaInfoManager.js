@@ -1,4 +1,4 @@
-import ApiClientMetaInfo from '@application/api/ApiClientMetaInfo.js';
+import ApiClientMetaInfo from '@application/model/api/ApiClientMetaInfo.js';
 
 export default class MetaInfoManager {
   constructor() {
