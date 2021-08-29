@@ -12,11 +12,9 @@ const UserData = {
 
 export default class User {
   constructor() {
-    const db = this.getDBInstance();
+    this.db = this.getDBInstance();
     this.table = 'User';
-    console.log('created table User!');
-
-    db.transaction(
+    this.db.transaction(
       txn => {
         txn.executeSql(
           `CREATE TABLE IF NOT EXISTS ${this.table}
@@ -38,16 +36,14 @@ export default class User {
 
   saveUser = (user, userToken) =>
     new Promise((resolve, reject) => {
-      const db = this.getDBInstance();
-
-      db.transaction(
+      this.db.transaction(
         txn => {
           txn.executeSql(
             `INSERT INTO ${this.table} (nickname, avatar, userToken) 
                 VALUES (:nickname, :avatar, :userToken)`,
             [user.nickname, user.image, userToken],
-            (tx, results) => resolve(results),
-            (tx, error) => reject(error)
+            (_, results) => resolve(results),
+            (_, error) => reject(error)
           );
         },
         err => console.log('error', err)
@@ -56,34 +52,30 @@ export default class User {
 
   updateUserToken = (id, userToken) =>
     new Promise((resolve, reject) => {
-      const db = this.getDBInstance();
-      console.log('updateUserToken', userToken);
-      console.log('id', id);
-      db.transaction(txn => {
+      this.db.transaction(txn => {
         txn.executeSql(
           `UPDATE ${this.table} SET userToken=? WHERE id=?`,
           [userToken, id],
-          (tx, results) => resolve(results),
-          (tx, error) => reject(error)
+          (_, results) => resolve(results),
+          (_, error) => reject(error)
         );
       });
     });
 
   checkUser = (nickname, userToken) =>
     new Promise((resolve, reject) => {
-      const db = this.getDBInstance();
       console.log('checkUser INIT', nickname, userToken);
 
-      db.transaction(txn => {
+      this.db.transaction(txn => {
         txn.executeSql(
           `SELECT * FROM ${this.table}
             WHERE nickname = ? AND userToken = ?`,
           [nickname, userToken],
-          (tx, results) => {
+          (_, results) => {
             console.log('checkUser result', results.rows._array);
             resolve(results.rows._array);
           },
-          (tx, error) => {
+          (_, error) => {
             console.log('ERROR', error);
             reject(error);
           }
@@ -93,17 +85,16 @@ export default class User {
 
   getUsers = () =>
     new Promise((resolve, reject) => {
-      const db = this.getDBInstance();
-      db.transaction(txn => {
+      this.db.transaction(txn => {
         txn.executeSql(
           `SELECT * FROM ${this.table}`,
           [],
-          (tx, results) => {
+          (_, results) => {
             console.log('getUsers result', results.rows._array);
             // results.rows._array.forEach(row => console.log('item:', row));
             resolve(results.rows._array);
           },
-          (tx, error) => {
+          (_, error) => {
             console.log('ERROR', error);
             reject(error);
           }
@@ -113,19 +104,17 @@ export default class User {
 
   deleteUser = id =>
     new Promise((resolve, reject) => {
-      const db = this.getDBInstance();
-      console.log('userId', id);
-      db.transaction(txn => {
+      this.db.transaction(txn => {
         txn.executeSql(
           `DELETE FROM ${this.table}
           WHERE id = ?`,
           [id],
-          (tx, results) => {
+          (_, results) => {
             console.log('deleteUser result', results);
             // results.rows._array.forEach(row => console.log('item:', row));
             resolve(true);
           },
-          (tx, error) => {
+          (_, error) => {
             console.log('ERROR deleteUser', error);
             reject(error);
           }
