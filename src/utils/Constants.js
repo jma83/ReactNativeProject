@@ -1,6 +1,6 @@
 export const dbConfig = {
-  name: 'Rickpedia.db',
+  name: 'rickpedia.db',
   version: '1.0',
-  description: 'Discover Rick and Morty universe',
+  description: '',
   size: 1
 };

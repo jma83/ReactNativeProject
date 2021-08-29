@@ -1,15 +1,5 @@
-import React, { useState } from 'react';
-import {
-  Text,
-  StyleSheet,
-  View,
-  FlatList,
-  ImageBackground,
-  TouchableOpacity,
-  TextInput,
-  Alert,
-  Keyboard
-} from 'react-native';
+import React, { useState, useCallback, useEffect } from 'react';
+import { Text, StyleSheet, View, FlatList, ImageBackground, TouchableOpacity, TextInput, Keyboard } from 'react-native';
 import AvatarProfileRow from '@components/rowList/AvatarProfileRow';
 import globalStyles from '@src/utils/GlobalStyles';
 const welcomeImg = require('@assets/imgs/welcome.jpg');
@@ -18,11 +8,17 @@ import WelcomeManager from '@application/managers/welcome/WelcomeManager';
 import AuthContext from '@application/context/AuthContext';
 import { createAlert } from '@utils/Utils';
 
-export default function Welcome({ navigation }) {
+export default function Welcome({ navigation, props }) {
   const { signIn } = React.useContext(AuthContext);
   const [welcomeManager] = useState(new WelcomeManager());
-  const [profiles, setProfiles] = useState(welcomeManager.getProfiles());
+  const [profiles, setProfiles] = useState([]);
   const [textInput, setTextInput] = useState('');
+
+  useEffect(async () => {
+    console.log('mount it!');
+    const result = await welcomeManager.fetchProfiles();
+    setProfiles(result);
+  }, []);
 
   const renderRow = rowInfo => {
     const item = rowInfo.item;
@@ -30,7 +26,7 @@ export default function Welcome({ navigation }) {
       <AvatarProfileRow
         id={item.id}
         name={item.nickname}
-        image={item.image}
+        image={item.avatar}
         deleteProfile={deleteProfile}
         onPress={signInProfile.bind(this, item)}
       />
@@ -45,18 +41,22 @@ export default function Welcome({ navigation }) {
     const profileId = id;
     createAlert('Confirm delete', `Do you want to delete ${name}'s profile?`, true, async () => {
       await welcomeManager.deleteById(profileId);
-      setProfiles(welcomeManager.getProfiles());
+      const profiles = await welcomeManager.fetchProfiles();
+      setProfiles(profiles);
       setTextInput('');
     });
   };
 
-  const createProfile = () => {
+  const createProfile = async () => {
     Keyboard.dismiss();
-    if (!welcomeManager.createProfile(textInput)) {
-      createAlert('Error', welcomeManager.getErrorMessage());
-    }
-    setProfiles(welcomeManager.getProfiles());
     setTextInput('');
+    const createResult = await welcomeManager.createProfile(textInput);
+    if (!createResult) {
+      createAlert('Error', welcomeManager.getErrorMessage());
+      return;
+    }
+    const profiles = await welcomeManager.fetchProfiles();
+    setProfiles(profiles);
   };
 
   const signInProfile = profile => {

@@ -1,29 +1,39 @@
-import ContentProfileTypes from '@application/data/ContentProfileTypes';
+import ProfileImageTypes from '@application/data/ProfileImageTypes';
 import UserManager from '@application/managers/generic/entities/UserManager.js';
 
 export default class WelcomeManager {
   constructor() {
-    this.profiles = []; //TODO Get from db
-    this.profileImages = ContentProfileTypes;
+    this.userManager = new UserManager();
+    this.profileImages = ProfileImageTypes;
     this.maxProfiles = 5;
     this.errorMessage = '';
-    this.userManager = new UserManager();
   }
 
-  signInProfile() {
+  async fetchProfiles() {
+    this.profiles = await this.userManager.getUserProfiles();
+    return this.profiles;
+  }
+
+  async getUpdatedProfiles() {
+    return this.profiles;
+  }
+
+  async signInProfile() {
     return this.userManager.signInUserProfile();
   }
 
-  createProfile(nickname = '') {
-    if (!this.validateProfile(nickname)) return false;
-    const image = this.profileImages.find(image => !this.profiles.some(p => p.image === image));
-    const item = { id: this.profiles.length, nickname, image };
-    this.profiles = [...this.profiles, item];
-    this.userManager.saveUserProfile(item);
-    return true;
+  async createProfile(nicknameSent = '') {
+    const nickname = nicknameSent.trim();
+    if (!this.validateNickname(nickname)) return false;
+    const image = this.profileImages.find(image => !this.profiles.some(p => p.avatar === image));
+    return await this.userManager.saveUserProfile({ nickname, image });
   }
 
-  validateProfile(nickname) {
+  async deleteById(id = 0) {
+    await this.userManager.deleteUserProfile(id);
+  }
+
+  validateNickname(nickname) {
     if (this.profiles.length >= this.maxProfiles) {
       this.errorMessage = `Can't create more profiles`;
       return false;
@@ -37,18 +47,6 @@ export default class WelcomeManager {
       return false;
     }
     return true;
-  }
-
-  deleteById(id = 0) {
-    const newArray = [...this.profiles];
-    newArray.forEach((value, index) => {
-      if (value.id === id) newArray.splice(index, 1);
-    });
-    this.profiles = newArray;
-  }
-
-  getProfiles() {
-    return this.profiles;
   }
 
   getErrorMessage() {
