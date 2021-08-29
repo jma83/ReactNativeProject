@@ -132,10 +132,18 @@ export default class CharacterDetail extends Component {
     this.props.onContentPressed({ content: data, contentType: ContentType.EPISODE });
   }
 
+  onLikePressed() {
+    this.props.onLikePressed({ apiId: this.props.content.id, contentType: ContentType.CHARACTER });
+  }
+
   getFloatingButton() {
     return (
-      <TouchableOpacity style={styles.floatingButton} activeOpacity={0.5} onPress={() => {}}>
-        <Icon name="star-outline" size={28} color={'black'} />
+      <TouchableOpacity style={styles.floatingButton} activeOpacity={0.5} onPress={() => this.onLikePressed()}>
+        {this.props.liked ? (
+          <Icon name="star" size={29} color={'black'} />
+        ) : (
+          <Icon name="star-outline" size={28} color={'black'} />
+        )}
       </TouchableOpacity>
     );
   }

@@ -25,10 +25,15 @@ export default class UserManager {
   }
 
   async getCurrentUserProfile() {
-    const user = await AsyncStorageManager.getItem('user');
-    const userToken = await AsyncStorageManager.getItem('userToken');
-    const result = await this.userDAO.checkUser(user, userToken);
+    const { nickname, userToken } = await this.getCurrentUserInStorage();
+    const result = await this.userDAO.checkUser(nickname, userToken);
     return result.length > 0 ? result[0] : null;
+  }
+
+  async getCurrentUserInStorage() {
+    const nickname = await AsyncStorageManager.getItem('user');
+    const userToken = await AsyncStorageManager.getItem('userToken');
+    return { nickname, userToken };
   }
 
   async getUserProfiles() {

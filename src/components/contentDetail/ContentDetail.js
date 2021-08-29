@@ -14,7 +14,8 @@ export default class ContentDetail extends Component {
       content: params.content || '',
       contentType: params.contentType,
       metaInfo: { url: '', abstract: '', image: '' },
-      contentList: []
+      contentList: [],
+      liked: false
     };
 
     this.detailManager = new DetailManager();
@@ -23,18 +24,24 @@ export default class ContentDetail extends Component {
     });
     this.getMetaInfo();
     this.getCurrentList();
+    this.checkLikedContent();
   }
 
   render() {
     return <View>{this.getDetailType()}</View>;
   }
 
+  checkLikedContent = async () => {
+    const liked = await this.detailManager.checkLikedContent(this.state.content.id);
+    console.log('likeeed???', liked);
+    this.setState({ liked });
+  };
+
   getMetaInfo() {
     const result = this.state.content.name.match('(.*)+(.*\\()') || this.state.content.name;
     console.log('earth', result);
     this.detailManager.getMetaInfoByTitle(result).then(async data => {
       const metaInfo = await data;
-      console.log('metaInfo', await data);
       this.setState({ metaInfo });
     });
   }
@@ -68,7 +75,9 @@ export default class ContentDetail extends Component {
           content={this.state.content}
           metaInfo={this.state.metaInfo}
           contentList={this.state.contentList}
+          liked={this.state.liked}
           onContentPressed={this.onContentPressed}
+          onLikePressed={this.onLikePressed}
           loadLocation={this.loadLocation}
         />
       );
@@ -77,7 +86,9 @@ export default class ContentDetail extends Component {
         <LocationDetail
           content={this.state.content}
           metaInfo={this.state.metaInfo}
+          liked={this.state.liked}
           contentList={this.state.contentList}
+          onLikePressed={this.onLikePressed}
           onContentPressed={this.onContentPressed}
         />
       );
@@ -86,7 +97,9 @@ export default class ContentDetail extends Component {
         <EpìsodeDetail
           content={this.state.content}
           metaInfo={this.state.metaInfo}
+          liked={this.state.liked}
           contentList={this.state.contentList}
+          onLikePressed={this.onLikePressed}
           onContentPressed={this.onContentPressed}
         />
       );
@@ -107,5 +120,15 @@ export default class ContentDetail extends Component {
       return;
     }
     this.props.navigation.push('ContentDetail', { content: data.content, contentType: data.contentType });
+  };
+
+  onLikePressed = async data => {
+    if (!data) {
+      return;
+    }
+    const liked = await this.detailManager.managelikeContent(data.apiId, data.contentType, this.state.liked);
+    console.log('likeeed???', liked);
+    this.setState({ liked });
+    //{ apiId: this.props.content.id, contentType: ContentType.CHARACTER }
   };
 }
