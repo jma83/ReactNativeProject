@@ -54,34 +54,42 @@ export default class User {
       );
     });
 
-  updateUserToken(id, userToken) {
-    const db = this.getDBInstance();
-
-    db.transaction(function (txn) {
-      txn.executeSql(
-        `UPDATE ${this.table} SET (userToken) 
-            VALUES (:userToken) WHERE id=?`,
-        [userToken, id]
-      );
+  updateUserToken = (id, userToken) =>
+    new Promise((resolve, reject) => {
+      const db = this.getDBInstance();
+      console.log('updateUserToken', userToken);
+      console.log('id', id);
+      db.transaction(txn => {
+        txn.executeSql(
+          `UPDATE ${this.table} SET userToken=? WHERE id=?`,
+          [userToken, id],
+          (tx, results) => resolve(results),
+          (tx, error) => reject(error)
+        );
+      });
     });
-  }
 
-  getUser(id) {
-    const db = this.getDBInstance();
+  checkUser = (nickname, userToken) =>
+    new Promise((resolve, reject) => {
+      const db = this.getDBInstance();
+      console.log('checkUser INIT', nickname, userToken);
 
-    db.transaction(function (txn) {
-      txn.executeSql(
-        `SELECT * FROM ${this.table} 
-            WHERE id=:id`,
-        [id],
-        function (tx, res) {
-          for (let i = 0; i < res.rows.length; ++i) {
-            console.log('item:', res.rows.item(i));
+      db.transaction(txn => {
+        txn.executeSql(
+          `SELECT * FROM ${this.table}
+            WHERE nickname = ? AND userToken = ?`,
+          [nickname, userToken],
+          (tx, results) => {
+            console.log('checkUser result', results.rows._array);
+            resolve(results.rows._array);
+          },
+          (tx, error) => {
+            console.log('ERROR', error);
+            reject(error);
           }
-        }
-      );
+        );
+      });
     });
-  }
 
   getUsers = () =>
     new Promise((resolve, reject) => {

@@ -15,8 +15,12 @@ export default class UserManager {
     await this.userDAO.deleteUser(id);
   }
 
-  signInUserProfile() {
-    return this.generateUserToken();
+  async signInUserProfile(user, userToken) {
+    const result = await this.userDAO.checkUser(user, userToken);
+    if (result.length <= 0) return null;
+    const newToken = this.generateUserToken();
+    await this.userDAO.updateUserToken(result[0].id, newToken);
+    return newToken;
   }
 
   removeUserProfile() {

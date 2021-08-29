@@ -59,13 +59,9 @@ export default function Welcome({ navigation, props }) {
     setProfiles(profiles);
   };
 
-  const signInProfile = profile => {
-    const token = welcomeManager.signInProfile();
-
-    const data = { nickname: profile.nickname, token };
-    console.log('lksaklfamlfmsalfmsflamflmfslasflmsfa', data);
-
-    signIn(data);
+  const signInProfile = async profile => {
+    const newUserToken = await welcomeManager.signInProfile(profile.nickname, profile.userToken);
+    signIn({ nickname: profile.nickname, token: newUserToken });
   };
 
   return (

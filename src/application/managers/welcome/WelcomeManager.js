@@ -18,8 +18,8 @@ export default class WelcomeManager {
     return this.profiles;
   }
 
-  async signInProfile() {
-    return this.userManager.signInUserProfile();
+  async signInProfile(user, userToken) {
+    return await this.userManager.signInUserProfile(user, userToken);
   }
 
   async createProfile(nicknameSent = '') {
