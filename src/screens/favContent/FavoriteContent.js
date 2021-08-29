@@ -7,7 +7,7 @@ import CharacterRow from '@components/rowList/CharacterRow';
 import ContentRow from '@components/rowList/ContentRow';
 import Pagination from '@components/pagination/Pagination';
 
-export default class CategoryContent extends React.Component {
+export default class FavoriteContent extends React.Component {
   constructor(props) {
     super(props);
     this.state = { items: [], pages: 1, currentPage: 1 };
