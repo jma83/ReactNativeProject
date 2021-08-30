@@ -20,7 +20,7 @@ export default function Profile({ navigation }) {
 
   const onContentPressed = () => {
     console.log('navigation', navigation);
-    navigation.navigate('Profile');
+    navigation.navigate('FavCategories');
   };
 
   return (

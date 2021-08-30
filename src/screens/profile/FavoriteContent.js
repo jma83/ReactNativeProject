@@ -1,17 +1,17 @@
 import React from 'react';
 import { StyleSheet, View, SafeAreaView } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import CategoryContentManager from '@application/managers/categoryContent/CategoryContentManager';
 import ContentType from '@application/data/ContentType';
 import CharacterRow from '@components/rowList/CharacterRow';
 import ContentRow from '@components/rowList/ContentRow';
 import Pagination from '@components/pagination/Pagination';
+import FavoriteContentManager from '@application/managers/profile/FavoriteContentManager';
 
 export default class FavoriteContent extends React.Component {
   constructor(props) {
     super(props);
     this.state = { items: [], pages: 1, currentPage: 1 };
-    this.categoryContentManager = new CategoryContentManager(this.props.route.params.contentType);
+    this.favoriteContentManager = new FavoriteContentManager(this.props.route.params.contentType);
     this.loading = false;
     props.navigation.setOptions({
       title: props.route.params.contentName
@@ -28,8 +28,8 @@ export default class FavoriteContent extends React.Component {
 
   loadContent = async () => {
     this.loading = true;
-    const data = await this.categoryContentManager.getContent();
-    const pages = await this.categoryContentManager.getPages();
+    const data = await this.favoriteContentManager.getCurrentContent();
+    const pages = await this.favoriteContentManager.getPages();
     console.log('\n\n');
     this.setState({ items: data.result, pages, currentPage: data.currentPage });
     this.loading = false;
@@ -39,7 +39,7 @@ export default class FavoriteContent extends React.Component {
   };
 
   loadImages = async (data = []) => {
-    return this.categoryContentManager.getImages(data).then(images => {
+    return this.favoriteContentManager.getImages(data).then(images => {
       let array = [...this.state.items];
       array.forEach(async (item, index) => {
         item.image = await images[index];
@@ -93,7 +93,7 @@ export default class FavoriteContent extends React.Component {
   }
 
   navigatePage = async pageState => {
-    await this.categoryContentManager.updatePage(pageState);
+    await this.favoriteContentManager.updatePage(pageState);
     await this.loadContent();
   };
 

@@ -9,7 +9,8 @@ import Categories from '@screens/categories/Categories';
 import Welcome from '@screens/welcome/Welcome';
 import ContentDetail from '@components/contentDetail/ContentDetail';
 import CategoryContent from '@screens/categories/CategoryContent';
-import FavoriteContent from '@screens/favContent/FavoriteContent';
+import FavoriteContent from '@screens/profile/FavoriteContent';
+import FavCategories from '@screens/profile/FavCategories';
 import EndGame from '@screens/game/EndGame';
 
 const Stack = createStackNavigator();
@@ -55,7 +56,7 @@ const ProfileStackNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Profile" component={Profile} />
-      <Stack.Screen name="Categories" component={Categories} />
+      <Stack.Screen name="FavCategories" component={FavCategories} />
       <Stack.Screen name="FavoriteContent" component={FavoriteContent} />
     </Stack.Navigator>
   );

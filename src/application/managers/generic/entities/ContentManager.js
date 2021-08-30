@@ -23,4 +23,10 @@ export default class ContentManager {
 
     return content.rowsAffected > 0;
   }
+
+  async getContentByUserAndType(userId, contentType) {
+    const content = await this.contentDAO.getContentByUserIdAndType(userId, contentType);
+    console.log('getContentByUser', content);
+    return content;
+  }
 }

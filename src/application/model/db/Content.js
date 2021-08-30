@@ -89,6 +89,26 @@ export default class Content {
       });
     });
 
+  getContentByUserIdAndType = (userId, contentType) =>
+    new Promise((resolve, reject) => {
+      console.log('getContentByUserId INIT', userId);
+      this.db.transaction(txn => {
+        txn.executeSql(
+          `SELECT * FROM ${this.table} 
+            WHERE userId=? AND type=?`,
+          [userId, contentType],
+          (_, results) => {
+            console.log('getContentByUserIdAndType result', results.rows._array);
+            resolve(results.rows._array);
+          },
+          (_, error) => {
+            console.log('ERROR', error);
+            reject(error);
+          }
+        );
+      });
+    });
+
   deleteContent = (apiId, userId) =>
     new Promise((resolve, reject) => {
       console.log('deleteContent', apiId, userId);
