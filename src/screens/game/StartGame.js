@@ -198,7 +198,7 @@ export default class StartGame extends React.Component {
   }
 
   endGame() {
-    this.props.navigation.navigate('EndGame', {
+    this.props.navigation.navigate('End Game', {
       maxRounds: this.startGameManager.getMaxRounds(),
       guessed: this.startGameManager.getGuessed()
     });

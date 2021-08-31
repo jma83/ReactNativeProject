@@ -22,6 +22,11 @@ export default class LocationManager extends ContentManager {
       .catch(e => Promise.reject(e));
   }
 
+  async getLocationsByIds(ids = []) {
+    const data = await this.apiClientLocation.getLocationsByIds(ids);
+    return data;
+  }
+
   async getLocationByURL(url = '') {
     const data = await this.apiClientLocation.getLocationByURL(url);
     return data;

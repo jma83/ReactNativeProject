@@ -46,8 +46,8 @@ const GameStackNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Game" component={Game} />
-      <Stack.Screen name="StartGame" component={StartGame} listeners={{ navigation, route }} />
-      <Stack.Screen name="EndGame" component={EndGame} />
+      <Stack.Screen name="Play Game" component={StartGame} listeners={{ navigation, route }} />
+      <Stack.Screen name="End Game" component={EndGame} />
     </Stack.Navigator>
   );
 };
@@ -56,8 +56,9 @@ const ProfileStackNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Profile" component={Profile} />
-      <Stack.Screen name="FavCategories" component={FavCategories} />
+      <Stack.Screen name="Favorite Content Categories" component={FavCategories} />
       <Stack.Screen name="FavoriteContent" component={FavoriteContent} />
+      <Stack.Screen name="ContentDetail" component={ContentDetail} />
     </Stack.Navigator>
   );
 };

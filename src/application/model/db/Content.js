@@ -19,7 +19,7 @@ export default class Content {
           `CREATE TABLE IF NOT EXISTS ${this.table}
             (id INTEGER PRIMARY KEY NOT NULL, 
             apiId INTEGER,
-            type VARCHAR(20),
+            type INTEGER,
             createDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             userId INTEGER NOT NULL,
             FOREIGN KEY (userId) REFERENCES User(id) ON DELETE CASCADE)`,
@@ -36,6 +36,7 @@ export default class Content {
 
   saveContent = (apiId, type, userId) =>
     new Promise((resolve, reject) => {
+      console.log('inser!', apiId, type, userId);
       this.db.transaction(txn => {
         txn.executeSql(
           `INSERT INTO ${this.table} (apiId, type, userId)

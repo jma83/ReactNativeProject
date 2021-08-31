@@ -115,7 +115,7 @@ export default class LocationDetail extends Component {
   }
 
   onLikePressed() {
-    this.props.onLikePressed({ apiId: this.props.content.id, contentType: ContentType.CHARACTER });
+    this.props.onLikePressed({ apiId: this.props.content.id, contentType: ContentType.LOCATION });
   }
 
   getFloatingButton() {

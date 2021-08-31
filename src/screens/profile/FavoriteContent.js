@@ -1,11 +1,12 @@
 import React from 'react';
-import { StyleSheet, View, SafeAreaView } from 'react-native';
+import { StyleSheet, View, SafeAreaView, Text } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import ContentType from '@application/data/ContentType';
 import CharacterRow from '@components/rowList/CharacterRow';
 import ContentRow from '@components/rowList/ContentRow';
 import Pagination from '@components/pagination/Pagination';
 import FavoriteContentManager from '@application/managers/profile/FavoriteContentManager';
+import globalStyles from '@src/utils/GlobalStyles';
 
 export default class FavoriteContent extends React.Component {
   constructor(props) {
@@ -16,6 +17,7 @@ export default class FavoriteContent extends React.Component {
     props.navigation.setOptions({
       title: props.route.params.contentName
     });
+    this.listenerFocus = null;
   }
 
   reload() {
@@ -23,7 +25,13 @@ export default class FavoriteContent extends React.Component {
   }
 
   componentDidMount() {
-    this.loadContent();
+    this.listenerFocus = this.props.navigation.addListener('focus', () => {
+      this.loadContent();
+    });
+  }
+
+  componentWillUnmount() {
+    this.listenerFocus();
   }
 
   loadContent = async () => {
@@ -33,6 +41,9 @@ export default class FavoriteContent extends React.Component {
     console.log('\n\n');
     this.setState({ items: data.result, pages, currentPage: data.currentPage });
     this.loading = false;
+    if (data.result == null || data.length <= 0) {
+      return;
+    }
     if (this.props.route.params.contentType !== ContentType.CHARACTER) {
       this.loadImages(data.result).then(array => this.setState({ items: array }));
     }
@@ -55,7 +66,19 @@ export default class FavoriteContent extends React.Component {
         <View style={styles.sectionContainer}>
           <View style={styles.sectionList}>
             <FlatList
-              ListFooterComponent={this.getPages()}
+              ListFooterComponent={this.getPagination()}
+              ListEmptyComponent={
+                <Text
+                  style={[
+                    globalStyles.CustomMDFontBlack,
+                    {
+                      color: 'black',
+                      textAlign: 'center'
+                    }
+                  ]}>
+                  - No content yet! -
+                </Text>
+              }
               data={this.state.items}
               renderItem={this.renderRow.bind(this)}
               keyExtractor={(item, index) => index}></FlatList>
@@ -69,7 +92,10 @@ export default class FavoriteContent extends React.Component {
     this.props.navigation.navigate('ContentDetail', { content, contentType: this.props.route.params.contentType });
   }
 
-  getPages() {
+  getPagination() {
+    if (this.state.items == null || this.state.items.length <= 0) {
+      return null;
+    }
     const current = this.state.currentPage; //this.state.pages
     const totalPages = this.state.pages;
     let array = [];

@@ -38,7 +38,7 @@ export default class Game extends React.Component {
   }
 
   onContentPressed() {
-    this.props.navigation.navigate('StartGame');
+    this.props.navigation.navigate('Play Game');
   }
 }
 const styles = StyleSheet.create({

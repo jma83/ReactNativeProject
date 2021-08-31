@@ -13,7 +13,11 @@ export default class ApiClientLocation extends ApiClient {
 
   async getLocationsByIds(id = []) {
     let query = this.getLocationURI() + `/${id}`;
-    return await this.get(query);
+    const result = await this.get(query);
+    if (result.length > 1) {
+      return result;
+    }
+    return [result];
   }
 
   async getLocationByURL(url = '') {
