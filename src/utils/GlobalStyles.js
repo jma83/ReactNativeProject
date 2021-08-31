@@ -32,13 +32,6 @@ const globalStyles = StyleSheet.create({
     fontSize: 19,
     color: 'white'
   },
-  CustomMDFontCenter: {
-    fontFamily: 'coolvetica',
-    fontSize: 19,
-    color: 'white',
-    textAlign: 'center',
-    padding: 2
-  },
   CustomMDFontBlack: {
     fontFamily: 'coolvetica',
     fontSize: 19,
@@ -96,11 +89,7 @@ const globalStyles = StyleSheet.create({
     backgroundColor: '#000000c0',
     fontFamily: 'KGBlankSpaceSolid'
   },
-  WelcomeTitle: {
-    color: 'white',
-    fontSize: 34,
-    lineHeight: 60,
-    textAlign: 'center',
+  TitleFont: {
     fontFamily: 'KGBlankSpaceSolid'
   }
 });

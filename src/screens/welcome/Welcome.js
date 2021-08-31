@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, StyleSheet, View, FlatList, ImageBackground, TouchableOpacity, TextInput, Keyboard } from 'react-native';
 import AvatarProfileRow from '@components/rowList/AvatarProfileRow';
 import globalStyles from '@src/utils/GlobalStyles';
@@ -8,7 +8,7 @@ import WelcomeManager from '@application/managers/welcome/WelcomeManager';
 import AuthContext from '@application/context/AuthContext';
 import { createAlert } from '@utils/Utils';
 
-export default function Welcome({ navigation, props }) {
+export default function Welcome() {
   const { signIn } = React.useContext(AuthContext);
   const [welcomeManager] = useState(new WelcomeManager());
   const [profiles, setProfiles] = useState([]);
@@ -68,17 +68,19 @@ export default function Welcome({ navigation, props }) {
     <View style={{ flex: 1 }}>
       <ImageBackground source={welcomeImg} resizeMode="cover" style={styles.image}>
         <View style={styles.sectionContainer}>
-          <Text style={globalStyles.WelcomeTitle}>Welcome to the Rickpedia!</Text>
-          <View style={styles.sectionList}>
+          <Text style={[globalStyles.TitleFont, styles.welcomeTitle]}>Welcome to the Rickpedia!</Text>
+          <View style={[styles.containerColumn, styles.sectionList]}>
             <Text style={globalStyles.CustomLGFont}>Select your profile:</Text>
             <FlatList
-              ListEmptyComponent={<Text style={globalStyles.CustomMDFontCenter}>- No profiles yet! -</Text>}
+              ListEmptyComponent={
+                <Text style={[globalStyles.CustomMDFont, styles.emptyList]}>- No profiles yet! -</Text>
+              }
               horizontal={true}
               data={profiles}
               renderItem={renderRow.bind(this)}
               keyExtractor={(item, index) => index}></FlatList>
           </View>
-          <View style={styles.sectionCreate}>
+          <View style={[styles.containerColumn, styles.sectionCreate]}>
             <Text style={globalStyles.CustomLGFont}>Or create a new one:</Text>
             <View style={styles.form}>
               <TextInput
@@ -105,22 +107,20 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: 30
   },
-  sectionList: {
+  containerColumn: {
     width: '100%',
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'column'
+  },
+  sectionList: {
     backgroundColor: 'rgba(76, 87, 117, 0.8)',
     marginTop: 30,
     padding: 10,
     alignItems: 'center'
   },
   sectionCreate: {
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'column',
     backgroundColor: 'rgba(76, 87, 117, 1)',
     padding: 20,
-
     borderTopWidth: 1,
     borderTopColor: 'white'
   },
@@ -156,5 +156,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 10,
     color: 'black'
+  },
+  emptyList: { textAlign: 'center', padding: 20 },
+  welcomeTitle: {
+    color: 'white',
+    fontSize: 34,
+    lineHeight: 60,
+    textAlign: 'center'
   }
 });
