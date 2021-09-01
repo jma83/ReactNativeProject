@@ -144,13 +144,13 @@ export default class StartGame extends React.Component {
   getMainContent() {
     return (
       <View style={styles.content}>
-        <View style={styles.timerContent}>
+        <View style={[styles.badgeContent, styles.baseContent, { backgroundColor: 'red' }]}>
           <Text style={globalStyles.CustomSMFont}>Timer: {this.state.count} </Text>
         </View>
-        <View style={styles.roundContent}>
+        <View style={[styles.badgeContent, styles.baseContent, { backgroundColor: 'blue' }]}>
           <Text style={globalStyles.CustomSMFont}>Round: {this.state.round} </Text>
         </View>
-        <View style={styles.sectionContent}>
+        <View style={[styles.sectionContent, styles.baseContent, globalStyles.PrimaryBackgroundColor]}>
           <View style={styles.sectionTitleContainer}>
             <Text style={globalStyles.CustomLGFont}>Who is {this.state.name}?</Text>
             {this.getStatus()}
@@ -169,7 +169,7 @@ export default class StartGame extends React.Component {
 
   getStartingContent() {
     return (
-      <View style={styles.sectionFirstContent}>
+      <View style={[styles.sectionFirstContent, styles.baseContent, globalStyles.PrimaryBackgroundColor]}>
         <Text style={globalStyles.CustomTitleFont}>Game starts in {this.state.count}</Text>
       </View>
     );
@@ -215,41 +215,22 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'flex-start'
   },
-  timerContent: {
+  badgeContent: {
     width: '40%',
-    borderWidth: 2,
-    borderColor: 'black',
-    borderRadius: 20,
-    margin: 6,
-    backgroundColor: 'red',
     alignItems: 'center',
     textAlign: 'center'
   },
-  roundContent: {
-    width: '40%',
+  baseContent: {
     borderWidth: 2,
     borderColor: 'black',
     borderRadius: 20,
-    margin: 6,
-    backgroundColor: 'blue',
-    alignItems: 'center',
-    textAlign: 'center'
+    margin: 6
   },
   sectionContent: {
-    height: '70%',
-    borderWidth: 2,
-    borderColor: 'black',
-    borderRadius: 20,
-    margin: 6,
-    backgroundColor: '#4c5775'
+    height: '70%'
   },
   sectionFirstContent: {
     height: '20%',
-    borderWidth: 2,
-    borderColor: 'black',
-    borderRadius: 20,
-    margin: 6,
-    backgroundColor: '#4c5775',
     justifyContent: 'center',
     alignItems: 'center',
     textAlign: 'center'

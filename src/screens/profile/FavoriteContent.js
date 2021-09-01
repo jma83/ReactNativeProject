@@ -1,12 +1,8 @@
 import React from 'react';
-import { StyleSheet, View, SafeAreaView, Text } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
+import { View } from 'react-native';
 import ContentType from '@application/data/ContentType';
-import CharacterRow from '@components/rowList/CharacterRow';
-import ContentRow from '@components/rowList/ContentRow';
-import Pagination from '@components/pagination/Pagination';
 import FavoriteContentManager from '@application/managers/profile/FavoriteContentManager';
-import globalStyles from '@src/utils/GlobalStyles';
+import CategoryChildContent from '@components/category/CategoryChildContent';
 
 export default class FavoriteContent extends React.Component {
   constructor(props) {
@@ -62,116 +58,25 @@ export default class FavoriteContent extends React.Component {
 
   render() {
     return (
-      <SafeAreaView>
-        <View style={styles.sectionContainer}>
-          <View style={styles.sectionList}>
-            <FlatList
-              ListFooterComponent={this.getPagination()}
-              ListEmptyComponent={
-                <Text
-                  style={[
-                    globalStyles.CustomMDFontBlack,
-                    {
-                      color: 'black',
-                      textAlign: 'center'
-                    }
-                  ]}>
-                  - No content yet! -
-                </Text>
-              }
-              data={this.state.items}
-              renderItem={this.renderRow.bind(this)}
-              keyExtractor={(item, index) => index}></FlatList>
-          </View>
-        </View>
-      </SafeAreaView>
+      <View>
+        <CategoryChildContent
+          items={this.state.items}
+          contentType={this.props.route.params.contentType}
+          pages={this.state.pages}
+          currentPage={this.state.currentPage}
+          onContentPressed={this.onContentPressed}
+          onNavigatePage={this.navigatePage}
+        />
+      </View>
     );
   }
 
-  onContentPressed(content) {
+  onContentPressed = content => {
     this.props.navigation.navigate('ContentDetail', { content, contentType: this.props.route.params.contentType });
-  }
-
-  getPagination() {
-    if (this.state.items == null || this.state.items.length <= 0) {
-      return null;
-    }
-    const current = this.state.currentPage; //this.state.pages
-    const totalPages = this.state.pages;
-    let array = [];
-    const disabledFirst = current === 1;
-    const disabledLast = current === totalPages;
-
-    array = [...array, 'First', 'Previous'];
-    array = [...array, String(current)];
-    array = [...array, 'Next', 'Last'];
-
-    return (
-      <Pagination
-        style={styles.footer}
-        pages={array}
-        currentPage={current}
-        disabledFirst={disabledFirst}
-        disabledLast={disabledLast}
-        onPressPage={this.navigatePage}
-      />
-    );
-  }
+  };
 
   navigatePage = async pageState => {
     await this.favoriteContentManager.updatePage(pageState);
     await this.loadContent();
   };
-
-  renderRow = rowInfo => {
-    const item = rowInfo.item;
-    if (this.props.route.params.contentType === ContentType.CHARACTER) {
-      return (
-        <CharacterRow
-          title={item.name}
-          subtitle={item.species}
-          imageURI={item.image}
-          footer={`Status: ${item.status}`}
-          onPress={this.onContentPressed.bind(this, item)}
-        />
-      );
-    } else if (this.props.route.params.contentType === ContentType.EPISODE) {
-      return (
-        <ContentRow
-          title={item.name}
-          subtitle={item.episode}
-          imageURI={item.image}
-          footer={`Release: ${item.air_date}`}
-          onPress={this.onContentPressed.bind(this, item)}
-        />
-      );
-    } else if (this.props.route.params.contentType === ContentType.LOCATION) {
-      return (
-        <ContentRow
-          title={item.name}
-          subtitle={item.type}
-          imageURI={item.image}
-          footer={item.dimension}
-          onPress={this.onContentPressed.bind(this, item)}
-        />
-      );
-    }
-  };
 }
-const styles = StyleSheet.create({
-  sectionContainer: {
-    width: '100%',
-    height: '100%'
-  },
-  sectionList: {
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'column'
-  },
-  footer: {
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between'
-  }
-});

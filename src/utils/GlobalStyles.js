@@ -91,6 +91,9 @@ const globalStyles = StyleSheet.create({
   },
   TitleFont: {
     fontFamily: 'KGBlankSpaceSolid'
+  },
+  PrimaryBackgroundColor: {
+    backgroundColor: '#4c5775'
   }
 });
 

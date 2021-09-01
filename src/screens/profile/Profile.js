@@ -32,11 +32,17 @@ export default function Profile({ navigation }) {
               <AvatarProfileRow id={profile.id} name={profile.nickname} image={profile.avatar} profile={true} />
             </View>
             <View style={styles.sectionButtonsContainer}>
-              <TouchableOpacity style={styles.floatingButton} activeOpacity={0.5} onPress={() => onContentPressed()}>
+              <TouchableOpacity
+                style={[styles.floatingButton, { backgroundColor: '#ee6e73' }]}
+                activeOpacity={0.5}
+                onPress={() => onContentPressed()}>
                 <Icon name="star" size={28} color={'white'} />
                 <Text style={globalStyles.CustomMDFont}>Favorite content</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.floatingButton2} activeOpacity={0.5} onPress={signOut}>
+              <TouchableOpacity
+                style={[styles.floatingButton, { backgroundColor: '#4c5775' }]}
+                activeOpacity={0.5}
+                onPress={signOut}>
                 <Icon name="people" size={28} color={'white'} />
                 <Text style={globalStyles.CustomMDFont}> Change profile </Text>
               </TouchableOpacity>
@@ -73,36 +79,12 @@ const styles = StyleSheet.create({
 
   floatingButton: {
     width: '70%',
-
     borderRadius: 10,
-    backgroundColor: '#ee6e73',
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'center',
     alignItems: 'center',
+    justifyContent: 'center',
     padding: 10,
     margin: 20
-  },
-  floatingButton2: {
-    width: '70%',
-    borderRadius: 10,
-    backgroundColor: '#4c5775',
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 10,
-    margin: 20
-  },
-  image: {
-    width: 100,
-    height: 100,
-    borderRadius: 10000,
-    overflow: 'hidden'
-  },
-  el_image_container: {
-    display: 'flex',
-    flexDirection: 'column',
-    maxHeight: 200
   }
 });
