@@ -177,7 +177,12 @@ export default class StartGame extends React.Component {
 
   getStatus() {
     return this.state.count === 0 ? (
-      <Text style={this.state.correct ? globalStyles.CustomSMFontGreen : globalStyles.CustomSMFontRed}>
+      <Text
+        style={
+          this.state.correct
+            ? [globalStyles.CustomSMFont, styles.response, { color: '#34a832' }]
+            : [globalStyles.CustomSMFont, styles.response, { color: 'red' }]
+        }>
         {this.state.status}
       </Text>
     ) : null;
@@ -262,5 +267,10 @@ const styles = StyleSheet.create({
     bottom: 40,
     right: 20,
     zIndex: 50
+  },
+  response: {
+    backgroundColor: 'black',
+    padding: 5,
+    borderRadius: 10
   }
 });

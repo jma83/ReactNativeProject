@@ -20,16 +20,7 @@ export default class NewCategoryContent extends React.Component {
             <FlatList
               ListFooterComponent={this.getPagination()}
               ListEmptyComponent={
-                <Text
-                  style={[
-                    globalStyles.CustomMDFontBlack,
-                    {
-                      color: 'black',
-                      textAlign: 'center'
-                    }
-                  ]}>
-                  - No content yet! -
-                </Text>
+                <Text style={[globalStyles.CustomMDFont, styles.textStyle]}>- No content yet! -</Text>
               }
               data={this.props.items}
               renderItem={this.renderRow.bind(this)}
@@ -124,5 +115,10 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between'
+  },
+  textStyle: {
+    color: 'black',
+    padding: 2,
+    textAlign: 'center'
   }
 });

@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { Image, StyleSheet, Text, View, Linking, SafeAreaView, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
 import globalStyles from '@src/utils/GlobalStyles';
-const defaultIcon = require('@assets/imgs/icon.jpg');
 import { FlatList } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Ionicons';
 import CharacterRow from '@components/rowList/CharacterRow';
 import ContentType from '@application/data/ContentType';
+import FloatingButton from '@components/buttons/FloatingButton';
+import PrimaryImage from '@components/image/PrimaryImage';
+import LayoutContentDetail from '@components/contentDetail/LayoutContentDetail';
 
 export default class EpisodeDetail extends Component {
   constructor(props) {
@@ -28,70 +30,41 @@ export default class EpisodeDetail extends Component {
       </SafeAreaView>
     );
   }
-
   getMainDetail = () => {
     return (
+      <LayoutContentDetail
+        image={this.getImageComponent()}
+        header={this.getHeaderComponent()}
+        status={this.getStatusComponent()}
+        footer={this.getFooterComponent()}
+        metaInfo={this.props.metaInfo}
+      />
+    );
+  };
+
+  getHeaderComponent = () => {
+    return (
       <View>
-        <View style={styles.el_container}>
-          <View style={styles.el_image_container}>
-            <Image style={styles.image} resizeMode="contain" source={this.getImage()} />
-          </View>
-          <View style={styles.el_content}>
-            <View style={styles.el_header}>
-              <Text style={globalStyles.CustomTitleFont}>{this.props.content.name}</Text>
-              <Text style={globalStyles.CustomMDFont}>Episode code: {this.props.content.episode || 'N/A'}</Text>
-            </View>
-            <View style={styles.el_status}>
-              <Text style={globalStyles.DefaultTextFont}>Air date: {this.props.content.air_date}</Text>
-            </View>
-          </View>
-        </View>
-        <View style={styles.el_footer}>
-          {this.getMetaDescription()}
-          <View style={{ marginTop: 30 }}>
-            <Text style={globalStyles.CustomMDFont}>Characters seen here:</Text>
-          </View>
-        </View>
+        <Text style={globalStyles.CustomTitleFont}>{this.props.content.name}</Text>
+        <Text style={globalStyles.CustomMDFont}>Episode code: {this.props.content.episode || 'N/A'}</Text>
       </View>
     );
   };
 
-  getMetaDescription = () => {
-    let description = this.props.metaInfo.abstract ? (
-      <View>
-        <Text style={globalStyles.CustomMDFont}>Description:</Text>
-        <Text style={globalStyles.DefaultTextFontWhite}>{this.props.metaInfo.abstract}</Text>
+  getImageComponent = () => {
+    return <PrimaryImage image={this.props.content.image || this.props.metaInfo.image} />;
+  };
+
+  getStatusComponent = () => {
+    return <Text style={globalStyles.DefaultTextFont}>Air date: {this.props.content.air_date}</Text>;
+  };
+
+  getFooterComponent = () => {
+    return (
+      <View style={{ marginTop: 30 }}>
+        <Text style={globalStyles.CustomMDFont}>Characters seen here:</Text>
       </View>
-    ) : (
-      <Text style={globalStyles.CustomMDFont}>No description available</Text>
     );
-    if (this.props.metaInfo.url != null) {
-      description = (
-        <View>
-          {description}
-          <Text style={globalStyles.CustomSMLinkFont} onPress={() => Linking.openURL(this.props.metaInfo.url)}>
-            Continue reading...
-          </Text>
-        </View>
-      );
-    }
-    return description;
-  };
-
-  getDimensionText = () => {
-    {
-      return this.props.content.dimension == 'unknown' || this.props.content.dimension == null
-        ? `Dimension: ${this.unknown}`
-        : this.props.content.dimension;
-    }
-  };
-
-  getImage = () => {
-    const imageURI = this.props.content.image || this.props.metaInfo.image;
-    if (!imageURI) {
-      return defaultIcon;
-    }
-    return { uri: imageURI };
   };
 
   renderRow = rowInfo => {
@@ -114,19 +87,19 @@ export default class EpisodeDetail extends Component {
     this.props.onContentPressed({ content: data, contentType: ContentType.CHARACTER });
   }
 
-  onLikePressed() {
+  onLikePressed = () => {
     this.props.onLikePressed({ apiId: this.props.content.id, contentType: ContentType.EPISODE });
-  }
+  };
 
   getFloatingButton() {
     return (
-      <TouchableOpacity style={styles.floatingButton} activeOpacity={0.5} onPress={() => this.onLikePressed()}>
+      <FloatingButton onPressed={this.onLikePressed}>
         {this.props.liked ? (
           <Icon name="star" size={29} color={'black'} />
         ) : (
           <Icon name="star-outline" size={28} color={'black'} />
         )}
-      </TouchableOpacity>
+      </FloatingButton>
     );
   }
 }
@@ -138,71 +111,10 @@ const styles = StyleSheet.create({
     elevation: 24,
     height: '100%'
   },
-
-  el_container: {
-    display: 'flex',
-    flexDirection: 'row',
-    margin: 16
-  },
-
-  el_content: {
-    display: 'flex',
-    flexDirection: 'column',
-    marginLeft: 10,
-    padding: 10,
-    justifyContent: 'space-around',
-    maxWidth: 170
-  },
-
-  el_status: {
-    display: 'flex',
-    flexDirection: 'column',
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    elevation: 24,
-    padding: 6
-  },
-
   el_footer: {
     display: 'flex',
     flexDirection: 'column',
     marginLeft: 16,
     maxWidth: 350
-  },
-  image: {
-    width: '102%',
-    height: '100%',
-    borderRadius: 5,
-    overflow: 'hidden'
-  },
-  el_image_container: {
-    display: 'flex',
-    flexDirection: 'column',
-    maxHeight: 200,
-    width: '50%'
-  },
-  sectionList: {
-    display: 'flex',
-    flexDirection: 'row',
-    width: '100%',
-    marginTop: 6,
-    marginLeft: 8
-  },
-  floatingButton: {
-    width: 50,
-    height: 50,
-    borderRadius: 30,
-    backgroundColor: '#ee6e73',
-    position: 'absolute',
-    alignItems: 'center',
-    justifyContent: 'center',
-    bottom: 20,
-    right: 20,
-    zIndex: 50
-  },
-  icon: {
-    resizeMode: 'contain',
-    width: 50,
-    height: 50
   }
 });

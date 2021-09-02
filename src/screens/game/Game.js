@@ -12,7 +12,7 @@ export default class Game extends React.Component {
           <ScrollView>
             <View style={styles.sectionContent}>
               <View style={styles.sectionTitleContainer}>
-                <Text style={globalStyles.CustomLGTitleFontBlack}>Ready to guess Rick & Morty Characters?{'\n'}</Text>
+                <Text style={globalStyles.CustomLGTitleFont}>Ready to guess Rick & Morty Characters?{'\n'}</Text>
                 <Text style={globalStyles.CustomMDFontBlack}>
                   Choose between 4 images, only one matches the correct character!
                 </Text>

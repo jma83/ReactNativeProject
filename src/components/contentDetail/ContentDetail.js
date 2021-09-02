@@ -5,6 +5,7 @@ import EpìsodeDetail from '@components/contentDetail/EpìsodeDetail';
 import LocationDetail from '@components/contentDetail/LocationDetail';
 import DetailManager from '@application/managers/detail/DetailManager';
 import ContentType from '@application/data/ContentType';
+import { regexContentName, regexUrlContentId } from '@src/utils/Constants';
 
 export default class ContentDetail extends Component {
   constructor(props) {
@@ -33,13 +34,11 @@ export default class ContentDetail extends Component {
 
   checkLikedContent = async () => {
     const liked = await this.detailManager.checkLikedContent(this.state.content.id);
-    console.log('likeeed???', liked);
     this.setState({ liked });
   };
 
   getMetaInfo() {
-    const result = this.state.content.name.match('(.*)+(.*\\()') || this.state.content.name;
-    console.log('earth', result);
+    const result = this.state.content.name.match(regexContentName) || this.state.content.name;
     this.detailManager.getMetaInfoByTitle(result).then(async data => {
       const metaInfo = await data;
       this.setState({ metaInfo });
@@ -55,7 +54,7 @@ export default class ContentDetail extends Component {
     } else if (this.state.contentType === ContentType.EPISODE) {
       elements = this.state.content.characters;
     }
-    const ids = elements.map(el => el.match('[^/]*$'));
+    const ids = elements.map(el => el.match(regexUrlContentId));
 
     if (this.state.contentType === ContentType.CHARACTER) {
       this.detailManager.getEpisodesByIds(ids).then(result => {
@@ -74,11 +73,11 @@ export default class ContentDetail extends Component {
         <CharacterDetail
           content={this.state.content}
           metaInfo={this.state.metaInfo}
-          contentList={this.state.contentList}
           liked={this.state.liked}
-          onContentPressed={this.onContentPressed}
+          contentList={this.state.contentList}
           onLikePressed={this.onLikePressed}
-          loadLocation={this.loadLocation}
+          onContentPressed={this.onContentPressed}
+          onLoadLocation={this.loadLocation}
         />
       );
     } else if (this.state.contentType === ContentType.LOCATION) {
@@ -127,8 +126,6 @@ export default class ContentDetail extends Component {
       return;
     }
     const liked = await this.detailManager.managelikeContent(data.apiId, data.contentType, this.state.liked);
-    console.log('likeeed???', liked);
     this.setState({ liked });
-    //{ apiId: this.props.content.id, contentType: ContentType.CHARACTER }
   };
 }
