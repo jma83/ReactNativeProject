@@ -14,9 +14,6 @@ export default function FloatingButton(props) {
 
 const styles = StyleSheet.create({
   floatingButton: {
-    padding: 9,
-    borderRadius: 30,
-    backgroundColor: '#ee6e73',
     position: 'absolute',
     alignItems: 'center',
     justifyContent: 'center',

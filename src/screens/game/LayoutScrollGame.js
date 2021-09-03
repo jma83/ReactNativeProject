@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     padding: 20,
     margin: 10,
     marginTop: 80,
-    backgroundColor: '#fff'
+    backgroundColor: 'white'
   },
   sectionTitleContainer: {
     marginBottom: 20,
@@ -45,29 +45,5 @@ const styles = StyleSheet.create({
   sectionButtonsContainer: {
     alignItems: 'center',
     justifyContent: 'center'
-  },
-
-  floatingButton: {
-    width: '70%',
-
-    borderRadius: 10,
-    backgroundColor: '#ee6e73',
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 10,
-    margin: 20
-  },
-  floatingButton2: {
-    width: '70%',
-    borderRadius: 10,
-    backgroundColor: '#4c5775',
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 10,
-    margin: 20
   }
 });

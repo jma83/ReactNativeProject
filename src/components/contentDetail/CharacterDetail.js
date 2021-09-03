@@ -17,7 +17,7 @@ export default class CharacterDetail extends Component {
   render() {
     return (
       <SafeAreaView>
-        <View style={this.props.contentStyles.el_general}>
+        <View style={[this.props.contentStyles.el_general, globalStyles.PrimaryBackgroundColor]}>
           <FlatList
             ListHeaderComponent={this.getMainDetail()}
             ListEmptyComponent={<Text style={this.props.contentStyles.el_footer}>No results!</Text>}
@@ -52,7 +52,12 @@ export default class CharacterDetail extends Component {
   };
 
   getImageComponent = () => {
-    return <PrimaryImage image={this.props.content.image || this.props.metaInfo.image} />;
+    return (
+      <PrimaryImage
+        imageStyles={this.props.contentStyles.image}
+        image={this.props.content.image || this.props.metaInfo.image}
+      />
+    );
   };
 
   getStatusComponent = () => {

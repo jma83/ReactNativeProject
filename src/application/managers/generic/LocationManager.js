@@ -16,7 +16,6 @@ export default class LocationManager extends ContentManager {
     return this.apiClientLocation
       .getLocations(0)
       .then(data => {
-        console.error('data', data.info);
         return data.info;
       })
       .catch(e => Promise.reject(e));

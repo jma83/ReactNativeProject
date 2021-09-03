@@ -22,7 +22,7 @@ export default function Profile({ navigation }) {
   };
 
   return (
-    <View style={styles.sectionContainer}>
+    <View style={[styles.sectionContainer, globalStyles.PrimaryBackgroundColor]}>
       <ImageBackground source={seasonsImg} resizeMode="stretch" style={{ flex: 1, justifyContent: 'center' }}>
         <ScrollView>
           <View style={styles.sectionContent}>
@@ -38,7 +38,7 @@ export default function Profile({ navigation }) {
                 <Text style={globalStyles.CustomMDFont}>Favorite content</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={[styles.floatingButton, { backgroundColor: '#4c5775' }]}
+                style={[styles.floatingButton, globalStyles.PrimaryBackgroundColor]}
                 activeOpacity={0.5}
                 onPress={signOut}>
                 <Icon name="people" size={28} color={'white'} />
@@ -53,8 +53,7 @@ export default function Profile({ navigation }) {
 }
 const styles = StyleSheet.create({
   sectionContainer: {
-    flex: 1,
-    backgroundColor: '#4c5775'
+    flex: 1
   },
   sectionContent: {
     borderWidth: 2,

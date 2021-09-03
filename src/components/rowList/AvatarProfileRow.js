@@ -12,7 +12,7 @@ export default class CategoryRow extends Component {
     return (
       <TouchableHighlight onPress={this.props.onPress} underlayColor="lightgray">
         <View>
-          <View style={styles.el_container}>
+          <View style={[globalStyles.GenericRowContainer, styles.el_container, globalStyles.PrimaryBackgroundColor]}>
             <View style={styles.el_content}>
               <Image source={this.props.image} style={styles.image} />
             </View>
@@ -44,24 +44,13 @@ export default class CategoryRow extends Component {
 
 const styles = StyleSheet.create({
   el_container: {
-    display: 'flex',
-    flexDirection: 'row',
-    backgroundColor: '#4c5775',
     borderRadius: 100,
     shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 12
-    },
-    shadowOpacity: 0.58,
-    shadowRadius: 16.0,
-    elevation: 24,
-    overflow: 'hidden',
+    margin: 20,
     borderWidth: 1,
     borderColor: 'black',
     width: 150,
-    height: 150,
-    margin: 20
+    height: 150
   },
 
   el_content: {

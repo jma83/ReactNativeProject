@@ -1,47 +1,47 @@
 import React, { Component } from 'react';
-import { Image, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import globalStyles from '@src/utils/GlobalStyles';
+import LayoutRow from '@components/rowList/LayoutRow';
+import PrimaryImage from '@components/image/PrimaryImage';
 
 export default class CharacterRow extends Component {
+  constructor(props) {
+    super(props);
+  }
   render() {
     return (
-      <TouchableHighlight onPress={this.props.onPress} underlayColor="lightgray">
-        <View style={styles.el_container}>
-          <Image style={styles.image} resizeMode="contain" source={{ uri: this.props.imageURI }} />
-          <View style={styles.el_content}>
-            <View style={styles.el_header}>
-              <Text style={globalStyles.CustomTitleFont}>{this.props.title}</Text>
-              <Text style={globalStyles.CustomMDFont}>{this.props.subtitle}</Text>
-            </View>
-            <View style={styles.el_footer}>
-              <Text style={globalStyles.DefaultTextFont}>{this.props.footer}</Text>
-            </View>
-          </View>
-        </View>
-      </TouchableHighlight>
+      <LayoutRow
+        onPress={this.props.onPress}
+        contentExtraStyles={styles.el_content}
+        container={this.getContainerElements()}
+        contentHeader={this.getHeaderElements()}
+        contentFooter={this.getFooterElements()}
+      />
     );
   }
+
+  getContainerElements = () => {
+    return <PrimaryImage imageStyles={styles.image} image={this.props.imageURI} />;
+  };
+
+  getHeaderElements = () => {
+    return (
+      <View style={styles.el_header}>
+        <Text style={globalStyles.CustomTitleFont}>{this.props.title}</Text>
+        <Text style={globalStyles.CustomMDFont}>{this.props.subtitle}</Text>
+      </View>
+    );
+  };
+
+  getFooterElements = () => {
+    return (
+      <View>
+        <Text style={globalStyles.DefaultTextFont}>{this.props.footer}</Text>
+      </View>
+    );
+  };
 }
-
 const styles = StyleSheet.create({
-  el_container: {
-    display: 'flex',
-    flexDirection: 'row',
-    margin: 8,
-    backgroundColor: '#4c5775',
-    borderRadius: 12,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 12
-    },
-    shadowOpacity: 0.58,
-    shadowRadius: 16.0,
-
-    elevation: 24,
-    overflow: 'hidden'
-  },
-
   el_content: {
     display: 'flex',
     flexDirection: 'column',
@@ -51,10 +51,9 @@ const styles = StyleSheet.create({
   },
 
   el_header: {
-    maxWidth: 200
+    maxWidth: '90%'
   },
 
-  el_footer: {},
   image: {
     width: 150,
     height: 150

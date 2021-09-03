@@ -42,13 +42,6 @@ export default function LayoutContentDetail(props) {
 }
 
 const styles = StyleSheet.create({
-  el_general: {
-    display: 'flex',
-    backgroundColor: '#4c5775',
-    elevation: 24,
-    height: '100%'
-  },
-
   el_container: {
     display: 'flex',
     flexDirection: 'row',
@@ -61,13 +54,13 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     padding: 10,
     justifyContent: 'space-around',
-    maxWidth: 170
+    maxWidth: '50%'
   },
 
   el_status: {
     display: 'flex',
     flexDirection: 'column',
-    backgroundColor: '#fff',
+    backgroundColor: 'white',
     borderRadius: 12,
     elevation: 24,
     padding: 6

@@ -77,7 +77,7 @@ export default class ContentDetail extends Component {
           metaInfo={this.state.metaInfo}
           liked={this.state.liked}
           contentList={this.state.contentList}
-          contentStyles={{ el_general: styles.el_general, el_footer: styles.el_footer }}
+          contentStyles={styles}
           floatingButton={this.getFloatingButton}
           onContentPressed={this.onContentPressed}
           onLoadLocation={this.loadLocation}
@@ -90,7 +90,7 @@ export default class ContentDetail extends Component {
           metaInfo={this.state.metaInfo}
           liked={this.state.liked}
           contentList={this.state.contentList}
-          contentStyles={{ el_general: styles.el_general, el_footer: styles.el_footer }}
+          contentStyles={styles}
           floatingButton={this.getFloatingButton}
           onContentPressed={this.onContentPressed}
         />
@@ -102,7 +102,7 @@ export default class ContentDetail extends Component {
           metaInfo={this.state.metaInfo}
           liked={this.state.liked}
           contentList={this.state.contentList}
-          contentStyles={{ el_general: styles.el_general, el_footer: styles.el_footer }}
+          contentStyles={styles}
           floatingButton={this.getFloatingButton}
           onContentPressed={this.onContentPressed}
         />
@@ -154,7 +154,6 @@ const styles = StyleSheet.create({
   },
   el_general: {
     display: 'flex',
-    backgroundColor: '#4c5775',
     elevation: 24,
     height: '100%'
   },
@@ -163,5 +162,11 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     marginLeft: 16,
     maxWidth: 350
+  },
+  image: {
+    width: '102%',
+    height: '100%',
+    borderRadius: 5,
+    overflow: 'hidden'
   }
 });

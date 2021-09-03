@@ -59,6 +59,21 @@ const globalStyles = StyleSheet.create({
   },
   SecondaryBackgroundColor: {
     backgroundColor: '#ee6e73'
+  },
+  GenericRowContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    borderRadius: 12,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 12
+    },
+    shadowOpacity: 0.58,
+    shadowRadius: 16.0,
+
+    elevation: 24,
+    overflow: 'hidden'
   }
 });
 

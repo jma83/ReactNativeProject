@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
+import globalStyles from '@src/utils/GlobalStyles';
 
 export const PageState = {
   FIRST: 0,
@@ -49,7 +50,7 @@ export default class Pagination extends React.Component {
         onPress={() => {
           this.props.onPressPage(page.index);
         }}>
-        <Text style={[styles.page, styles.element]}>{page.item}</Text>
+        <Text style={[styles.page, styles.element, globalStyles.PrimaryBackgroundColor]}>{page.item}</Text>
       </TouchableOpacity>
     );
   };
@@ -70,7 +71,6 @@ const styles = StyleSheet.create({
     marginBottom: 4
   },
   page: {
-    backgroundColor: '#4c5775',
     borderRadius: 8
   },
   disabledPage: {
