@@ -3,7 +3,10 @@ import { StyleSheet, TouchableOpacity } from 'react-native';
 
 export default function FloatingButton(props) {
   return (
-    <TouchableOpacity style={styles.floatingButton} activeOpacity={0.5} onPress={() => props.onPressed()}>
+    <TouchableOpacity
+      style={[styles.floatingButton, props.extraStyles]}
+      activeOpacity={0.5}
+      onPress={() => props.onPressed()}>
       {props.children}
     </TouchableOpacity>
   );
@@ -11,8 +14,7 @@ export default function FloatingButton(props) {
 
 const styles = StyleSheet.create({
   floatingButton: {
-    width: 50,
-    height: 50,
+    padding: 9,
     borderRadius: 30,
     backgroundColor: '#ee6e73',
     position: 'absolute',

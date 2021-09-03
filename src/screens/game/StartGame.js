@@ -1,11 +1,22 @@
 import React from 'react';
-import { StyleSheet, View, ImageBackground, TouchableOpacity, FlatList, Text } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, FlatList, Text } from 'react-native';
 import StartGameManager from '@application/managers/game/StartGameManager';
 import ImageCharacterRow from '@components/rowList/ImageCharacterRow';
 import globalStyles from '@src/utils/GlobalStyles';
 import Icon from 'react-native-vector-icons/Ionicons';
+import LayoutGame from '@screens/game/LayoutGame';
+import FloatingButton from '../../components/buttons/FloatingButton';
 
-const charactersImg = require('@assets/imgs/characters.png');
+const defaultStateValues = {
+  options: [],
+  round: 0,
+  name: '',
+  count: 3,
+  status: '',
+  answered: false,
+  correct: false,
+  ended: false
+};
 
 export default class StartGame extends React.Component {
   constructor(props) {
@@ -14,16 +25,7 @@ export default class StartGame extends React.Component {
     this.startInterval = null;
     this.inGameInterval = null;
     this.focusSubscription = null;
-    this.state = {
-      options: [],
-      round: 0,
-      name: '',
-      count: this.startGameManager.getTimeBetweenRounds(),
-      status: '',
-      answered: false,
-      correct: false,
-      ended: false
-    };
+    this.state = defaultStateValues;
     this.activeStartInterval();
   }
 
@@ -39,27 +41,21 @@ export default class StartGame extends React.Component {
 
   componentWillUnmount() {
     this.focusSubscription();
+    if (this.inGameInterval) clearInterval(this.inGameInterval);
+    if (this.startInterval) clearInterval(this.startInterval);
   }
 
   reset = () => {
     this.startGameManager.init();
-    this.setState({
-      options: [],
-      round: 0,
-      name: '',
-      count: this.startGameManager.getTimeBetweenRounds(),
-      status: '',
-      answered: false,
-      correct: false,
-      ended: false
-    });
+    this.setState(defaultStateValues);
     this.activeStartInterval();
   };
 
   activeStartInterval() {
+    this.setState({ count: this.startGameManager.getTimeBetweenRounds() });
     this.startInterval = setInterval(
-      (function (self) {
-        return function () {
+      (self => {
+        return () => {
           if (self.state.count <= 1) {
             self.startRound();
           } else {
@@ -74,8 +70,8 @@ export default class StartGame extends React.Component {
 
   activeInGameInterval() {
     this.inGameInterval = setInterval(
-      (function (self) {
-        return function () {
+      (self => {
+        return () => {
           if (self.state.count <= 1) {
             self.endRound();
           } else {
@@ -110,18 +106,11 @@ export default class StartGame extends React.Component {
     if (this.startGameManager.checkEnded()) {
       this.setState({ ended: true });
     }
-
     this.startGameManager.endRound();
   }
 
   render() {
-    return (
-      <View style={styles.sectionContainer}>
-        <ImageBackground source={charactersImg} resizeMode="cover" style={{ flex: 1, justifyContent: 'center' }}>
-          {this.state.round > 0 ? this.getMainContent() : this.getStartingContent()}
-        </ImageBackground>
-      </View>
-    );
+    return <LayoutGame>{this.state.round > 0 ? this.getMainContent() : this.getStartingContent()}</LayoutGame>;
   }
 
   renderRow = item => {
@@ -190,15 +179,14 @@ export default class StartGame extends React.Component {
 
   getFloatingButton() {
     return this.state.count === 0 ? (
-      <TouchableOpacity
-        style={styles.floatingButton}
-        activeOpacity={0.7}
-        onPress={() => {
+      <FloatingButton
+        extraStyles={styles.floatingButton}
+        onPressed={() => {
           this.state.ended ? this.endGame() : this.startRound();
         }}>
         <Icon name="arrow-forward" size={28} color={'black'} />
         {this.state.ended ? <Text>End game</Text> : <Text>Next round</Text>}
-      </TouchableOpacity>
+      </FloatingButton>
     ) : null;
   }
 
@@ -210,9 +198,6 @@ export default class StartGame extends React.Component {
   }
 }
 const styles = StyleSheet.create({
-  sectionContainer: {
-    flex: 1
-  },
   content: {
     width: '100%',
     height: '100%',
@@ -256,17 +241,11 @@ const styles = StyleSheet.create({
   },
 
   floatingButton: {
-    padding: 5,
     borderRadius: 10,
     borderWidth: 2,
     borderColor: 'black',
     backgroundColor: 'white',
-    position: 'absolute',
-    alignItems: 'center',
-    justifyContent: 'center',
-    bottom: 40,
-    right: 20,
-    zIndex: 50
+    bottom: 40
   },
   response: {
     backgroundColor: 'black',

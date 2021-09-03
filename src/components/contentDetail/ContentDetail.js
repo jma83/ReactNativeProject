@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import CharacterDetail from '@components/contentDetail/CharacterDetail';
 import EpìsodeDetail from '@components/contentDetail/EpìsodeDetail';
 import LocationDetail from '@components/contentDetail/LocationDetail';
 import DetailManager from '@application/managers/detail/DetailManager';
 import ContentType from '@application/data/ContentType';
 import { regexContentName, regexUrlContentId } from '@src/utils/Constants';
+import FloatingButton from '@components/buttons/FloatingButton';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 export default class ContentDetail extends Component {
   constructor(props) {
@@ -75,7 +77,8 @@ export default class ContentDetail extends Component {
           metaInfo={this.state.metaInfo}
           liked={this.state.liked}
           contentList={this.state.contentList}
-          onLikePressed={this.onLikePressed}
+          contentStyles={{ el_general: styles.el_general, el_footer: styles.el_footer }}
+          floatingButton={this.getFloatingButton}
           onContentPressed={this.onContentPressed}
           onLoadLocation={this.loadLocation}
         />
@@ -87,7 +90,8 @@ export default class ContentDetail extends Component {
           metaInfo={this.state.metaInfo}
           liked={this.state.liked}
           contentList={this.state.contentList}
-          onLikePressed={this.onLikePressed}
+          contentStyles={{ el_general: styles.el_general, el_footer: styles.el_footer }}
+          floatingButton={this.getFloatingButton}
           onContentPressed={this.onContentPressed}
         />
       );
@@ -98,7 +102,8 @@ export default class ContentDetail extends Component {
           metaInfo={this.state.metaInfo}
           liked={this.state.liked}
           contentList={this.state.contentList}
-          onLikePressed={this.onLikePressed}
+          contentStyles={{ el_general: styles.el_general, el_footer: styles.el_footer }}
+          floatingButton={this.getFloatingButton}
           onContentPressed={this.onContentPressed}
         />
       );
@@ -121,11 +126,42 @@ export default class ContentDetail extends Component {
     this.props.navigation.push('ContentDetail', { content: data.content, contentType: data.contentType });
   };
 
-  onLikePressed = async data => {
-    if (!data) {
-      return;
-    }
-    const liked = await this.detailManager.managelikeContent(data.apiId, data.contentType, this.state.liked);
+  onLikePressed = async () => {
+    const apiId = this.state.content.id;
+    const contentType = this.state.contentType;
+    const liked = await this.detailManager.managelikeContent(apiId, contentType, this.state.liked);
     this.setState({ liked });
   };
+
+  getFloatingButton = () => {
+    return (
+      <FloatingButton extraStyles={styles.extraButtonSyles} onPressed={() => this.onLikePressed()}>
+        {this.state.liked ? (
+          <Icon name="star" size={29} color={'black'} />
+        ) : (
+          <Icon name="star-outline" size={28} color={'black'} />
+        )}
+      </FloatingButton>
+    );
+  };
 }
+
+const styles = StyleSheet.create({
+  extraButtonSyles: {
+    padding: 9,
+    borderRadius: 30,
+    backgroundColor: '#ee6e73'
+  },
+  el_general: {
+    display: 'flex',
+    backgroundColor: '#4c5775',
+    elevation: 24,
+    height: '100%'
+  },
+  el_footer: {
+    display: 'flex',
+    flexDirection: 'column',
+    marginLeft: 16,
+    maxWidth: 350
+  }
+});

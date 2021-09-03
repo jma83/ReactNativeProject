@@ -54,7 +54,9 @@ export default class Home extends React.Component {
     return (
       <SafeAreaView>
         <View style={styles.sectionContainer}>
-          <Text style={globalStyles.CustomMDFontBlack}> Suggested {this.contentTypeText()} </Text>
+          <Text style={(globalStyles.CustomLGFont, { color: 'black', fontWeight: 'bold', paddingLeft: 10 })}>
+            Suggested {this.contentTypeText()}
+          </Text>
           <View style={styles.sectionList}>
             <FlatList
               data={this.state.items}

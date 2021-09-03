@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
+import { Text, View, SafeAreaView } from 'react-native';
 import globalStyles from '@src/utils/GlobalStyles';
 import { FlatList } from 'react-native-gesture-handler';
 import ContentType from '@application/data/ContentType';
 import ContentCardRow from '@components/contentDetail/elementCard/ContentCardRow';
-import Icon from 'react-native-vector-icons/Ionicons';
 import ContentRow from '@components/rowList/ContentRow';
-import FloatingButton from '@components/buttons/FloatingButton';
 import PrimaryImage from '@components/image/PrimaryImage';
 import LayoutContentDetail from '@components/contentDetail/LayoutContentDetail';
 
@@ -19,14 +17,14 @@ export default class CharacterDetail extends Component {
   render() {
     return (
       <SafeAreaView>
-        <View style={styles.el_general}>
+        <View style={this.props.contentStyles.el_general}>
           <FlatList
             ListHeaderComponent={this.getMainDetail()}
-            ListEmptyComponent={<Text style={styles.el_footer}>No results!</Text>}
+            ListEmptyComponent={<Text style={this.props.contentStyles.el_footer}>No results!</Text>}
             data={this.props.contentList}
             renderItem={this.renderRow.bind(this)}
             keyExtractor={(item, index) => index}></FlatList>
-          {this.getFloatingButton()}
+          {this.props.floatingButton()}
         </View>
       </SafeAreaView>
     );
@@ -119,35 +117,4 @@ export default class CharacterDetail extends Component {
   onContentPressed(data) {
     this.props.onContentPressed({ content: data, contentType: ContentType.EPISODE });
   }
-
-  onLikePressed = () => {
-    this.props.onLikePressed({ apiId: this.props.content.id, contentType: ContentType.CHARACTER });
-  };
-
-  getFloatingButton() {
-    return (
-      <FloatingButton onPressed={this.onLikePressed}>
-        {this.props.liked ? (
-          <Icon name="star" size={29} color={'black'} />
-        ) : (
-          <Icon name="star-outline" size={28} color={'black'} />
-        )}
-      </FloatingButton>
-    );
-  }
 }
-
-const styles = StyleSheet.create({
-  el_general: {
-    display: 'flex',
-    backgroundColor: '#4c5775',
-    elevation: 24,
-    height: '100%'
-  },
-  el_footer: {
-    display: 'flex',
-    flexDirection: 'column',
-    marginLeft: 16,
-    maxWidth: 350
-  }
-});

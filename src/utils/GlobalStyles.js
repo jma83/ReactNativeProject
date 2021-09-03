@@ -56,6 +56,9 @@ const globalStyles = StyleSheet.create({
   },
   PrimaryBackgroundColor: {
     backgroundColor: '#4c5775'
+  },
+  SecondaryBackgroundColor: {
+    backgroundColor: '#ee6e73'
   }
 });
 

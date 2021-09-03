@@ -36,7 +36,7 @@ export default class CategoryRow extends Component {
       </View>
     ) : (
       <View style={{ alignItems: 'center' }}>
-        <Text style={globalStyles.CustomMDFontBlack}>{this.props.name}</Text>
+        <Text style={[globalStyles.CustomMDFont, { color: 'black' }]}>{this.props.name}</Text>
       </View>
     );
   }
