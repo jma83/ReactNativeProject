@@ -11,7 +11,7 @@ export default class ApiClientImage extends ApiClient {
       this.getQueryParam('titles', title, true) +
       this.getQueryParam('width', width, false) +
       this.getQueryParam('height', height, false);
-    console.log('uri img', uri);
+
     return await this.get(uri);
   }
 }

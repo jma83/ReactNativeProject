@@ -3,7 +3,6 @@ import ApiClient from '@application/model/api/ApiClient.js';
 export default class ApiClientEpisode extends ApiClient {
   async getEpisodes(page) {
     let query = this.getEpisodeURI() + this.getQueryParam('page', page, true);
-    console.log('getEpisodes', query);
 
     return await this.get(query);
   }

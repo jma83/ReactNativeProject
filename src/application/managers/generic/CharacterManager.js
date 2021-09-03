@@ -21,7 +21,6 @@ export default class CharacterManager extends ContentManager {
     return this.apiClientCharacter
       .getCharacters(0)
       .then(data => {
-        console.log('data', data.info);
         return data.info;
       })
       .catch(e => Promise.reject(e));

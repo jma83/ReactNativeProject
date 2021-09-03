@@ -34,7 +34,6 @@ export default class FavoriteContent extends React.Component {
     this.loading = true;
     const data = await this.favoriteContentManager.getCurrentContent();
     const pages = await this.favoriteContentManager.getPages();
-    console.log('\n\n');
     this.setState({ items: data.result, pages, currentPage: data.currentPage });
     this.loading = false;
     if (data.result == null || data.length <= 0) {

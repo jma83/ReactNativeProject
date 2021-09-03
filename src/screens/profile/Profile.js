@@ -13,13 +13,11 @@ export default function Profile({ navigation }) {
   const [profile, setProfile] = useState([]);
 
   useEffect(async () => {
-    console.log('mount it!');
     const result = await profileManager.getCurrentProfile();
     setProfile(result);
   }, []);
 
   const onContentPressed = () => {
-    console.log('navigation', navigation);
     navigation.navigate('Favorite Content Categories');
   };
 

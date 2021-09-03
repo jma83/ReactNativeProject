@@ -35,7 +35,6 @@ export default class StartGameManager {
     const page = this.generateRandom(0, this.characterManager.getPages());
     const results = await this.characterManager.getCharacters(page);
     this.options = await this.filterResults(results);
-    console.log(this.options);
     this.correctAnswer = this.options[this.generateRandom(0, this.options.length)];
   }
 

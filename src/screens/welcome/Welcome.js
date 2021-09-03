@@ -15,7 +15,6 @@ export default function Welcome() {
   const [textInput, setTextInput] = useState('');
 
   useEffect(async () => {
-    console.log('mount it!');
     const result = await welcomeManager.fetchProfiles();
     setProfiles(result);
   }, []);

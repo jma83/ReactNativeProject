@@ -30,7 +30,6 @@ export default class Home extends React.Component {
   loadContent = async () => {
     this.loading = true;
     const data = await this.homeManager.getRandomContent();
-    console.log('\n\n');
     this.setState({ items: data.result, contentType: data.contentType });
     this.loading = false;
     if (data.contentType !== ContentType.CHARACTER) {
@@ -45,7 +44,6 @@ export default class Home extends React.Component {
     let array = [...this.state.items];
     array.forEach(async (item, index) => {
       item.image = await images[index];
-      console.log('index', index, await images[index]);
     });
     return array;
   };

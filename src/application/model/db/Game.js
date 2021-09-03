@@ -45,12 +45,8 @@ export default class Game {
       txn.executeSql(
         `SELECT * FROM ${this.table} 
             WHERE userId = :userId`,
-        [userId],
-        function (tx, res) {
-          for (let i = 0; i < res.rows.length; ++i) {
-            console.log('item:', res.rows.item(i));
-          }
-        }
+        [userId]
+        // results.rows._array.forEach(row => console.log('item:', row));
       );
     });
   }

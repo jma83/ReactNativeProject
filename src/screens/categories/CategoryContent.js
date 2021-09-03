@@ -34,7 +34,6 @@ export default class CategoryContent extends React.Component {
     this.loading = true;
     const data = await this.categoryContentManager.getContent();
     const pages = await this.categoryContentManager.getPages();
-    console.log('\n\n');
     this.setState({ items: data.result, pages, currentPage: data.currentPage });
     this.loading = false;
     if (this.props.route.params.contentType !== ContentType.CHARACTER) {

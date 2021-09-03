@@ -25,7 +25,6 @@ export default class FavoriteContentManager {
 
   async getCurrentContent() {
     if (!this.currentUser) this.currentUser = await this.userManager.getCurrentUserProfile();
-    console.log('favvv', this.currentUser.id, this.contentType);
     this.content = await this.contentManager.getContentByUserAndType(this.currentUser.id, this.contentType);
     return await this.getContentInfo();
   }
@@ -59,9 +58,7 @@ export default class FavoriteContentManager {
     if (ids == null || ids.length <= 0) {
       return [];
     }
-    console.log('getCharacters ids', ids);
     const results = await this.characterManager.getCharactersByIds(ids);
-    console.log('results', results);
 
     return results;
   }
@@ -71,9 +68,7 @@ export default class FavoriteContentManager {
     if (ids == null || ids.length <= 0) {
       return [];
     }
-    console.log('getLocations ids', ids);
     const results = await this.locationManager.getLocationsByIds(ids);
-    console.log('results', results);
 
     return results;
   }
@@ -83,9 +78,7 @@ export default class FavoriteContentManager {
     if (ids == null || ids.length <= 0) {
       return [];
     }
-    console.log('getEpisodes ids', ids);
     const results = await this.episodeManager.getEpisodesByIds(ids);
-    console.log('results', results);
 
     return results;
   }

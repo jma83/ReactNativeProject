@@ -21,7 +21,6 @@ export default class ApiClientLocation extends ApiClient {
   }
 
   async getLocationByURL(url = '') {
-    console.log('getLocationByURL', url.includes(this.getLocationURI()));
     if (!url.includes(this.getLocationURI())) {
       return null;
     }

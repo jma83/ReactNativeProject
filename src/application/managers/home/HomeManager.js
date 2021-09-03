@@ -17,8 +17,6 @@ export default class HomeManager {
   async getRandomContent() {
     const size = Object.keys(ContentType).length;
     const contentType = this.generateRandom(0, size);
-    console.log('size', size);
-    console.log('content', contentType);
 
     switch (contentType) {
       case ContentType.CHARACTER:
@@ -37,12 +35,10 @@ export default class HomeManager {
       const result = await this.imageManager.getImage(element.name);
       const elem = Object.keys(result.items)[0];
       if (elem == null) {
-        console.log('chao pescaoooo');
         return '';
       }
       let image = '';
       image = await result.items[elem].thumbnail;
-      console.log('image result=?=?', image);
       return image;
     });
     return pepe;
@@ -86,7 +82,6 @@ export default class HomeManager {
       return results;
     }
     const initIndex = this.random === true ? this.generateRandom(0, results.length - this.limit) : 0;
-    console.log('randomLimit', initIndex, this.limit + initIndex);
     return results.slice(initIndex, this.limit + initIndex);
   }
 

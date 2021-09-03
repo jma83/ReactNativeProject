@@ -26,7 +26,7 @@ export default class User {
           []
         );
       },
-      err => console.log('error', err)
+      err => console.error('ERROR', err)
     );
   }
 
@@ -46,7 +46,7 @@ export default class User {
             (_, error) => reject(error)
           );
         },
-        err => console.log('error', err)
+        err => console.error('ERROR', err)
       );
     });
 
@@ -64,19 +64,16 @@ export default class User {
 
   checkUser = (nickname, userToken) =>
     new Promise((resolve, reject) => {
-      console.log('checkUser INIT', nickname, userToken);
-
       this.db.transaction(txn => {
         txn.executeSql(
           `SELECT * FROM ${this.table}
             WHERE nickname = ? AND userToken = ?`,
           [nickname, userToken],
           (_, results) => {
-            console.log('checkUser result', results.rows._array);
             resolve(results.rows._array);
           },
           (_, error) => {
-            console.log('ERROR', error);
+            console.error('ERROR', error);
             reject(error);
           }
         );
@@ -90,12 +87,11 @@ export default class User {
           `SELECT * FROM ${this.table}`,
           [],
           (_, results) => {
-            console.log('getUsers result', results.rows._array);
             // results.rows._array.forEach(row => console.log('item:', row));
             resolve(results.rows._array);
           },
           (_, error) => {
-            console.log('ERROR', error);
+            console.error('ERROR', error);
             reject(error);
           }
         );
@@ -110,12 +106,11 @@ export default class User {
           WHERE id = ?`,
           [id],
           (_, results) => {
-            console.log('deleteUser result', results);
             // results.rows._array.forEach(row => console.log('item:', row));
             resolve(true);
           },
           (_, error) => {
-            console.log('ERROR deleteUser', error);
+            console.error('ERROR deleteUser', error);
             reject(error);
           }
         );

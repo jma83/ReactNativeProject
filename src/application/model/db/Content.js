@@ -26,7 +26,7 @@ export default class Content {
           []
         );
       },
-      err => console.log('error', err)
+      err => console.error('ERROR', err)
     );
   }
 
@@ -36,7 +36,6 @@ export default class Content {
 
   saveContent = (apiId, type, userId) =>
     new Promise((resolve, reject) => {
-      console.log('inser!', apiId, type, userId);
       this.db.transaction(txn => {
         txn.executeSql(
           `INSERT INTO ${this.table} (apiId, type, userId)
@@ -50,19 +49,16 @@ export default class Content {
 
   getUserContent = userId =>
     new Promise((resolve, reject) => {
-      console.log('getUserContent INIT', userId);
-
       this.db.transaction(txn => {
         txn.executeSql(
           `SELECT * FROM ${this.table} 
             WHERE userId=?`,
           [userId],
           (_, results) => {
-            console.log('getUserContent result', results.rows._array);
             resolve(results.rows._array);
           },
           (_, error) => {
-            console.log('ERROR', error);
+            console.error('ERROR', error);
             reject(error);
           }
         );
@@ -71,19 +67,16 @@ export default class Content {
 
   checkUserContentById = (apiId, userId) =>
     new Promise((resolve, reject) => {
-      console.log('checkUserContentById INIT', apiId, userId);
-
       this.db.transaction(txn => {
         txn.executeSql(
           `SELECT * FROM ${this.table} 
             WHERE apiId=? AND userId=?`,
           [apiId, userId],
           (_, results) => {
-            console.log('checkUserContentById result', results.rows._array);
             resolve(results.rows._array);
           },
           (_, error) => {
-            console.log('ERROR', error);
+            console.error('ERROR', error);
             reject(error);
           }
         );
@@ -92,18 +85,16 @@ export default class Content {
 
   getContentByUserIdAndType = (userId, contentType) =>
     new Promise((resolve, reject) => {
-      console.log('getContentByUserId INIT', userId);
       this.db.transaction(txn => {
         txn.executeSql(
           `SELECT * FROM ${this.table} 
             WHERE userId=? AND type=?`,
           [userId, contentType],
           (_, results) => {
-            console.log('getContentByUserIdAndType result', results.rows._array);
             resolve(results.rows._array);
           },
           (_, error) => {
-            console.log('ERROR', error);
+            console.error('ERROR', error);
             reject(error);
           }
         );
@@ -112,8 +103,6 @@ export default class Content {
 
   deleteContent = (apiId, userId) =>
     new Promise((resolve, reject) => {
-      console.log('deleteContent', apiId, userId);
-
       this.db.transaction(txn => {
         txn.executeSql(
           `DELETE FROM ${this.table} 
