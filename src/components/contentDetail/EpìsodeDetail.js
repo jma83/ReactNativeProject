@@ -5,12 +5,11 @@ import { FlatList } from 'react-native-gesture-handler';
 import CharacterRow from '@components/rowList/CharacterRow';
 import ContentType from '@application/data/ContentType';
 import PrimaryImage from '@components/image/PrimaryImage';
-import LayoutContentDetail from '@components/contentDetail/LayoutContentDetail';
+import LayoutContentDetail from '@components/contentDetail/layout/LayoutContentDetail';
 
 export default class EpisodeDetail extends Component {
   constructor(props) {
     super(props);
-    this.unknown = 'unknown';
   }
 
   render() {

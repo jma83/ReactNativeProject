@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { ImageBackground, StyleSheet, Text } from 'react-native';
 import globalStyles from '@utils/GlobalStyles';
-import LayoutRow from '@components/rowList/LayoutRow';
+import LayoutRow from '@components/rowList/layout/LayoutRow';
 
 export default class CategoryRow extends Component {
   render() {

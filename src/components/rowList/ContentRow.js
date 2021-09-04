@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import globalStyles from '@utils/GlobalStyles';
-import LayoutRow from '@components/rowList/LayoutRow';
+import LayoutRow from '@components/rowList/layout/LayoutRow';
 import PrimaryImage from '@components/image/PrimaryImage';
 
 export default class ContentRow extends Component {

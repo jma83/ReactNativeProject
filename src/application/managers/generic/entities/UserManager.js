@@ -39,7 +39,6 @@ export default class UserManager {
   async getUserProfiles() {
     try {
       const result = await this.userDAO.getUsers();
-      // console.log('result', result);
       return result;
     } catch (err) {
       console.error('error', err);

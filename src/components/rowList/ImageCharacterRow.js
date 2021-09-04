@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, TouchableHighlight, View } from 'react-native';
 import globalStyles from '@src/utils/GlobalStyles';
-import PrimaryImage from '../image/PrimaryImage';
+import PrimaryImage from '@components/image/PrimaryImage';
 
 export default class ImageCharacterRow extends Component {
   render() {

@@ -6,7 +6,7 @@ import ContentType from '@application/data/ContentType';
 import ContentCardRow from '@components/contentDetail/elementCard/ContentCardRow';
 import ContentRow from '@components/rowList/ContentRow';
 import PrimaryImage from '@components/image/PrimaryImage';
-import LayoutContentDetail from '@components/contentDetail/LayoutContentDetail';
+import LayoutContentDetail from '@components/contentDetail/layout/LayoutContentDetail';
 
 const unknown = 'Unknown';
 export default class CharacterDetail extends Component {

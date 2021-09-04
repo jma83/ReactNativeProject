@@ -7,7 +7,6 @@ export default class ApiClientCharacter extends ApiClient {
 
   async getCharacters(page = 0) {
     let query = this.getCharacterURI() + this.getQueryParam('page', page, true);
-    // console.log('getCharacters', query);
     return await this.get(query);
   }
 

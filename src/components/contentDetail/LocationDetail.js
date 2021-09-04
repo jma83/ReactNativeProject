@@ -5,11 +5,12 @@ import { FlatList } from 'react-native-gesture-handler';
 import CharacterRow from '@components/rowList/CharacterRow';
 import ContentType from '@application/data/ContentType';
 import PrimaryImage from '@components/image/PrimaryImage';
-import LayoutContentDetail from '@components/contentDetail/LayoutContentDetail';
+import LayoutContentDetail from '@components/contentDetail/layout/LayoutContentDetail';
+
+const unknown = 'unknown';
 export default class LocationDetail extends Component {
   constructor(props) {
     super(props);
-    this.unknown = 'unknown';
   }
 
   render() {
@@ -72,8 +73,8 @@ export default class LocationDetail extends Component {
 
   getDimensionText = () => {
     {
-      return this.props.content.dimension == 'unknown' || this.props.content.dimension == null
-        ? `Dimension: ${this.unknown}`
+      return this.props.content.dimension == unknown || this.props.content.dimension == null
+        ? `Dimension: ${unknown}`
         : this.props.content.dimension;
     }
   };

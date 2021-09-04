@@ -7,7 +7,6 @@ export default class ContentManager {
   }
 
   async checkLiked(contentId, userId) {
-    console.log('checkLieeeed', contentId, userId);
     const content = await this.contentDAO.checkUserContentById(contentId, userId);
     return content.length > 0;
   }
@@ -26,7 +25,6 @@ export default class ContentManager {
 
   async getContentByUserAndType(userId, contentType) {
     const content = await this.contentDAO.getContentByUserIdAndType(userId, contentType);
-    console.log('getContentByUser', content);
     return content;
   }
 }

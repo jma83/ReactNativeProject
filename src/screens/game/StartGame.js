@@ -1,11 +1,11 @@
 import React from 'react';
-import { StyleSheet, View, TouchableOpacity, FlatList, Text } from 'react-native';
+import { StyleSheet, View, FlatList, Text } from 'react-native';
 import StartGameManager from '@application/managers/game/StartGameManager';
 import ImageCharacterRow from '@components/rowList/ImageCharacterRow';
 import globalStyles from '@src/utils/GlobalStyles';
 import Icon from 'react-native-vector-icons/Ionicons';
-import LayoutGame from '@screens/game/LayoutGame';
-import FloatingButton from '../../components/buttons/FloatingButton';
+import LayoutGame from '@screens/game/layout/LayoutGame';
+import FloatingButton from '@components/buttons/FloatingButton';
 
 const defaultStateValues = {
   options: [],
