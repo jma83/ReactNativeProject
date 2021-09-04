@@ -1,12 +1,10 @@
 import React from 'react';
-import { Text, StyleSheet, View, SafeAreaView, FlatList } from 'react-native';
+import { Text } from 'react-native';
 import HomeManager from '@application/managers/home/HomeManager';
 import ContentType from '@application/data/ContentType';
-import CharacterRow from '@components/rowList/CharacterRow';
-import ContentRow from '@components/rowList/ContentRow';
 import globalStyles from '@utils/GlobalStyles';
 import Icon from 'react-native-vector-icons/Ionicons';
-import AnimationView from '@components/animations/AnimationView';
+import ContentList from '@components/contentList/ContentList';
 
 export default class Home extends React.Component {
   constructor(props) {
@@ -50,60 +48,22 @@ export default class Home extends React.Component {
 
   render() {
     return (
-      <SafeAreaView>
-        <AnimationView styles={styles.sectionContainer} duration={500} scale={{ start: 2, end: 1 }}>
-          <Text style={(globalStyles.CustomLGFont, { color: 'black', fontWeight: 'bold', paddingLeft: 10 })}>
-            Suggested {this.contentTypeText()}
-          </Text>
-          <View style={styles.sectionList}>
-            <FlatList
-              data={this.state.items}
-              renderItem={this.renderRow.bind(this)}
-              keyExtractor={(item, index) => index}></FlatList>
-          </View>
-        </AnimationView>
-      </SafeAreaView>
+      <ContentList
+        items={this.state.items}
+        contentType={this.state.contentType}
+        onContentPressed={this.onContentPressed}
+        extraStyles={{ height: '99%' }}>
+        <Text style={[globalStyles.CustomMDFont, { color: 'black', fontWeight: 'bold', paddingLeft: 10 }]}>
+          Suggested {this.contentTypeText()}
+        </Text>
+      </ContentList>
     );
   }
 
-  onContentPressed(content) {
+  onContentPressed = content => {
     this.props.navigation.navigate('ContentDetail', { content, contentType: this.state.contentType });
-  }
-
-  renderRow = rowInfo => {
-    const item = rowInfo.item;
-    if (this.state.contentType === ContentType.CHARACTER) {
-      return (
-        <CharacterRow
-          title={item.name}
-          subtitle={item.species}
-          imageURI={item.image}
-          footer={`Status: ${item.status}`}
-          onPress={this.onContentPressed.bind(this, item)}
-        />
-      );
-    } else if (this.state.contentType === ContentType.EPISODE) {
-      return (
-        <ContentRow
-          title={item.name}
-          subtitle={item.episode}
-          imageURI={item.image}
-          footer={`Release: ${item.air_date}`}
-          onPress={this.onContentPressed.bind(this, item)}
-        />
-      );
-    } else if (this.state.contentType === ContentType.LOCATION) {
-      return (
-        <ContentRow
-          title={item.name}
-          subtitle={item.type}
-          imageURI={item.image}
-          footer={item.dimension}
-          onPress={this.onContentPressed.bind(this, item)}
-        />
-      );
-    }
   };
+
   contentTypeText = () => {
     if (this.state.contentType === ContentType.CHARACTER) {
       return 'characters:';
@@ -114,18 +74,3 @@ export default class Home extends React.Component {
     }
   };
 }
-const styles = StyleSheet.create({
-  sectionContainer: {
-    width: '100%',
-    height: '98%'
-  },
-  sectionList: {
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'column'
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600'
-  }
-});

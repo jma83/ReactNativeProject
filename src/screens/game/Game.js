@@ -2,7 +2,7 @@ import React from 'react';
 import { Text } from 'react-native';
 import globalStyles from '@utils/GlobalStyles';
 import Icon from 'react-native-vector-icons/Ionicons';
-import LayoutScrollGame from '@screens/game/layout/LayoutScrollGame';
+import LayoutScrollGame from '@components/game/layout/LayoutScrollGame';
 import PrimaryButton from '@components/buttons/PrimaryButton';
 
 export default class Game extends React.Component {
