@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     marginLeft: 16,
-    maxWidth: 350
+    maxWidth: '90%'
   },
   image: {
     width: '102%',

@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     marginLeft: 16,
-    maxWidth: 350
+    maxWidth: '90%'
   },
   el_image_container: {
     display: 'flex',

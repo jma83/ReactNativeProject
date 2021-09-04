@@ -23,7 +23,7 @@ export default class StartGameManager {
     this.correctAnswer = {};
 
     this.timeBetweenRounds = 3;
-    this.timeInRound = 4;
+    this.timeInRound = 12;
   }
 
   async getCharacters() {
@@ -44,7 +44,6 @@ export default class StartGameManager {
 
   checkAnswer(option) {
     if (this.status === GameStatus.PLAYING) {
-      console.log('checkAnswer', option.id, this.correctAnswer.id);
       if (option.id === this.correctAnswer.id) {
         this.guessed++;
         return true;

@@ -8,8 +8,8 @@ import ContentRow from '@components/rowList/ContentRow';
 import PrimaryImage from '@components/image/PrimaryImage';
 import LayoutContentDetail from '@components/contentDetail/LayoutContentDetail';
 
+const unknown = 'Unknown';
 export default class CharacterDetail extends Component {
-  static unknown = 'Unknown';
   constructor(props) {
     super(props);
   }
