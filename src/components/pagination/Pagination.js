@@ -1,6 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
+import { StyleSheet, View, Text, TouchableOpacity, FlatList } from 'react-native';
 import globalStyles from '@src/utils/GlobalStyles';
 
 export const PageState = {

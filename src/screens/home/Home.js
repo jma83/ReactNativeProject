@@ -1,6 +1,5 @@
 import React from 'react';
-import { Text, StyleSheet, View, SafeAreaView } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
+import { Text, StyleSheet, View, SafeAreaView, FlatList } from 'react-native';
 import HomeManager from '@application/managers/home/HomeManager';
 import ContentType from '@application/data/ContentType';
 import CharacterRow from '@components/rowList/CharacterRow';

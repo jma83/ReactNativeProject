@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { Text, View, SafeAreaView } from 'react-native';
+import { Text, View, SafeAreaView, FlatList } from 'react-native';
 import globalStyles from '@src/utils/GlobalStyles';
-import { FlatList } from 'react-native-gesture-handler';
 import ContentType from '@application/data/ContentType';
 import ContentCardRow from '@components/contentDetail/elementCard/ContentCardRow';
 import ContentRow from '@components/rowList/ContentRow';

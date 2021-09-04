@@ -1,4 +1,3 @@
-import 'react-native-get-random-values';
 import Content from '@application/model/db/Content';
 
 export default class ContentManager {
