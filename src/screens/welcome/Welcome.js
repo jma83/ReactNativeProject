@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, StyleSheet, View, FlatList, ImageBackground, TouchableOpacity, TextInput, Keyboard } from 'react-native';
+import { Text, StyleSheet, View, FlatList, TouchableOpacity, TextInput, Keyboard } from 'react-native';
 import AvatarProfileRow from '@components/rowList/AvatarProfileRow';
 import globalStyles from '@src/utils/GlobalStyles';
 const welcomeImg = require('@assets/imgs/welcome.jpg');
@@ -7,6 +7,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import WelcomeManager from '@application/managers/welcome/WelcomeManager';
 import AuthContext from '@application/context/AuthContext';
 import { createAlert } from '@utils/Utils';
+import ImageBackgroundView from '@components/image/ImageBackgroundView';
+import AnimationView from '@components/animations/AnimationView';
 
 export default function Welcome() {
   const { signIn } = React.useContext(AuthContext);
@@ -64,40 +66,36 @@ export default function Welcome() {
   };
 
   return (
-    <View style={{ flex: 1 }}>
-      <ImageBackground source={welcomeImg} resizeMode="cover" style={styles.image}>
-        <View style={styles.sectionContainer}>
-          <Text style={[globalStyles.TitleFont, styles.welcomeTitle]}>Welcome to the Rickpedia!</Text>
-          <View style={[styles.containerColumn, styles.sectionList]}>
-            <Text style={globalStyles.CustomLGFont}>Select your profile:</Text>
-            <FlatList
-              ListEmptyComponent={
-                <Text style={[globalStyles.CustomMDFont, styles.emptyList]}>- No profiles yet! -</Text>
-              }
-              horizontal={true}
-              data={profiles}
-              renderItem={renderRow.bind(this)}
-              keyExtractor={(item, index) => index}></FlatList>
-          </View>
-          <View style={[styles.containerColumn, styles.sectionCreate]}>
-            <Text style={globalStyles.CustomLGFont}>Or create a new one:</Text>
-            <View style={styles.form}>
-              <TextInput
-                style={styles.input}
-                placeholder="Your Nickname"
-                maxLength={20}
-                value={textInput}
-                onSubmitEditing={() => createProfile()}
-                onChangeText={text => onChangeText(text)}
-              />
-              <TouchableOpacity style={styles.button} activeOpacity={0.5} onPress={() => createProfile()}>
-                <Icon name="person-add" size={30} color={'black'} />
-              </TouchableOpacity>
-            </View>
+    <ImageBackgroundView image={welcomeImg}>
+      <AnimationView styles={styles.sectionContainer} duration={1000} opacity={true}>
+        <Text style={[globalStyles.TitleFont, styles.welcomeTitle]}>Welcome to the Rickpedia!</Text>
+        <View style={[styles.containerColumn, styles.sectionList]}>
+          <Text style={globalStyles.CustomLGFont}>Select your profile:</Text>
+          <FlatList
+            ListEmptyComponent={<Text style={[globalStyles.CustomMDFont, styles.emptyList]}>- No profiles yet! -</Text>}
+            horizontal={true}
+            data={profiles}
+            renderItem={renderRow.bind(this)}
+            keyExtractor={(item, index) => index}></FlatList>
+        </View>
+        <View style={[styles.containerColumn, styles.sectionCreate]}>
+          <Text style={globalStyles.CustomLGFont}>Or create a new one:</Text>
+          <View style={styles.form}>
+            <TextInput
+              style={styles.input}
+              placeholder="Your Nickname"
+              maxLength={20}
+              value={textInput}
+              onSubmitEditing={() => createProfile()}
+              onChangeText={text => onChangeText(text)}
+            />
+            <TouchableOpacity style={styles.button} activeOpacity={0.5} onPress={() => createProfile()}>
+              <Icon name="person-add" size={30} color={'black'} />
+            </TouchableOpacity>
           </View>
         </View>
-      </ImageBackground>
-    </View>
+      </AnimationView>
+    </ImageBackgroundView>
   );
 }
 

@@ -1,26 +1,26 @@
 import React from 'react';
-import { StyleSheet, View, ImageBackground, ScrollView, Text } from 'react-native';
+import { StyleSheet, View, ScrollView, Text } from 'react-native';
 const charactersImg = require('@assets/imgs/characters.png');
 import globalStyles from '@utils/GlobalStyles';
+import ImageBackgroundView from '@components/image/ImageBackgroundView';
+import AnimationView from '@components/animations/AnimationView';
 
 export default function LayoutGame(props) {
   return (
-    <View style={styles.sectionContainer}>
-      <ImageBackground source={charactersImg} resizeMode="cover" style={{ flex: 1, justifyContent: 'center' }}>
-        <ScrollView>
-          <View style={styles.sectionContent}>
-            <View style={styles.sectionTitleContainer}>
-              <Text style={globalStyles.CustomLGTitleFontBlack}>{props.title}</Text>
-              <Text style={[globalStyles.CustomMDFont, { color: 'black' }]}>{props.subtitle}</Text>
-            </View>
-            <View style={styles.sectionButtonsContainer}>
-              {props.buttons1}
-              {props.buttons2}
-            </View>
+    <ImageBackgroundView image={charactersImg}>
+      <ScrollView>
+        <AnimationView styles={styles.sectionContent} duration={500} translateY={{ start: 150, end: 0 }} opacity={true}>
+          <View style={styles.sectionTitleContainer}>
+            <Text style={globalStyles.CustomLGTitleFontBlack}>{props.title}</Text>
+            <Text style={[globalStyles.CustomMDFont, { color: 'black' }]}>{props.subtitle}</Text>
           </View>
-        </ScrollView>
-      </ImageBackground>
-    </View>
+          <View style={styles.sectionButtonsContainer}>
+            {props.buttons1}
+            {props.buttons2}
+          </View>
+        </AnimationView>
+      </ScrollView>
+    </ImageBackgroundView>
   );
 }
 

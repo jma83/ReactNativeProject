@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Text, Linking } from 'react-native';
 import globalStyles from '@src/utils/GlobalStyles';
+import AnimationView from '@components/animations/AnimationView';
 
 export default function LayoutContentDetail(props) {
   const getMetaDescription = () => {
@@ -25,7 +26,7 @@ export default function LayoutContentDetail(props) {
     return description;
   };
   return (
-    <View>
+    <AnimationView duration={500} opacity={true}>
       <View style={styles.el_container}>
         <View style={styles.el_image_container}>{props.image}</View>
         <View style={styles.el_content}>
@@ -37,7 +38,7 @@ export default function LayoutContentDetail(props) {
         {getMetaDescription()}
         {props.footer}
       </View>
-    </View>
+    </AnimationView>
   );
 }
 

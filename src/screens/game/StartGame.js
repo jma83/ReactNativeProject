@@ -4,8 +4,10 @@ import StartGameManager from '@application/managers/game/StartGameManager';
 import ImageCharacterRow from '@components/rowList/ImageCharacterRow';
 import globalStyles from '@src/utils/GlobalStyles';
 import Icon from 'react-native-vector-icons/Ionicons';
-import LayoutGame from '@screens/game/layout/LayoutGame';
+import ImageBackgroundView from '@components/image/ImageBackgroundView';
 import FloatingButton from '@components/buttons/FloatingButton';
+const charactersImg = require('@assets/imgs/characters.png');
+import AnimationView from '@components/animations/AnimationView';
 
 const defaultStateValues = {
   options: [],
@@ -110,7 +112,11 @@ export default class StartGame extends React.Component {
   }
 
   render() {
-    return <LayoutGame>{this.state.round > 0 ? this.getMainContent() : this.getStartingContent()}</LayoutGame>;
+    return (
+      <ImageBackgroundView image={charactersImg}>
+        {this.state.round > 0 ? this.getMainContent() : this.getStartingContent()}
+      </ImageBackgroundView>
+    );
   }
 
   renderRow = item => {
@@ -132,7 +138,7 @@ export default class StartGame extends React.Component {
 
   getMainContent() {
     return (
-      <View style={styles.content}>
+      <AnimationView styles={styles.content} duration={500} translateX={{ start: 150, end: 0 }} opacity={true}>
         <View style={[styles.badgeContent, styles.baseContent, { backgroundColor: 'red' }]}>
           <Text style={globalStyles.CustomSMFont}>Timer: {this.state.count} </Text>
         </View>
@@ -152,7 +158,7 @@ export default class StartGame extends React.Component {
             keyExtractor={(item, index) => index}></FlatList>
         </View>
         {this.getFloatingButton()}
-      </View>
+      </AnimationView>
     );
   }
 
@@ -245,7 +251,8 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: 'black',
     backgroundColor: 'white',
-    bottom: 40
+    bottom: 40,
+    padding: 5
   },
   response: {
     backgroundColor: 'black',

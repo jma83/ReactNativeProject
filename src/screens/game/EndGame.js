@@ -46,7 +46,7 @@ export default class EndGame extends React.Component {
   getButtons2() {
     return (
       <PrimaryButton color={globalStyles.PrimaryBackgroundColor} onPressed={() => this.onReturnPressed()}>
-        <Icon name="stats-chart" size={28} color={'white'} />
+        <Icon name="arrow-back" size={28} color={'white'} />
         <Text style={globalStyles.CustomMDFont}> Go Back </Text>
       </PrimaryButton>
     );

@@ -7,6 +7,7 @@ import CharacterRow from '@components/rowList/CharacterRow';
 import ContentRow from '@components/rowList/ContentRow';
 import globalStyles from '@utils/GlobalStyles';
 import Icon from 'react-native-vector-icons/Ionicons';
+import AnimationView from '@components/animations/AnimationView';
 
 export default class Home extends React.Component {
   constructor(props) {
@@ -51,7 +52,7 @@ export default class Home extends React.Component {
   render() {
     return (
       <SafeAreaView>
-        <View style={styles.sectionContainer}>
+        <AnimationView styles={styles.sectionContainer} duration={500} scale={{ start: 2, end: 1 }}>
           <Text style={(globalStyles.CustomLGFont, { color: 'black', fontWeight: 'bold', paddingLeft: 10 })}>
             Suggested {this.contentTypeText()}
           </Text>
@@ -61,7 +62,7 @@ export default class Home extends React.Component {
               renderItem={this.renderRow.bind(this)}
               keyExtractor={(item, index) => index}></FlatList>
           </View>
-        </View>
+        </AnimationView>
       </SafeAreaView>
     );
   }

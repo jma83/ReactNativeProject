@@ -7,14 +7,7 @@ import PrimaryButton from '@components/buttons/PrimaryButton';
 
 export default class Game extends React.Component {
   render() {
-    return (
-      <LayoutScrollGame
-        title={this.getTitle()}
-        subtitle={this.getSubTitle()}
-        buttons1={this.getButtons1()}
-        buttons2={this.getButtons2()}
-      />
-    );
+    return <LayoutScrollGame title={this.getTitle()} subtitle={this.getSubTitle()} buttons1={this.getButtons1()} />;
   }
 
   getTitle() {
@@ -34,14 +27,14 @@ export default class Game extends React.Component {
     );
   }
 
-  getButtons2() {
+  /* getButtons2() {
     return (
       <PrimaryButton color={globalStyles.PrimaryBackgroundColor} onPressed={() => {}}>
         <Icon name="stats-chart" size={28} color={'white'} />
-        <Text style={globalStyles.CustomMDFont}>Your scores </Text>
+        <Text style={globalStyles.CustomMDFont}>Scores </Text>
       </PrimaryButton>
     );
-  }
+  } */
 
   onContentPressed() {
     this.props.navigation.navigate('Play Game');

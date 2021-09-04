@@ -6,6 +6,7 @@ const seasonsImg = require('@assets/imgs/seasons.jpg');
 import AuthContext from '@application/context/AuthContext';
 import AvatarProfileRow from '@components/rowList/AvatarProfileRow';
 import ProfileManager from '@application/managers/profile/ProfileManager';
+import AnimationView from '@components/animations/AnimationView';
 
 export default function Profile({ navigation }) {
   const { signOut } = React.useContext(AuthContext);
@@ -25,13 +26,13 @@ export default function Profile({ navigation }) {
     <View style={[styles.sectionContainer, globalStyles.PrimaryBackgroundColor]}>
       <ImageBackground source={seasonsImg} resizeMode="stretch" style={{ flex: 1, justifyContent: 'center' }}>
         <ScrollView>
-          <View style={styles.sectionContent}>
+          <AnimationView styles={styles.sectionContent} duration={500} scale={{ start: 0.5, end: 1 }} opacity={true}>
             <View style={styles.sectionTitleContainer}>
               <AvatarProfileRow id={profile.id} name={profile.nickname} image={profile.avatar} profile={true} />
             </View>
             <View style={styles.sectionButtonsContainer}>
               <TouchableOpacity
-                style={[styles.floatingButton, { backgroundColor: '#ee6e73' }]}
+                style={[styles.floatingButton, globalStyles.SecondaryBackgroundColor]}
                 activeOpacity={0.5}
                 onPress={() => onContentPressed()}>
                 <Icon name="star" size={28} color={'white'} />
@@ -45,7 +46,7 @@ export default function Profile({ navigation }) {
                 <Text style={globalStyles.CustomMDFont}> Change profile </Text>
               </TouchableOpacity>
             </View>
-          </View>
+          </AnimationView>
         </ScrollView>
       </ImageBackground>
     </View>
@@ -53,7 +54,9 @@ export default function Profile({ navigation }) {
 }
 const styles = StyleSheet.create({
   sectionContainer: {
-    flex: 1
+    flex: 1,
+    width: '100%',
+    height: '100%'
   },
   sectionContent: {
     borderWidth: 2,
