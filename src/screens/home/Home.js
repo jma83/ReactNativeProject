@@ -53,7 +53,7 @@ export default class Home extends React.Component {
         contentType={this.state.contentType}
         onContentPressed={this.onContentPressed}
         extraStyles={{ height: '99%' }}>
-        <Text style={[globalStyles.CustomMDFont, { color: 'black', fontWeight: 'bold', paddingLeft: 10 }]}>
+        <Text style={[globalStyles.CustomMDFont, { color: 'black', paddingLeft: 10 }]}>
           Suggested {this.contentTypeText()}
         </Text>
       </ContentList>
