@@ -1,11 +1,11 @@
-import ApiClientImage from '@application/model/api/ApiClientImage.js';
+import ApiClientMetaInfo from '@application/model/api/ApiClientMetaInfo.js';
 
 export default class ImageManager {
   constructor() {
-    this.apiClientImage = new ApiClientImage();
+    this.apiClientMetaInfo = new ApiClientMetaInfo();
   }
 
   async getImage(title = '') {
-    return await this.apiClientImage.getImageByTitle(title);
+    return await this.apiClientMetaInfo.getImageByTitle(title);
   }
 }

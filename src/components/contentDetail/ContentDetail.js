@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, ToastAndroid, Platform, AlertIOS } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import CharacterDetail from '@components/contentDetail/CharacterDetail';
 import EpìsodeDetail from '@components/contentDetail/EpìsodeDetail';
 import LocationDetail from '@components/contentDetail/LocationDetail';
@@ -8,6 +8,7 @@ import ContentType from '@application/data/ContentType';
 import { regexContentName, regexUrlContentId } from '@src/utils/Constants';
 import FloatingButton from '@components/buttons/FloatingButton';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { notifyMessage } from '@utils/ComponentUtils';
 
 export default class ContentDetail extends Component {
   constructor(props) {
@@ -132,16 +133,8 @@ export default class ContentDetail extends Component {
     const liked = await this.detailManager.managelikeContent(apiId, contentType, this.state.liked);
     const message = liked ? 'Added to favorite content!' : 'Removed from favorite content!';
     this.setState({ liked });
-    this.notifyMessage(message);
+    notifyMessage(message);
   };
-
-  notifyMessage(msg) {
-    if (Platform.OS === 'android') {
-      ToastAndroid.show(msg, ToastAndroid.SHORT);
-    } else {
-      AlertIOS.alert(msg);
-    }
-  }
 
   getFloatingButton = () => {
     return (

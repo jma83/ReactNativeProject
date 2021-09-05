@@ -6,7 +6,7 @@ const welcomeImg = require('@assets/imgs/welcome.jpg');
 import Icon from 'react-native-vector-icons/Ionicons';
 import WelcomeManager from '@application/managers/welcome/WelcomeManager';
 import AuthContext from '@application/context/AuthContext';
-import { createAlert } from '@utils/Utils';
+import { createAlert } from '@utils/ComponentUtils';
 import ImageBackgroundView from '@components/image/ImageBackgroundView';
 import AnimationView from '@components/animations/AnimationView';
 

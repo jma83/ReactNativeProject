@@ -4,10 +4,9 @@ import { dbConfig } from '@utils/Constants';
 const UserData = {
   id: '',
   nickname: '',
+  avatar: {},
   userToken: '',
-  createDate: new Date(),
-  games: [],
-  favContent: []
+  createDate: new Date()
 };
 
 export default class User {
