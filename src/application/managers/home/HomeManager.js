@@ -1,15 +1,12 @@
 import ContentType from '@application/data/ContentType';
-import EpisodeManager from '@application/managers/generic/EpisodeManager';
-import CharacterManager from '@application/managers/generic/CharacterManager';
-import LocationManager from '@application/managers/generic/LocationManager';
-import ImageManager from '@application/managers/generic/ImageManager';
+import { episodeManager, characterManager, locationManager, imageManager } from '@application/container/AppManagers.js';
 
 export default class HomeManager {
   constructor(limit = 10, random = true) {
-    this.characterManager = new CharacterManager();
-    this.episodeManager = new EpisodeManager();
-    this.locationManager = new LocationManager();
-    this.imageManager = new ImageManager();
+    this.characterManager = characterManager;
+    this.episodeManager = episodeManager;
+    this.locationManager = locationManager;
+    this.imageManager = imageManager;
     this.limit = limit;
     this.random = random;
   }

@@ -1,10 +1,9 @@
-import ApiClientEpisode from '@application/model/api/ApiClientEpisode.js';
-import ContentManager from '@application/managers/generic/ContentManager.js';
+import ContentAPIManager from '@application/managers/generic/ContentAPIManager.js';
 
-export default class EpisodeManager extends ContentManager {
-  constructor() {
+export default class EpisodeManager extends ContentAPIManager {
+  constructor(apiClientEpisode) {
     super();
-    this.apiClientEpisode = new ApiClientEpisode();
+    this.apiClientEpisode = apiClientEpisode;
   }
 
   async getEpisodes(page = 0) {

@@ -1,24 +1,22 @@
-import AsyncStorageManager from '@application/managers/storage/AsyncStorageManager';
 import * as React from 'react';
-
-const effects = (dispatch, userManager) => {
+import { userManager } from '@application/container/AppManagers.js';
+const effects = dispatch => {
   React.useEffect(() => {
     const checkUserSessionOnLoad = async () => {
-      let userToken = null;
+      let finalToken = null;
       try {
-        const user = await AsyncStorageManager.getItem('user');
-        const token = await AsyncStorageManager.getItem('userToken');
-        if (!user || !token) {
+        const { nickname, userToken } = await userManager.getCurrentUserInStorage();
+        if (!nickname || !userToken) {
           return;
         }
-        const newUserToken = await userManager.signInUserProfile(user, token);
+        const newUserToken = await userManager.signInUserProfile(nickname, userToken);
         if (newUserToken == null) {
           return;
         }
-        await AsyncStorageManager.setItem('userToken', newUserToken);
-        userToken = { user, newUserToken };
+        userManager.setCurrentUserInStorage(nickname, newUserToken);
+        finalToken = { nickname, newUserToken };
       } catch (e) {}
-      dispatch({ type: 'RESTORE_TOKEN', token: userToken });
+      dispatch({ type: 'RESTORE_TOKEN', token: finalToken });
     };
 
     checkUserSessionOnLoad();

@@ -1,8 +1,6 @@
-import ApiClientMetaInfo from '@application/model/api/ApiClientMetaInfo.js';
-
 export default class MetaInfoManager {
-  constructor() {
-    this.apiClientMetaInfo = new ApiClientMetaInfo();
+  constructor(apiClientMetaInfo) {
+    this.apiClientMetaInfo = apiClientMetaInfo;
   }
 
   async getMetaInfoByTitle(title = '') {

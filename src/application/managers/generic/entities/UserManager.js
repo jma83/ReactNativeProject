@@ -1,11 +1,10 @@
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
-import User from '@application/model/db/User';
 import AsyncStorageManager from '@application/managers/storage/AsyncStorageManager';
 
 export default class UserManager {
-  constructor() {
-    this.userDAO = new User();
+  constructor(user) {
+    this.userDAO = user;
   }
 
   async saveUserProfile(item = null) {
@@ -34,6 +33,16 @@ export default class UserManager {
     const nickname = await AsyncStorageManager.getItem('user');
     const userToken = await AsyncStorageManager.getItem('userToken');
     return { nickname, userToken };
+  }
+
+  async setCurrentUserInStorage(nickname, userToken) {
+    await AsyncStorageManager.setItem('user', nickname);
+    await AsyncStorageManager.setItem('userToken', userToken);
+  }
+
+  async removeCurrentUserInStorage() {
+    await AsyncStorageManager.removeItem('user');
+    await AsyncStorageManager.removeItem('userToken');
   }
 
   async getUserProfiles() {

@@ -1,10 +1,9 @@
-import ApiClientCharacter from '@application/model/api/ApiClientCharacter.js';
-import ContentManager from '@application/managers/generic/ContentManager.js';
+import ContentAPIManager from '@application/managers/generic/ContentAPIManager.js';
 
-export default class CharacterManager extends ContentManager {
-  constructor() {
+export default class CharacterManager extends ContentAPIManager {
+  constructor(apiClientCharacter) {
     super();
-    this.apiClientCharacter = new ApiClientCharacter();
+    this.apiClientCharacter = apiClientCharacter;
   }
 
   async getCharacters(page = 0) {

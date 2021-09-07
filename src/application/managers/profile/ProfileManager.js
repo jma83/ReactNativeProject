@@ -1,9 +1,7 @@
-import ProfileImageTypes from '@application/data/ProfileImageTypes';
-import UserManager from '@application/managers/generic/entities/UserManager.js';
-
+import { userManager } from '@application/container/AppManagers.js';
 export default class ProfileManager {
   constructor() {
-    this.userManager = new UserManager();
+    this.userManager = userManager;
     this.errorMessage = '';
     this.profile = null;
   }

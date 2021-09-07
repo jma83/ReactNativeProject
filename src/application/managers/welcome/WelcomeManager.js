@@ -1,9 +1,8 @@
 import ProfileImageTypes from '@application/data/ProfileImageTypes';
-import UserManager from '@application/managers/generic/entities/UserManager.js';
-
+import { userManager } from '@application/container/AppManagers.js';
 export default class WelcomeManager {
   constructor() {
-    this.userManager = new UserManager();
+    this.userManager = userManager;
     this.profileImages = ProfileImageTypes;
     this.maxProfiles = 5;
     this.errorMessage = '';

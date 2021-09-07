@@ -1,19 +1,21 @@
-import MetaInfoManager from '@application/managers/generic/MetaInfoManager';
-import EpisodeManager from '@application/managers/generic/EpisodeManager';
-import CharacterManager from '@application/managers/generic/CharacterManager';
-import LocationManager from '@application/managers/generic/LocationManager';
-import UserManager from '@application/managers/generic/entities/UserManager.js';
-import ContentManager from '@application/managers/generic/entities/ContentManager.js';
+import {
+  metaInfoManager,
+  episodeManager,
+  characterManager,
+  locationManager,
+  userManager,
+  contentManager
+} from '@application/container/AppManagers.js';
 
 export default class DetailManager {
   constructor() {
-    this.metaInfoManager = new MetaInfoManager();
-    this.episodeManager = new EpisodeManager();
-    this.characterManager = new CharacterManager();
-    this.locationManager = new LocationManager();
+    this.metaInfoManager = metaInfoManager;
+    this.episodeManager = episodeManager;
+    this.characterManager = characterManager;
+    this.locationManager = locationManager;
 
-    this.userManager = new UserManager();
-    this.contentManager = new ContentManager();
+    this.userManager = userManager;
+    this.contentManager = contentManager;
     this.currentUser = null;
   }
 

@@ -1,0 +1,21 @@
+import UserManager from '@application/managers/generic/entities/UserManager.js';
+import ContentManager from '@application/managers/generic/entities/ContentManager.js';
+import CharacterManager from '@application/managers/generic/CharacterManager.js';
+import EpisodeManager from '@application/managers/generic/EpisodeManager.js';
+import LocationManager from '@application/managers/generic/LocationManager.js';
+import ImageManager from '@application/managers/generic/ImageManager.js';
+import MetaInfoManager from '@application/managers/generic/MetaInfoManager.js';
+import ApiClientCharacter from '@application/model/api/ApiClientCharacter.js';
+import ApiClientEpisode from '@application/model/api/ApiClientEpisode.js';
+import ApiClientLocation from '@application/model/api/ApiClientLocation.js';
+import ApiClientMetaInfo from '@application/model/api/ApiClientMetaInfo.js';
+import User from '@application/model/db/User.js';
+import Content from '@application/model/db/Content.js';
+
+export const characterManager = new CharacterManager(new ApiClientCharacter());
+export const episodeManager = new EpisodeManager(new ApiClientEpisode());
+export const locationManager = new LocationManager(new ApiClientLocation());
+export const metaInfoManager = new MetaInfoManager(new ApiClientMetaInfo());
+export const imageManager = new ImageManager(new ApiClientMetaInfo());
+export const contentManager = new ContentManager(new Content());
+export const userManager = new UserManager(new User());

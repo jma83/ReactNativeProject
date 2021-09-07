@@ -1,4 +1,4 @@
-import CharacterManager from '@application/managers/generic/CharacterManager';
+import { characterManager } from '@application/container/AppManagers.js';
 
 const GameStatus = {
   PAUSED: 0,
@@ -16,7 +16,7 @@ export default class StartGameManager {
     this.status = GameStatus.PAUSED;
     this.round = 0;
     this.maxRounds = maxRounds;
-    this.characterManager = new CharacterManager();
+    this.characterManager = characterManager;
 
     this.guessed = 0;
     this.options = [];

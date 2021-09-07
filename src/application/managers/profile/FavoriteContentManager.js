@@ -1,20 +1,22 @@
 import ContentType from '@application/data/ContentType';
-import EpisodeManager from '@application/managers/generic/EpisodeManager';
-import CharacterManager from '@application/managers/generic/CharacterManager';
-import LocationManager from '@application/managers/generic/LocationManager';
-import ImageManager from '@application/managers/generic/ImageManager';
+import {
+  episodeManager,
+  characterManager,
+  locationManager,
+  userManager,
+  imageManager,
+  contentManager
+} from '@application/container/AppManagers.js';
 import { PageState } from '@components/pagination/Pagination';
-import UserManager from '@application/managers/generic/entities/UserManager.js';
-import ContentManager from '@application/managers/generic/entities/ContentManager';
 
 export default class FavoriteContentManager {
   constructor(contentType) {
-    this.characterManager = new CharacterManager();
-    this.episodeManager = new EpisodeManager();
-    this.locationManager = new LocationManager();
-    this.imageManager = new ImageManager();
-    this.userManager = new UserManager();
-    this.contentManager = new ContentManager();
+    this.characterManager = characterManager;
+    this.episodeManager = episodeManager;
+    this.locationManager = locationManager;
+    this.imageManager = imageManager;
+    this.userManager = userManager;
+    this.contentManager = contentManager;
     this.currentUser = null;
     this.page = 1;
     this.totalPages = 0;

@@ -1,8 +1,6 @@
-import Content from '@application/model/db/Content';
-
 export default class ContentManager {
-  constructor() {
-    this.contentDAO = new Content();
+  constructor(content) {
+    this.contentDAO = content;
   }
 
   async checkLiked(contentId, userId) {

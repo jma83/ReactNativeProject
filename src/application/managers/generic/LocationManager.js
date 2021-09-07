@@ -1,10 +1,9 @@
-import ApiClientLocation from '@application/model/api/ApiClientLocation.js';
-import ContentManager from '@application/managers/generic/ContentManager.js';
+import ContentAPIManager from '@application/managers/generic/ContentAPIManager.js';
 
-export default class LocationManager extends ContentManager {
-  constructor() {
+export default class LocationManager extends ContentAPIManager {
+  constructor(apiClientLocation) {
     super();
-    this.apiClientLocation = new ApiClientLocation();
+    this.apiClientLocation = apiClientLocation;
   }
 
   async getLocations(page = 0) {
