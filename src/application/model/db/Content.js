@@ -16,17 +16,30 @@ export default class Content {
     this.db.transaction(
       txn => {
         txn.executeSql(
-          `CREATE TABLE IF NOT EXISTS ${this.table}
-            (id INTEGER PRIMARY KEY NOT NULL, 
-            apiId INTEGER,
-            type INTEGER,
-            createDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            userId INTEGER NOT NULL,
-            FOREIGN KEY (userId) REFERENCES User(id) ON DELETE CASCADE)`,
-          []
+          `SELECT name FROM sqlite_master WHERE type='table' AND name='${this.table}'`,
+          [],
+          (_, results) => {
+            if (results.rows._array.length <= 0) {
+              txn.executeSql(
+                `CREATE TABLE IF NOT EXISTS ${this.table}
+                  (id INTEGER PRIMARY KEY NOT NULL, 
+                  apiId INTEGER,
+                  type INTEGER,
+                  createDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                  userId INTEGER NOT NULL,
+                  FOREIGN KEY (userId) REFERENCES User(id) ON DELETE CASCADE)`,
+                [],
+                () => {},
+                (_, error) => console.error('ERROR CREATE TABLE Content', error)
+              );
+            }
+          },
+          (_, error) => {
+            console.error('ERROR getTable', error);
+            reject(error);
+          }
         );
-      },
-      err => console.error('ERROR', err)
+      }
     );
   }
 
@@ -49,6 +62,7 @@ export default class Content {
 
   getUserContent = userId =>
     new Promise((resolve, reject) => {
+      this.db = this.getDBInstance();
       this.db.transaction(txn => {
         txn.executeSql(
           `SELECT * FROM ${this.table} 
@@ -58,7 +72,7 @@ export default class Content {
             resolve(results.rows._array);
           },
           (_, error) => {
-            console.error('ERROR', error);
+            console.error('ERROR getUserContent', error);
             reject(error);
           }
         );
@@ -94,7 +108,7 @@ export default class Content {
             resolve(results.rows._array);
           },
           (_, error) => {
-            console.error('ERROR', error);
+            console.error('ERROR getContentByUserIdAndType', error);
             reject(error);
           }
         );

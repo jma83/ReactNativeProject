@@ -1,4 +1,4 @@
-import { Alert, ToastAndroid, Platform, AlertIOS } from 'react-native';
+import { Alert, ToastAndroid, Platform } from 'react-native';
 
 export const generateRandom = (min = 0, max = 0) => {
   return Math.floor(Math.random() * (max - min) + min);
@@ -24,6 +24,6 @@ export const notifyMessage = msg => {
   if (Platform.OS === 'android') {
     ToastAndroid.show(msg, ToastAndroid.SHORT);
   } else {
-    AlertIOS.alert(msg);
+    Alert.alert(msg);
   }
 };

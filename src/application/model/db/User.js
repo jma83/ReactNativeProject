@@ -16,18 +16,32 @@ export default class User {
     this.db.transaction(
       txn => {
         txn.executeSql(
-          `CREATE TABLE IF NOT EXISTS ${this.table}
-              (id INTEGER PRIMARY KEY NOT NULL, 
-              nickname VARCHAR(20), 
-              avatar BLOB, 
-              userToken VARCHAR(36),
-              createDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP)`,
-          []
+          `SELECT name FROM sqlite_master WHERE type='table' AND name='${this.table}'`,
+          [],
+          (_, results) => {
+            if (results.rows._array.length <= 0) {
+              txn.executeSql(
+                `CREATE TABLE IF NOT EXISTS ${this.table}
+                    (id INTEGER PRIMARY KEY NOT NULL, 
+                    nickname VARCHAR(20), 
+                    avatar BLOB, 
+                    userToken VARCHAR(36),
+                    createDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP)`,
+                [],
+                () => {},
+                (_, error) => console.error('ERROR CREATE TABLE User', error)
+              );
+            }
+          },
+          (_, error) => {
+            console.error('ERROR getTable', error);
+            reject(error);
+          }
         );
-      },
-      err => console.error('ERROR', err)
+      }
     );
   }
+  
 
   getDBInstance() {
     return SQLite.openDatabase(dbConfig.name, dbConfig.version, dbConfig.description, dbConfig.size);
@@ -45,7 +59,7 @@ export default class User {
             (_, error) => reject(error)
           );
         },
-        err => console.error('ERROR', err)
+        err => console.error('ERROR saveUser', err)
       );
     });
 
@@ -72,7 +86,7 @@ export default class User {
             resolve(results.rows._array);
           },
           (_, error) => {
-            console.error('ERROR', error);
+            console.error('ERROR checkUser', error);
             reject(error);
           }
         );
@@ -90,7 +104,7 @@ export default class User {
             resolve(results.rows._array);
           },
           (_, error) => {
-            console.error('ERROR', error);
+            console.error('ERROR getUsers', error);
             reject(error);
           }
         );

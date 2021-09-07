@@ -6,10 +6,11 @@ import { reducerActionTypes, defaultValues } from '@application/data/AuthActionT
 import { NavigationContainer } from '@react-navigation/native';
 import { BottomTabNavigator } from '@navigation/TabNavigator';
 import { WelcomeStackNavigator } from '@navigation/StackNavigator';
+import UserManager from '@application/managers/generic/entities/UserManager.js';
 
 export default function App() {
   const [state, dispatch] = React.useReducer(reducerActionTypes, defaultValues);
-  effects(dispatch);
+  effects(dispatch, new UserManager());
   const actions = () => ({
     signIn: signIn(dispatch),
     signOut: signOut(dispatch)

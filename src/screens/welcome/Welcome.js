@@ -12,12 +12,14 @@ import AnimationView from '@components/animations/AnimationView';
 
 export default function Welcome() {
   const { signIn } = React.useContext(AuthContext);
-  const [welcomeManager] = useState(new WelcomeManager());
+  const [welcomeManager, setWelcomeManager] = useState(null);
   const [profiles, setProfiles] = useState([]);
   const [textInput, setTextInput] = useState('');
 
   useEffect(async () => {
-    const result = await welcomeManager.fetchProfiles();
+    const manager = new WelcomeManager();
+    const result = await manager.fetchProfiles();
+    setWelcomeManager(manager);
     setProfiles(result);
   }, []);
 

@@ -1,12 +1,10 @@
 import AsyncStorageManager from '@application/managers/storage/AsyncStorageManager';
 import * as React from 'react';
-import UserManager from '@application/managers/generic/entities/UserManager.js';
 
-const effects = dispatch => {
+const effects = (dispatch, userManager) => {
   React.useEffect(() => {
     const checkUserSessionOnLoad = async () => {
       let userToken = null;
-      const userManager = new UserManager();
       try {
         const user = await AsyncStorageManager.getItem('user');
         const token = await AsyncStorageManager.getItem('userToken');

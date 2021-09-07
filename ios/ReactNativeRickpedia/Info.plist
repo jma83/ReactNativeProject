@@ -53,6 +53,8 @@
 	<false/>
 	<key>UIAppFonts</key>
 	<array>
+		<string>coolvetica.ttf</string>
+		<string>KGBlankSpaceSolid.ttf</string>
 		<string>AntDesign.ttf</string>
 		<string>Entypo.ttf</string>
 		<string>EvilIcons.ttf</string>
@@ -69,8 +71,6 @@
 		<string>Octicons.ttf</string>
 		<string>SimpleLineIcons.ttf</string>
 		<string>Zocial.ttf</string>
-		<string>coolvetica.ttf</string>
-		<string>KGBlankSpaceSolid.ttf</string>
 	</array>
 </dict>
 </plist>
