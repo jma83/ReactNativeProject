@@ -12,9 +12,9 @@ target 'ReactNativeRickpedia' do
     :hermes_enabled => false
   )
 
-  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
-  pod 'RNSqlite2', :path => '../node_modules/react-native-sqlite-2'
+
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
   target 'ReactNativeRickpediaTests' do
     inherit! :complete
