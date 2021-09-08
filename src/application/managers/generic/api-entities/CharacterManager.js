@@ -1,4 +1,4 @@
-import ContentAPIManager from '@application/managers/generic/ContentAPIManager.js';
+import ContentAPIManager from '@application/managers/generic/api-entities/ContentAPIManager.js';
 
 export default class CharacterManager extends ContentAPIManager {
   constructor(apiClientCharacter) {
