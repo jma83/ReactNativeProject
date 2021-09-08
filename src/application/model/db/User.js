@@ -13,35 +13,32 @@ export default class User {
   constructor() {
     this.db = this.getDBInstance();
     this.table = 'User';
-    this.db.transaction(
-      txn => {
-        txn.executeSql(
-          `SELECT name FROM sqlite_master WHERE type='table' AND name='${this.table}'`,
-          [],
-          (_, results) => {
-            if (results.rows._array.length <= 0) {
-              txn.executeSql(
-                `CREATE TABLE IF NOT EXISTS ${this.table}
+    this.db.transaction(txn => {
+      txn.executeSql(
+        `SELECT name FROM sqlite_master WHERE type='table' AND name='${this.table}'`,
+        [],
+        (_, results) => {
+          if (results.rows._array.length <= 0) {
+            txn.executeSql(
+              `CREATE TABLE IF NOT EXISTS ${this.table}
                     (id INTEGER PRIMARY KEY NOT NULL, 
                     nickname VARCHAR(20), 
                     avatar BLOB, 
                     userToken VARCHAR(36),
                     createDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP)`,
-                [],
-                () => {},
-                (_, error) => console.error('ERROR CREATE TABLE User', error)
-              );
-            }
-          },
-          (_, error) => {
-            console.error('ERROR getTable', error);
-            reject(error);
+              [],
+              () => {},
+              (_, error) => console.error('ERROR CREATE TABLE User', error)
+            );
           }
-        );
-      }
-    );
+        },
+        (_, error) => {
+          console.error('ERROR getTable', error);
+          reject(error);
+        }
+      );
+    });
   }
-  
 
   getDBInstance() {
     return SQLite.openDatabase(dbConfig.name, dbConfig.version, dbConfig.description, dbConfig.size);

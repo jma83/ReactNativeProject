@@ -13,34 +13,32 @@ export default class Content {
   constructor() {
     this.db = this.getDBInstance();
     this.table = 'Content';
-    this.db.transaction(
-      txn => {
-        txn.executeSql(
-          `SELECT name FROM sqlite_master WHERE type='table' AND name='${this.table}'`,
-          [],
-          (_, results) => {
-            if (results.rows._array.length <= 0) {
-              txn.executeSql(
-                `CREATE TABLE IF NOT EXISTS ${this.table}
+    this.db.transaction(txn => {
+      txn.executeSql(
+        `SELECT name FROM sqlite_master WHERE type='table' AND name='${this.table}'`,
+        [],
+        (_, results) => {
+          if (results.rows._array.length <= 0) {
+            txn.executeSql(
+              `CREATE TABLE IF NOT EXISTS ${this.table}
                   (id INTEGER PRIMARY KEY NOT NULL, 
                   apiId INTEGER,
                   type INTEGER,
                   createDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                   userId INTEGER NOT NULL,
                   FOREIGN KEY (userId) REFERENCES User(id) ON DELETE CASCADE)`,
-                [],
-                () => {},
-                (_, error) => console.error('ERROR CREATE TABLE Content', error)
-              );
-            }
-          },
-          (_, error) => {
-            console.error('ERROR getTable', error);
-            reject(error);
+              [],
+              () => {},
+              (_, error) => console.error('ERROR CREATE TABLE Content', error)
+            );
           }
-        );
-      }
-    );
+        },
+        (_, error) => {
+          console.error('ERROR getTable', error);
+          reject(error);
+        }
+      );
+    });
   }
 
   getDBInstance() {
